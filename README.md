@@ -36,6 +36,52 @@ start using the package.
 
 ### Result
 
+Every asynchronus task can have two possible outcomes as a [Result]
+or it is a [Success] or it is a [Failure]
+So the
+
+```dart
+Result<ResultType>
+```
+
+generic union type is a convinience type to model
+and help safelly deal with any asynchronus task outcome
+
+The approach is declarative, so in order to deal with the result, one
+should call the [handle] method which has two required parameters
+an onSuccess callback
+
+```dart
+Type onSuccess(Type data)
+```
+
+and an [onFailure] callback
+
+```dart
+Type onFailure(AppError data)
+```
+
+Where AppError is a convinience type to model errors in the application
+
+Example:
+
+```dart
+Result<String> asyncTaskResturningStringResult = await someFutureOfResultString();
+
+asyncTaskResturningStringResult.handle(
+  onSuccess: (String data) {
+    "here one have access to the succesful value of the async task and might use it as desired"
+  },
+  onFailure: (AppError error) {
+    "here one have access to the failure modeled as AppError representing this async task"
+  }
+);
+```
+
+In this way one always need to deal in a declarative way with both the
+success and failure possible outcomes as unfortunatelly any asynchronus
+task needs
+
 ### Maybe
 
 ### RequestStatus
