@@ -16,14 +16,14 @@ part 'result.freezed.dart';
   ),
 )
 
-/// Every asynchronus task can have two possible outcomes as a [Result]
-/// or it is a [Success] or it is a [Failure]
+/// Every asynchronus task can have two possible outcomes as a [Result].
+/// It is either a [Success] or a [Failure].
 /// So the
 /// ```dart
 /// Result<ResultType>
 /// ```
 /// generic union type is a convinience type to model
-/// and help safelly deal with any asynchronus task outcome
+/// and help safelly deal with any asynchronus task outcomes
 ///
 /// The approach is declarative, so in order to deal with the result, one
 /// should call the [handle] method which has two required parameters
@@ -52,7 +52,7 @@ part 'result.freezed.dart';
 /// );
 /// ```
 ///
-/// In this way one always need to deal in a declarative way with both the
+/// In this way one always needs to deal in a declarative way with both the
 /// success and failure possible outcomes as unfortunatelly any asynchronus
 /// task needs
 class Result<ResultType> with _$Result<ResultType> {
