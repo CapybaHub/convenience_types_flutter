@@ -16,7 +16,10 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$FormField<T> {
+  /// Property representing the name of this [FormField] in a possible json request body
   String get name => throw _privateConstructorUsedError;
+
+  /// Property representing the value of this [FormField] in a possible json request body
   Maybe<T> get field => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -114,8 +117,11 @@ class __$$_FormFieldCopyWithImpl<T, $Res>
 class _$_FormField<T> implements _FormField<T> {
   const _$_FormField({required this.name, this.field = const Nothing()});
 
+  /// Property representing the name of this [FormField] in a possible json request body
   @override
   final String name;
+
+  /// Property representing the value of this [FormField] in a possible json request body
   @override
   @JsonKey()
   final Maybe<T> field;
@@ -151,8 +157,12 @@ abstract class _FormField<T> implements FormField<T> {
       _$_FormField<T>;
 
   @override
+
+  /// Property representing the name of this [FormField] in a possible json request body
   String get name => throw _privateConstructorUsedError;
   @override
+
+  /// Property representing the value of this [FormField] in a possible json request body
   Maybe<T> get field => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
