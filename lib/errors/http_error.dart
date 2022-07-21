@@ -128,58 +128,70 @@ class NoInternetConnectionError extends HttpError {
   });
 }
 
-Future<HttpError> parseHttpError(DioError error, StackTrace stackTrace) async {
+Future<HttpError> parseHttpError({
+  required DioError error,
+  required StackTrace stackTrace,
+  String Function({required DioError error})? handleErrorMessage,
+  String defaultErrorMessage =
+      "Algo inesperado aconteceu. Tente novamente mais tarde.",
+}) async {
   try {
-    late String msg;
+    String msg = defaultErrorMessage;
 
-    if (error.response != null &&
-        error.response?.headers.value('Content-Type') == 'application/json' &&
-        (error.response?.data as Map).containsKey('msg')) {
-      msg = error.response?.data["msg"];
+    if (handleErrorMessage != null) {
+      msg = handleErrorMessage(error: error);
     } else {
-      msg = "Algo inesperado aconteceu. Tente novamente mais tarde.";
+      if (error.response != null &&
+          error.response?.headers.value('Content-Type') == 'application/json' &&
+          (error.response?.data as Map).containsKey('msg')) {
+        msg = error.response?.data["msg"];
+      }
     }
 
     if (error.type == DioErrorType.response) {
       switch (error.response?.statusCode) {
         case 400:
           return HttpBadRequestError(
-            slug: msg,
+            slug: stackTrace.toString(),
             msg: msg,
             errors: error.response?.data,
           );
         case 401:
           return HttpUnauthorizedError(
-            slug: msg,
+            slug: stackTrace.toString(),
             msg: msg,
           );
         case 403:
           return HttpForbiddenError(
-            slug: msg,
+            slug: stackTrace.toString(),
             msg: msg,
           );
         case 404:
           return HttpNotFoundError(
-            slug: msg,
+            slug: stackTrace.toString(),
             msg: msg,
           );
         case 410:
           return HttpGoneError(
-            slug: msg,
+            slug: stackTrace.toString(),
             msg: msg,
           );
         case 422:
           return UnprocessableEntityError(
-            slug: msg,
+            slug: stackTrace.toString(),
             msg: msg,
             errors: error.response?.data,
           );
         case 500:
           return HttpInternalServerError(
-            slug: error.message,
+            slug: stackTrace.toString(),
+            msg: msg,
           );
         default:
-          return HttpUnknownError();
+          return HttpUnknownError(
+            slug: stackTrace.toString(),
+            msg: msg,
+          );
       }
     } else if (error.type == DioErrorType.connectTimeout ||
         error.type == DioErrorType.receiveTimeout ||
