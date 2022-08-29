@@ -95,19 +95,13 @@ class Maybe<T> with _$Maybe<T> {
   /// this cast sometimes. Use it wisely!
   Just<T> get asJust => this as Just<T>;
 
-  /// The [value] getter is a quick way to get the value contained in [Just], if it exists.
-  T? get value => map(
-        nothing: (_) => null,
-        just: (just) => just.value,
-      );
-
   /// The [getOrElse] method which receives a parameter to return as a
   /// fallback value, when the value is a [Nothing], or there is
   /// no value in the [Just].
   getOrElse(fallback) {
     return map(
       nothing: (_) => fallback,
-      just: (_) => value ?? fallback,
+      just: (just) => just.value ?? fallback,
     );
   }
 }

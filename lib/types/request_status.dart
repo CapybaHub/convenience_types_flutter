@@ -134,14 +134,4 @@ class RequestStatus<ResultType> with _$RequestStatus<ResultType> {
   /// `strongly advised to not do that indiscriminately`. Although, it might be convenient to have
   /// this cast sometimes. Use it wisely!
   Failed get asFailed => this as Failed;
-
-  ResultType? get data => maybeWhen(
-        succeeded: (data) => data,
-        orElse: () => null,
-      );
-
-  AppError? get error => maybeWhen(
-        failed: (error) => error,
-        orElse: () => null,
-      );
 }

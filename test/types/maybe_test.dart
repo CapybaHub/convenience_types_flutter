@@ -36,31 +36,6 @@ void main() {
   );
 
   group(
-    'Test value getter',
-    () {
-      test(
-        'It should return the value when its a Just',
-        () {
-          const bool mockValue = true;
-          Maybe testJust = const Just(mockValue);
-
-          expect(testJust.value, mockValue);
-          expect(testJust.value, isA<bool>());
-        },
-      );
-
-      test(
-        'It should return null when its a Nothing',
-        () {
-          Maybe testJust = const Nothing();
-
-          expect(testJust.value, null);
-        },
-      );
-    },
-  );
-
-  group(
     'Test getOrElse method',
     () {
       test(
