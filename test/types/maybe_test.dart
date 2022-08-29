@@ -36,6 +36,30 @@ void main() {
   );
 
   group(
+    "Maybe.from",
+    () {
+      test(
+        'It should return a nothing if the inputed value is null',
+        () {
+          Maybe testMaybe = Maybe.from(null);
+
+          testMaybe.when(
+            nothing: () => expect(true, true),
+            just: (_) => fail("unexpected just"),
+          );
+        },
+      );
+
+      test(
+        'It should return a Just if the inputed value is not null',
+        () {
+          expect(Maybe.from(1), const Just(1));
+        },
+      );
+    },
+  );
+
+  group(
     'Test getOrElse method',
     () {
       test(

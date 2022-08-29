@@ -80,6 +80,15 @@ class Maybe<T> with _$Maybe<T> {
   /// Type representing the [Just] state of a value, which would be equivalent to having a value
   const factory Maybe.just(T value) = Just<T>;
 
+  /// Factory for helping building a [Maybe] from a nullable input. It produces a [Nothing] if the input is null, and a [Just] otherwise
+  factory Maybe.from(T? input) {
+    if (input == null) {
+      return Nothing<T>();
+    } else {
+      return Just<T>(input);
+    }
+  }
+
   bool get isNothing => this is Nothing;
   bool get isJust => this is Just;
 
