@@ -36,25 +36,24 @@ void main() {
   );
 
   group(
-    'Test value getter',
+    "Maybe.from",
     () {
       test(
-        'It should return the value when its a Just',
+        'It should return a nothing if the inputed value is null',
         () {
-          const bool mockValue = true;
-          Maybe testJust = const Just(mockValue);
+          Maybe testMaybe = Maybe.from(null);
 
-          expect(testJust.value, mockValue);
-          expect(testJust.value, isA<bool>());
+          testMaybe.when(
+            nothing: () => expect(true, true),
+            just: (_) => fail("unexpected just"),
+          );
         },
       );
 
       test(
-        'It should return null when its a Nothing',
+        'It should return a Just if the inputed value is not null',
         () {
-          Maybe testJust = const Nothing();
-
-          expect(testJust.value, null);
+          expect(Maybe.from(1), const Just(1));
         },
       );
     },
