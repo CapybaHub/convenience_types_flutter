@@ -89,6 +89,14 @@ class Maybe<T> with _$Maybe<T> {
     }
   }
 
+  /// Method chain access to data held by the [Maybe]. If `this` is [Nothing] returns [Nothing], if `this` is [Just], returns the result of the `combiner` method over the `value` inside [Just]
+  Maybe<K> mapJust<K>(Maybe<K> Function(T) combiner) {
+    return when(
+      nothing: () => Nothing<K>(),
+      just: (T data) => combiner(data),
+    );
+  }
+
   bool get isNothing => this is Nothing;
   bool get isJust => this is Just;
 
