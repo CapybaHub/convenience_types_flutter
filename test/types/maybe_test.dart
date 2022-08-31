@@ -1,6 +1,12 @@
 import 'package:convenience_types/types/maybe.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+class TestMapType {
+  dynamic data;
+
+  TestMapType(this.data);
+}
+
 void main() {
   group(
     'Test cast cases',
@@ -54,6 +60,42 @@ void main() {
         'It should return a Just if the inputed value is not null',
         () {
           expect(Maybe.from(1), const Just(1));
+        },
+      );
+    },
+  );
+
+  group(
+    'mapJust',
+    () {
+      test(
+        'It should return the result of the combiner method passing the value inside this, if this is Just',
+        () {
+          Maybe<String> testMaybe = const Just('test');
+          Maybe<TestMapType> _combiner(String value) {
+            return Just(TestMapType(value));
+          }
+
+          testMaybe.mapJust(_combiner).when(
+                nothing: () => fail("unexpected Nothing"),
+                just: (combined) {
+                  expect(combined, isA<TestMapType>());
+                  expect(combined.data, 'test');
+                },
+              );
+        },
+      );
+
+      test(
+        'It should return Nothing, if this is Nothing',
+        () {
+          Maybe<String> testMaybe = const Nothing();
+          Maybe<TestMapType> _combiner(String value) {
+            return Just(TestMapType(value));
+          }
+
+          expect(testMaybe.mapJust<TestMapType>(_combiner),
+              const Nothing<TestMapType>());
         },
       );
     },

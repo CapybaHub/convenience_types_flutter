@@ -116,4 +116,11 @@ class Result<ResultType> with _$Result<ResultType> {
       return onFailure((this as Failure).error);
     }
   }
+
+  /// Method chain access to data held by the [Result]. If `this` is [Failure] returns [Failure], if `this` is [Success], returns the result of the `combiner` method over the `data` inside [Success]
+  Result<K> mapSuccess<K>(Result<K> Function(ResultType) combiner) {
+    return handle(
+        onSuccess: (data) => combiner(data),
+        onFailure: (error) => Failure(error));
+  }
 }
