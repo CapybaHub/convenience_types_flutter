@@ -3,6 +3,9 @@ import 'package:dio/dio.dart';
 
 import 'app_error.dart';
 
+/// Abstract class to model errors on the application. As a presset of foreseen
+/// specific errors there are some different implementations of this type.
+/// [HttpError] models errors related to http requests
 abstract class HttpError extends AppError {
   final int code;
 
@@ -18,6 +21,7 @@ abstract class HttpError extends AppError {
       '[$runtimeType]: (slug: $slug, msg: $msg, stackTrace: $stackTrace, code: $code)';
 }
 
+/// [HttpNetworkError] models errors related to network connection
 class HttpNetworkError extends HttpError {
   HttpNetworkError({
     super.slug,
@@ -25,6 +29,8 @@ class HttpNetworkError extends HttpError {
     super.stackTrace,
   });
 }
+
+/// [HttpUnknownError] models unknown http errors
 
 class HttpUnknownError extends HttpError {
   HttpUnknownError({
@@ -34,6 +40,7 @@ class HttpUnknownError extends HttpError {
   });
 }
 
+/// [HttpNetworkError] models http errors with `status 400`
 class HttpBadRequestError extends HttpError {
   final Map<String, dynamic> errors;
 
@@ -52,6 +59,8 @@ class HttpBadRequestError extends HttpError {
         );
 }
 
+/// [HttpUnauthorizedError] models http errors with `status 401`
+
 class HttpUnauthorizedError extends HttpError {
   HttpUnauthorizedError({
     super.slug,
@@ -62,6 +71,7 @@ class HttpUnauthorizedError extends HttpError {
         );
 }
 
+/// [HttpForbiddenError] models http errors with `status 403`
 class HttpForbiddenError extends HttpError {
   HttpForbiddenError({
     super.slug,
@@ -71,6 +81,8 @@ class HttpForbiddenError extends HttpError {
           code: 403,
         );
 }
+
+/// [HttpNotFoundError] models http errors with `status 404`
 
 class HttpNotFoundError extends HttpError {
   HttpNotFoundError({
@@ -82,6 +94,7 @@ class HttpNotFoundError extends HttpError {
         );
 }
 
+/// [HttpGoneError] models http errors with `status 410`
 class HttpGoneError extends HttpError {
   HttpGoneError({
     super.slug,
@@ -91,6 +104,8 @@ class HttpGoneError extends HttpError {
           code: 410,
         );
 }
+
+/// [UnprocessableEntityError] models http errors with `status 422`
 
 class UnprocessableEntityError extends HttpError {
   final Map<String, dynamic> errors;
@@ -110,6 +125,7 @@ class UnprocessableEntityError extends HttpError {
         );
 }
 
+/// [HttpInternalServerError] models http errors with `status 500`
 class HttpInternalServerError extends HttpError {
   HttpInternalServerError({
     super.slug,
@@ -120,6 +136,8 @@ class HttpInternalServerError extends HttpError {
         );
 }
 
+/// [NoInternetConnectionError] models errors related with failure in
+/// communication associated with failure of internet connection
 class NoInternetConnectionError extends HttpError {
   NoInternetConnectionError({
     super.slug,

@@ -25,6 +25,12 @@ Along our development cycle of numerous projects we have adopted the usage of so
     </ol>
   </li>
   <li><a href="#ppError">AppError</a></li>
+  <li><a href="#util">Util</a>
+    <ol>
+      <li><a href="#formUtils">FormUtils</a></li>
+      <li><a href="#seedTestStateMixin">SeedTestStateMixin</a></li>
+    </ol>
+  </li>
 </ol>
 
 ## Getting started
@@ -331,3 +337,59 @@ Example:
 ```
 
 ## AppError
+
+Abstract class to model errors on the application. As a presset of foreseen
+specific errors there are some different implementations of this type. Namely:
+[HttpError] models errors related to http requests
+[CacheError] models cache errors
+[DeviceInfoError] models device's information gathering related errors
+[FormError] models form related errors
+[StorageError] models storage operations related errors
+
+In addition to the [AppError], there are a presset of foreseen [Exceptions]
+
+## Util
+
+### FormUtils
+
+Class used as a dart `Mixin` to a `Form` class, providing methods to conviniently
+deal with validation and serialization of fields.
+
+```dart
+  Result<String> validateField<Type>
+```
+
+Method to help validate a [FormField<Type>] providing its value represented by its `Maybe<Type>`, and
+a `List<Validator<Type>>`, returning a `Result<String>` with possible error message.
+
+```dart
+  Map<String, dynamic> fieldsToJson(List<FormField> fields)
+```
+
+Method to help in the task of passing the provided `List<FormField>` to its `Map<String, dynamic>` representation,
+that is useful when it comes to pass the `Form` data through, for instance, a request body
+
+### SeedTestStateMixin
+
+`Mixin` to `StateNotifier` to help seeding test states.
+
+`Example:`
+
+```dart
+class MyStateNotifier extends StateNotifier<MyState> with SeedTestStateMixin<MyState> {}
+```
+
+and in a test:
+
+```dart
+test(
+        'Test description',
+        () {
+          myStateNotifier.setSeedState(
+            mySeedState
+          );
+
+          /// test body
+        },
+      );
+```
