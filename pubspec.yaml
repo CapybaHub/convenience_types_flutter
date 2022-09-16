@@ -13,6 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   freezed_annotation: ^2.0.3
+  state_notifier: ^0.7.2+1
 
 dev_dependencies:
   flutter_test:

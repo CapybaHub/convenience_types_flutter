@@ -1,3 +1,12 @@
+/// Abstract class to model errors on the application. As a presset of foreseen
+/// specific errors there are some different implementations of this type. Namely:
+/// [HttpError]  models errors related to http requests
+/// [CacheError]  models cache errors
+/// [DeviceInfoError]  models device's information gathering related errors
+/// [FormError]  models form related errors
+/// [StorageError]  models storage operations related errors
+///
+/// In addition to the [AppError], there are a presset of foreseen [Exceptions]
 abstract class AppError {
   final String slug;
   final String msg;

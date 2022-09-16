@@ -1,5 +1,8 @@
 import 'app_error.dart';
 
+/// Abstract class to model errors on the application. As a presset of foreseen
+/// specific errors there are some different implementations of this type.
+/// [CacheError] models cache errors
 abstract class CacheError extends AppError {
   CacheError({
     super.slug,
@@ -8,6 +11,7 @@ abstract class CacheError extends AppError {
   });
 }
 
+/// [FailedToCacheError] models failure in the action of caching an info
 class FailedToCacheError extends CacheError {
   FailedToCacheError({
     super.slug,
@@ -19,6 +23,7 @@ class FailedToCacheError extends CacheError {
   String toString() => '[FailedToCacheError]: {slug: $slug, msg: $msg}';
 }
 
+/// [FileAlreadyCachedError] models failure araised from trying to cache an already cached file
 class FileAlreadyCachedError extends CacheError {
   FileAlreadyCachedError({
     super.slug,
@@ -30,6 +35,7 @@ class FileAlreadyCachedError extends CacheError {
   String toString() => '[FileAlreadyCachedError]: {slug: $slug, msg: $msg}';
 }
 
+/// [NotCachedError] models failure araised from trying retrieve a file not yet cached
 class NotCachedError extends CacheError {
   NotCachedError({
     super.slug,
@@ -41,6 +47,7 @@ class NotCachedError extends CacheError {
   String toString() => '[NotCachedError]: {slug: $slug, msg: $msg}';
 }
 
+/// [FailedToUnloadError] models failure araised from trying to delete a cached file
 class FailedToUnloadError extends CacheError {
   FailedToUnloadError({
     super.slug,

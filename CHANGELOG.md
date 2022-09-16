@@ -1,3 +1,8 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+## new
+
+- types: `FormField`, `Maybe`, `RequestStatus`, `Result`
+- errors: `CacheError`, `DeviceInfoError`, `FormError`, `HttpError`, `StorageError`
+- exceptions: `ParseException`, `CacheException`
+- formUtils: `FormUtils`, `SeedTestStateMixin`
