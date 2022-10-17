@@ -7,7 +7,7 @@ part 'maybe.freezed.dart';
 /// ```dart
 /// Maybe<T>
 /// ```
-/// generic union type is a convinience type to model
+/// generic union type is a convenience type to model
 /// and help safelly deal with any optional value outcomes.
 ///
 /// Where we can have two types that will represent the state of a value that can be null. The [Nothing], representing when it has no value, and the [Just], when it has a value.

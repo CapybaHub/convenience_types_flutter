@@ -1,7 +1,7 @@
 name: convenience_types
-description: A new Flutter package project.
+description: A package to ensamble convenience types commonly used through flutter projects developed by Capyba.
 version: 0.1.0
-homepage:
+repository: https://github.com/CapybaHub/convenience_types_flutter
 
 environment:
   sdk: ">=2.17.0 <3.0.0"

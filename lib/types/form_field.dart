@@ -13,7 +13,7 @@ part 'form_field.freezed.dart';
 /// ```dart
 /// FormField<Type>
 /// ```
-/// is a convinience type that models, as the name already points,
+/// is a convenience type that models, as the name already points,
 /// a field in a Form, and uses the convention of not passing not filled fields to the resulting `Map`.
 /// But here we are already passing the [name] of the field
 /// in its possible Map (json) position, and the actual [field] data is a `Maybe<Type>`.
@@ -21,7 +21,7 @@ part 'form_field.freezed.dart';
 /// `FormField`s are usually used in a `Form` defined class, and with the usage of
 /// our convinice mixin `FormUtils`, one should have everything it needs to have
 /// form validation, and `toJson` method. It might introduce some verbose api, to
-/// deal with, but the convinience of dealing with the most critical parts, like
+/// deal with, but the convenience of dealing with the most critical parts, like
 /// validating and passing the `Form` information through, makes the usage of our
 /// `FormField`s worthwhile.
 /// <br>

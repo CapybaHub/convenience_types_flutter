@@ -50,7 +50,7 @@ So the
 Result<ResultType>
 ```
 
-generic union type is a convinience type to model
+generic union type is a convenience type to model
 and help safelly deal with any asynchronus task outcomes.
 
 The approach is declarative, so in order to deal with the result, one
@@ -67,7 +67,7 @@ and an `onFailure` callback
 Type onFailure(AppError data)
 ```
 
-Where AppError is a convinience type to model errors in the application
+Where AppError is a convenience type to model errors in the application
 
 Example:
 
@@ -88,7 +88,7 @@ In this way one always needs to deal in a declarative way with both the
 success and failure possible outcomes as unfortunatelly any asynchronus
 task needs.
 
-`anti-patern alert!`: The `Result` generic Union type comes with casts convinience methods `asSuccess`, `asFailure`, but although it might be temping to just cast the result into the desired type, it is strongly advised you not to do it, once if you try to cast diferent types (`Success` as `Failure` or the other way around) it would throw an exception.
+`anti-patern alert!`: The `Result` generic Union type comes with casts convenience methods `asSuccess`, `asFailure`, but although it might be temping to just cast the result into the desired type, it is strongly advised you not to do it, once if you try to cast diferent types (`Success` as `Failure` or the other way around) it would throw an exception.
 
 ### Maybe
 
@@ -99,7 +99,7 @@ So the
 Maybe<T>
 ```
 
-generic union type is a convinience type to model
+generic union type is a convenience type to model
 and help safelly deal with any optional value outcomes.
 
 Where we can have two types that will represent the state of a value that can be null. The [Nothing], representing when it has no value, and the [Just], when it has a value.
@@ -179,7 +179,7 @@ contains a field `data` of type `ResultType`. And the
 Failed().error = AppError error;
 ```
 
-contains a field `error` of type `AppError`. Where `AppError` is the convinience type
+contains a field `error` of type `AppError`. Where `AppError` is the convenience type
 that models errors in the app.<br>
 To deal with the request states one should use one of the unions methods.<br>
 The `.map` forces you to deal with all the four states explicitly, passing callbacks for
@@ -246,7 +246,7 @@ The generic sealed data class
 FormField<Type>
 ```
 
-is a convinience type that models, as the name already points,
+is a convenience type that models, as the name already points,
 a field in a Form, and uses the convention of not passing not filled fields to the resulting `Map`.
 Here we are already passing the [name] of the field in its possible `Map`
 (json) position, and the actual [field] data is a `Maybe<Type>`.
@@ -254,7 +254,7 @@ Here we are already passing the [name] of the field in its possible `Map`
 `FormField`s are usually used in a `Form` defined class, and with the usage of
 our convinice mixin `FormUtils`, one should have everything it needs to have
 form validation, and `toJson` method. It might introduce some verbose api, to
-deal with, but the convinience of dealing with the most critical parts, like
+deal with, but the convenience of dealing with the most critical parts, like
 validating and passing the `Form` information through, makes the usage of our
 `FormField`s worthwhile.
 <br>

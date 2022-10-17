@@ -22,7 +22,7 @@ part 'result.freezed.dart';
 /// ```dart
 /// Result<ResultType>
 /// ```
-/// generic union type is a convinience type to model
+/// generic union type is a convenience type to model
 /// and help safelly deal with any asynchronus task outcomes
 ///
 /// The approach is declarative, so in order to deal with the result, one
@@ -35,7 +35,7 @@ part 'result.freezed.dart';
 /// ```dart
 /// Type onFailure(AppError data)
 /// ```
-/// Where AppError is a convinience type to model errors in the application
+/// Where AppError is a convenience type to model errors in the application
 ///
 /// Example:
 ///
@@ -90,7 +90,7 @@ class Result<ResultType> with _$Result<ResultType> {
   /// ```dart
   /// Type onFailure(AppError data)
   /// ```
-  /// Where AppError is a convinience type to model errors in the application
+  /// Where AppError is a convenience type to model errors in the application
   ///
   /// Example:
   ///

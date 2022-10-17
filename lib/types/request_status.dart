@@ -18,7 +18,7 @@ part 'request_status.freezed.dart';
 /// ```dart
 /// Failed().error = AppError error;
 /// ```
-/// contains a field `error` of type `AppError`. Where `AppError` is the convinience type
+/// contains a field `error` of type `AppError`. Where `AppError` is the convenience type
 /// that models errors in the app.
 ///
 ///
