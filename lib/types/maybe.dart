@@ -7,7 +7,7 @@ part 'maybe.freezed.dart';
 /// ```dart
 /// Maybe<T>
 /// ```
-/// generic union type is a convinience type to model
+/// generic union type is a convenience type to model
 /// and help safelly deal with any optional value outcomes.
 ///
 /// Where we can have two types that will represent the state of a value that can be null. The [Nothing], representing when it has no value, and the [Just], when it has a value.
@@ -115,10 +115,10 @@ class Maybe<T> with _$Maybe<T> {
   /// The [getOrElse] method which receives a parameter to return as a
   /// fallback value, when the value is a [Nothing], or there is
   /// no value in the [Just].
-  getOrElse(fallback) {
-    return map(
-      nothing: (_) => fallback,
-      just: (just) => just.value ?? fallback,
+  T getOrElse(T fallback) {
+    return when(
+      nothing: () => fallback,
+      just: (value) => value ?? fallback,
     );
   }
 }
