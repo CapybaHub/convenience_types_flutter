@@ -1,3 +1,10 @@
+## 0.1.2
+
+## fixes
+
+- getOrElse behavior
+- Getting Started session in the readme
+
 ## 0.1.1
 
 ## new

@@ -35,8 +35,13 @@ Along our development cycle of numerous projects we have adopted the usage of so
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+To install and have the package good to go in a Flutter project, run:
+
+`flutter pub add convenience_types`
+
+If you're on a Dart project, run:
+
+`dart pub add convenience_types`
 
 ## Types
 
