@@ -1,4 +1,5 @@
 import 'package:convenience_types/errors/app_error.dart';
+import 'package:convenience_types/types/types.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'request_status.freezed.dart';
@@ -105,6 +106,12 @@ class RequestStatus<ResultType> with _$RequestStatus<ResultType> {
 
   /// Type representing the [Failed] state of a request when it is not successful, bringing possibly the modeled error
   const factory RequestStatus.failed(AppError error) = Failed;
+
+  /// Factory for helping building a [RequestStatus] from a [Result] input. It produces a [Failed] status if the input is a [Failure], and a [Succeeded] otherwise
+  factory RequestStatus.fromResult(Result<ResultType> result) => result.handle(
+        onSuccess: (data) => Succeeded(data),
+        onFailure: (error) => Failed(error),
+      );
 
   bool get isIdle => this is Idle;
   bool get isLoading => this is Loading;

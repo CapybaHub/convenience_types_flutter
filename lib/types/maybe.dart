@@ -115,10 +115,10 @@ class Maybe<T> with _$Maybe<T> {
   /// The [getOrElse] method which receives a parameter to return as a
   /// fallback value, when the value is a [Nothing], or there is
   /// no value in the [Just].
-  getOrElse(fallback) {
-    return map(
-      nothing: (_) => fallback,
-      just: (just) => just.value ?? fallback,
+  T getOrElse(T fallback) {
+    return when(
+      nothing: () => fallback,
+      just: (value) => value,
     );
   }
 }
