@@ -19,7 +19,7 @@ part 'form_field.freezed.dart';
 /// in its possible Map (json) position, and the actual [field] data is a `Maybe<Type>`.
 /// <br>
 /// `FormField`s are usually used in a `Form` defined class, and with the usage of
-/// our convinice mixin `FormUtils`, one should have everything it needs to have
+/// our convenience mixin `FormUtils`, one should have everything it needs to have
 /// form validation, and `toJson` method. It might introduce some verbose api, to
 /// deal with, but the convenience of dealing with the most critical parts, like
 /// validating and passing the `Form` information through, makes the usage of our

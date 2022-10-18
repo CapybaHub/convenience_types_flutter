@@ -21,7 +21,8 @@ abstract class AppError {
   @override
   bool operator ==(other) {
     return (other.runtimeType == runtimeType) &&
-        (other as AppError).slug == slug;
+        (other is AppError) &&
+        other.slug == slug;
   }
 
   @override

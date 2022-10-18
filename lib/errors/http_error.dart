@@ -161,7 +161,8 @@ Future<HttpError> parseHttpError({
     } else {
       if (error.response != null &&
           error.response?.headers.value('Content-Type') == 'application/json' &&
-          (error.response?.data as Map).containsKey('msg')) {
+          (error.response?.data is Map) &&
+          error.response?.data.containsKey('msg')) {
         msg = error.response?.data["msg"];
       }
     }
