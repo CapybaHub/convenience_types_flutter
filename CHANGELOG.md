@@ -1,3 +1,11 @@
+## new
+
+- added example
+
+## fixes
+
+- typos (convinience -> convenience)
+
 ## 0.1.0
 
 ## new
