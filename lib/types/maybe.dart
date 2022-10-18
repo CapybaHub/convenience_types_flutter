@@ -118,7 +118,7 @@ class Maybe<T> with _$Maybe<T> {
   T getOrElse(T fallback) {
     return when(
       nothing: () => fallback,
-      just: (value) => value,
+      just: (value) => value ?? fallback,
     );
   }
 }
