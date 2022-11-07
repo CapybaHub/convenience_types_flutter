@@ -89,10 +89,13 @@ class Maybe<T> with _$Maybe<T> {
     }
   }
 
-  /// Method chain access to data held by the [Maybe]. If `this` is [Nothing] returns [Nothing], if `this` is [Just], returns the result of the `combiner` method over the `value` inside [Just]
-  Maybe<K> mapJust<K>(Maybe<K> Function(T) combiner) {
+  /// Method chain access to data held by the [Maybe]. If `this` is [Nothing] returns the result of [orElse] if some is passed, otherwise it returns null; if `this` is [Just], returns the result of the `combiner` method over the `value` inside [Just]
+  K? mapJust<K>(
+    K Function(T) combiner, {
+    K Function()? orElse,
+  }) {
     return when(
-      nothing: () => Nothing<K>(),
+      nothing: () => orElse != null ? orElse() : null,
       just: (T data) => combiner(data),
     );
   }

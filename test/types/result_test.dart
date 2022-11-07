@@ -44,33 +44,50 @@ void main() {
         'It should return the result of the combiner passing the data inside Result, if this is a Success',
         () {
           Result<String> testResult = const Success('test');
-          Result<TestMapType> _combiner(String data) {
-            return Success(TestMapType(data));
+          TestMapType combiner(String data) {
+            return TestMapType(data);
           }
 
-          testResult.mapSuccess(_combiner).handle(
-            onSuccess: (data) {
-              expect(data, isA<TestMapType>());
-              expect(data.data, 'test');
-            },
-            onFailure: (error) {
-              fail('unexpected failure');
-            },
+          expect(testResult.mapSuccess(combiner), isA<TestMapType>());
+          expect(testResult.mapSuccess(combiner)?.data, 'test');
+        },
+      );
+
+      test(
+        'It should return the result of orElse, if this is a Failure and a orElse is passed',
+        () {
+          Result<String> testResult = Failure(AppUnknownError());
+          TestMapType combiner(String data) {
+            return TestMapType(data);
+          }
+
+          TestMapType orElse(AppError error) {
+            return TestMapType('error');
+          }
+
+          expect(
+            testResult.mapSuccess(combiner, orElse: orElse),
+            isA<TestMapType>(),
+          );
+
+          expect(
+            testResult.mapSuccess(combiner, orElse: orElse)?.data,
+            'error',
           );
         },
       );
 
       test(
-        'It should return Failure, if this is a Failure',
+        'It should return the null, if this is a Failure and no orElse is passed',
         () {
           Result<String> testResult = Failure(AppUnknownError());
-          Result<TestMapType> _combiner(String data) {
-            return Success(TestMapType(data));
+          TestMapType combiner(String data) {
+            return TestMapType(data);
           }
 
           expect(
-            testResult.mapSuccess(_combiner),
-            isA<Failure>(),
+            testResult.mapSuccess(combiner),
+            null,
           );
         },
       );

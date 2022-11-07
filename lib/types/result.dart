@@ -117,10 +117,14 @@ class Result<ResultType> with _$Result<ResultType> {
     }
   }
 
-  /// Method chain access to data held by the [Result]. If `this` is [Failure] returns [Failure], if `this` is [Success], returns the result of the `combiner` method over the `data` inside [Success]
-  Result<K> mapSuccess<K>(Result<K> Function(ResultType) combiner) {
+  /// Method chain access to data held by the [Result]. If `this` is [Failure] returns the result of [orElse] if some is passed, otherwise returns null; if `this` is [Success], returns the result of the `combiner` method over the `data` inside [Success]
+  K? mapSuccess<K>(
+    K Function(ResultType) combiner, {
+    K Function(AppError)? orElse,
+  }) {
     return handle(
-        onSuccess: (data) => combiner(data),
-        onFailure: (error) => Failure(error));
+      onSuccess: (data) => combiner(data),
+      onFailure: (error) => orElse != null ? orElse(error) : null,
+    );
   }
 }

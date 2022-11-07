@@ -72,30 +72,46 @@ void main() {
         'It should return the result of the combiner method passing the value inside this, if this is Just',
         () {
           Maybe<String> testMaybe = const Just('test');
-          Maybe<TestMapType> _combiner(String value) {
-            return Just(TestMapType(value));
+          TestMapType combiner(String value) {
+            return TestMapType(value);
           }
 
-          testMaybe.mapJust(_combiner).when(
-                nothing: () => fail("unexpected Nothing"),
-                just: (combined) {
-                  expect(combined, isA<TestMapType>());
-                  expect(combined.data, 'test');
-                },
-              );
+          expect(testMaybe.mapJust(combiner), isA<TestMapType>());
+          expect(testMaybe.mapJust(combiner)?.data, 'test');
         },
       );
 
       test(
-        'It should return Nothing, if this is Nothing',
+        'It should return the result of orElse, if this is Nothing',
         () {
           Maybe<String> testMaybe = const Nothing();
-          Maybe<TestMapType> _combiner(String value) {
-            return Just(TestMapType(value));
+          TestMapType combiner(String value) {
+            return TestMapType(value);
           }
 
-          expect(testMaybe.mapJust<TestMapType>(_combiner),
-              const Nothing<TestMapType>());
+          TestMapType orElse() {
+            return TestMapType('nothing');
+          }
+
+          expect(testMaybe.mapJust<TestMapType>(combiner, orElse: orElse)?.data,
+              'nothing');
+        },
+      );
+
+      test(
+        'It should return null, if this is Nothing and no orElse is passed',
+        () {
+          Maybe<String> testMaybe = const Nothing();
+          TestMapType combiner(String value) {
+            return TestMapType(value);
+          }
+
+          TestMapType orElse() {
+            return TestMapType('nothing');
+          }
+
+          expect(testMaybe.mapJust<TestMapType>(combiner, orElse: orElse)?.data,
+              'nothing');
         },
       );
     },
