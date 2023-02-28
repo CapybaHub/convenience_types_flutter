@@ -1,3 +1,11 @@
+## [UNRELEASED]
+
+## new
+
+- Maybe factories
+- maybeData getters
+- const contructors to AppError
+
 ## 0.1.2
 
 ## fixes
