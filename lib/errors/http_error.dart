@@ -9,7 +9,7 @@ import 'app_error.dart';
 abstract class HttpError extends AppError {
   final int code;
 
-  HttpError({
+  const HttpError({
     super.slug,
     super.msg,
     super.stackTrace,
@@ -23,7 +23,7 @@ abstract class HttpError extends AppError {
 
 /// [HttpNetworkError] models errors related to network connection
 class HttpNetworkError extends HttpError {
-  HttpNetworkError({
+  const HttpNetworkError({
     super.slug,
     super.msg,
     super.stackTrace,
@@ -33,7 +33,7 @@ class HttpNetworkError extends HttpError {
 /// [HttpUnknownError] models unknown http errors
 
 class HttpUnknownError extends HttpError {
-  HttpUnknownError({
+  const HttpUnknownError({
     super.slug,
     super.msg,
     super.stackTrace,
@@ -49,7 +49,7 @@ class HttpBadRequestError extends HttpError {
 
   String get msgDev => errors['msg_dev'] ?? '';
 
-  HttpBadRequestError({
+  const HttpBadRequestError({
     super.slug,
     super.msg,
     super.stackTrace,
@@ -62,7 +62,7 @@ class HttpBadRequestError extends HttpError {
 /// [HttpUnauthorizedError] models http errors with `status 401`
 
 class HttpUnauthorizedError extends HttpError {
-  HttpUnauthorizedError({
+  const HttpUnauthorizedError({
     super.slug,
     super.msg,
     super.stackTrace,
@@ -73,7 +73,7 @@ class HttpUnauthorizedError extends HttpError {
 
 /// [HttpForbiddenError] models http errors with `status 403`
 class HttpForbiddenError extends HttpError {
-  HttpForbiddenError({
+  const HttpForbiddenError({
     super.slug,
     super.msg,
     super.stackTrace,
@@ -85,7 +85,7 @@ class HttpForbiddenError extends HttpError {
 /// [HttpNotFoundError] models http errors with `status 404`
 
 class HttpNotFoundError extends HttpError {
-  HttpNotFoundError({
+  const HttpNotFoundError({
     super.slug,
     super.msg,
     super.stackTrace,
@@ -96,7 +96,7 @@ class HttpNotFoundError extends HttpError {
 
 /// [HttpGoneError] models http errors with `status 410`
 class HttpGoneError extends HttpError {
-  HttpGoneError({
+  const HttpGoneError({
     super.slug,
     super.msg,
     super.stackTrace,
@@ -115,7 +115,7 @@ class UnprocessableEntityError extends HttpError {
 
   String get msgDev => errors['msg_dev'] ?? '';
 
-  UnprocessableEntityError({
+  const UnprocessableEntityError({
     super.slug,
     super.msg,
     super.stackTrace,
@@ -127,7 +127,7 @@ class UnprocessableEntityError extends HttpError {
 
 /// [HttpInternalServerError] models http errors with `status 500`
 class HttpInternalServerError extends HttpError {
-  HttpInternalServerError({
+  const HttpInternalServerError({
     super.slug,
     super.msg,
     super.stackTrace,
@@ -139,7 +139,7 @@ class HttpInternalServerError extends HttpError {
 /// [NoInternetConnectionError] models errors related with failure in
 /// communication associated with failure of internet connection
 class NoInternetConnectionError extends HttpError {
-  NoInternetConnectionError({
+  const NoInternetConnectionError({
     super.slug,
     super.msg,
     super.stackTrace,
@@ -218,7 +218,7 @@ Future<HttpError> parseHttpError({
         error.type == DioErrorType.other) {
       return await parseSocketException(error);
     } else {
-      return HttpUnknownError();
+      return const HttpUnknownError();
     }
   } catch (e) {
     return HttpUnknownError(slug: e.toString());
@@ -229,7 +229,7 @@ Future<HttpError> parseSocketException(exception) async {
   var connectivityResult = await (Connectivity().checkConnectivity());
 
   if (connectivityResult == ConnectivityResult.none) {
-    return NoInternetConnectionError();
+    return const NoInternetConnectionError();
   } else {
     return HttpNetworkError(
       slug: exception.toString(),

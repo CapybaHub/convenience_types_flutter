@@ -12,7 +12,7 @@ void main() {
 
   const String errorString = 'error';
   const String secondErrorString = 'secondError';
-  final FormError testError = FormError(msg: errorString);
+  const FormError testError = FormError(msg: errorString);
   FormField testField = const FormField(
     name: 'test',
   );

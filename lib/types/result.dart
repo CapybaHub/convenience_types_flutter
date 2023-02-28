@@ -1,4 +1,5 @@
 import 'package:convenience_types/errors/app_error.dart';
+import 'package:convenience_types/types/maybe.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'result.freezed.dart';
@@ -123,4 +124,10 @@ class Result<ResultType> with _$Result<ResultType> {
         onSuccess: (data) => combiner(data),
         onFailure: (error) => Failure(error));
   }
+
+  /// Getter that results in a [Just] if the [Result] is [Success] and [Nothing] othterwise
+  Maybe<ResultType> get maybeData => handle(
+        onSuccess: (data) => Just(data),
+        onFailure: (_) => Nothing<ResultType>(),
+      );
 }

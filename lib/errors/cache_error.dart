@@ -4,7 +4,7 @@ import 'app_error.dart';
 /// specific errors there are some different implementations of this type.
 /// [CacheError] models cache errors
 abstract class CacheError extends AppError {
-  CacheError({
+  const CacheError({
     super.slug,
     super.msg,
     super.stackTrace,
@@ -13,7 +13,7 @@ abstract class CacheError extends AppError {
 
 /// [FailedToCacheError] models failure in the action of caching an info
 class FailedToCacheError extends CacheError {
-  FailedToCacheError({
+  const FailedToCacheError({
     super.slug,
     super.msg,
     super.stackTrace,
@@ -25,7 +25,7 @@ class FailedToCacheError extends CacheError {
 
 /// [FileAlreadyCachedError] models failure araised from trying to cache an already cached file
 class FileAlreadyCachedError extends CacheError {
-  FileAlreadyCachedError({
+  const FileAlreadyCachedError({
     super.slug,
     super.msg,
     super.stackTrace,
@@ -37,7 +37,7 @@ class FileAlreadyCachedError extends CacheError {
 
 /// [NotCachedError] models failure araised from trying retrieve a file not yet cached
 class NotCachedError extends CacheError {
-  NotCachedError({
+  const NotCachedError({
     super.slug,
     super.msg,
     super.stackTrace,
@@ -49,7 +49,7 @@ class NotCachedError extends CacheError {
 
 /// [FailedToUnloadError] models failure araised from trying to delete a cached file
 class FailedToUnloadError extends CacheError {
-  FailedToUnloadError({
+  const FailedToUnloadError({
     super.slug,
     super.msg,
     super.stackTrace,

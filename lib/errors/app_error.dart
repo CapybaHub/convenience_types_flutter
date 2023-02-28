@@ -12,7 +12,7 @@ abstract class AppError {
   final String msg;
   final String stackTrace;
 
-  AppError({
+  const AppError({
     this.slug = '',
     this.msg = '',
     this.stackTrace = '',
@@ -38,7 +38,7 @@ abstract class AppError {
 }
 
 class AppUnknownError extends AppError {
-  AppUnknownError({
+  const AppUnknownError({
     super.slug,
     super.msg,
     super.stackTrace,
@@ -53,7 +53,7 @@ class AppUnknownError extends AppError {
 }
 
 class ParseError extends AppError {
-  ParseError({
+  const ParseError({
     super.slug,
     super.msg,
     super.stackTrace,
@@ -68,7 +68,7 @@ class ParseError extends AppError {
 }
 
 class EntityNotFitError extends AppError {
-  EntityNotFitError({
+  const EntityNotFitError({
     super.slug,
     super.msg,
     super.stackTrace,
@@ -83,7 +83,7 @@ class EntityNotFitError extends AppError {
 }
 
 class FailedToShareError extends AppError {
-  FailedToShareError({
+  const FailedToShareError({
     super.slug,
     super.msg,
     super.stackTrace,
@@ -98,7 +98,7 @@ class FailedToShareError extends AppError {
 }
 
 class TokenNotFoundError extends AppError {
-  TokenNotFoundError({
+  const TokenNotFoundError({
     super.slug,
     super.msg,
     super.stackTrace,
