@@ -60,7 +60,7 @@ class HttpClientWrapper {
 
       return Failure(error);
     } catch (e) {
-      return Failure(
+      return const Failure(
         HttpUnknownError(),
       );
     }

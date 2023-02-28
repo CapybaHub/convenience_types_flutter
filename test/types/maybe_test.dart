@@ -1,4 +1,7 @@
+import 'package:convenience_types/errors/app_error.dart';
 import 'package:convenience_types/types/maybe.dart';
+import 'package:convenience_types/types/request_status.dart';
+import 'package:convenience_types/types/result.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class TestMapType {
@@ -66,17 +69,93 @@ void main() {
   );
 
   group(
+    'Maybe.fromResult',
+    () {
+      test(
+        'It should return a Just if the input is a Success',
+        () {
+          Success<bool> testResult = const Success(true);
+
+          Maybe<bool> testMaybe = Maybe.fromResult(testResult);
+
+          expect(testMaybe, const Just(true));
+        },
+      );
+
+      test(
+        'It should return a Nothing if the input is a Failure',
+        () {
+          Failure<bool> testResult = const Failure(AppUnknownError());
+
+          Maybe<bool> testMaybe = Maybe.fromResult(testResult);
+
+          expect(testMaybe, const Nothing<bool>());
+        },
+      );
+    },
+  );
+
+  group(
+    'Maybe.fromRequest',
+    () {
+      test(
+        'It should return a Just if the input is a Succeeded',
+        () {
+          RequestStatus<bool> testRequest = const Succeeded(true);
+
+          Maybe<bool> testMaybe = Maybe.fromRequest(testRequest);
+
+          expect(testMaybe, const Just(true));
+        },
+      );
+
+      test(
+        'It should return a Nothing if the input is a Idle',
+        () {
+          RequestStatus<bool> testRequest = const Idle();
+
+          Maybe<bool> testMaybe = Maybe.fromRequest(testRequest);
+
+          expect(testMaybe, const Nothing<bool>());
+        },
+      );
+
+      test(
+        'It should return a Nothing if the input is a Loading',
+        () {
+          RequestStatus<bool> testRequest = const Loading();
+
+          Maybe<bool> testMaybe = Maybe.fromRequest(testRequest);
+
+          expect(testMaybe, const Nothing<bool>());
+        },
+      );
+
+      test(
+        'It should return a Nothing if the input is a Failed',
+        () {
+          RequestStatus<bool> testRequest = const Failed(AppUnknownError());
+
+          Maybe<bool> testMaybe = Maybe.fromRequest(testRequest);
+
+          expect(testMaybe, const Nothing<bool>());
+        },
+      );
+    },
+  );
+
+  group(
     'mapJust',
     () {
       test(
         'It should return the result of the combiner method passing the value inside this, if this is Just',
         () {
           Maybe<String> testMaybe = const Just('test');
-          Maybe<TestMapType> _combiner(String value) {
+          Maybe<TestMapType> combiner(String value) {
             return Just(TestMapType(value));
           }
 
-          testMaybe.mapJust(_combiner).when(
+          testMaybe.mapJust(combiner).when(
                 nothing: () => fail("unexpected Nothing"),
                 just: (combined) {
                   expect(combined, isA<TestMapType>());
@@ -90,11 +169,11 @@ void main() {
         'It should return Nothing, if this is Nothing',
         () {
           Maybe<String> testMaybe = const Nothing();
-          Maybe<TestMapType> _combiner(String value) {
+          Maybe<TestMapType> combiner(String value) {
             return Just(TestMapType(value));
           }
 
-          expect(testMaybe.mapJust<TestMapType>(_combiner),
+          expect(testMaybe.mapJust<TestMapType>(combiner),
               const Nothing<TestMapType>());
         },
       );

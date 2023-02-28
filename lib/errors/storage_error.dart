@@ -4,7 +4,7 @@ import 'app_error.dart';
 /// specific errors there are some different implementations of this type.
 /// [StorageError] models errors related to storage operations
 abstract class StorageError extends AppError {
-  StorageError({
+  const StorageError({
     super.slug,
     super.msg,
     super.stackTrace,
@@ -13,7 +13,7 @@ abstract class StorageError extends AppError {
 
 /// [StorageUnknownError] models unknown or unexpected storage related errors
 class StorageUnknownError extends StorageError {
-  StorageUnknownError({
+  const StorageUnknownError({
     super.slug,
     super.msg,
     super.stackTrace,
@@ -23,7 +23,7 @@ class StorageUnknownError extends StorageError {
 /// [StorageNotFoundError] models the error of not finding device's storage
 
 class StorageNotFoundError extends StorageError {
-  StorageNotFoundError({
+  const StorageNotFoundError({
     super.slug,
     super.msg,
     super.stackTrace,

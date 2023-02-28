@@ -113,6 +113,12 @@ class RequestStatus<ResultType> with _$RequestStatus<ResultType> {
         onFailure: (error) => Failed(error),
       );
 
+  /// Getter that results in a [Maybe] that is [Just] if the [RequestStatus] is [Succeeded] and [Nothing] otherwise
+  Maybe<ResultType> get maybeData => maybeWhen(
+        orElse: () => Nothing<ResultType>(),
+        succeeded: (data) => Just(data),
+      );
+
   bool get isIdle => this is Idle;
   bool get isLoading => this is Loading;
   bool get isSucceeded => this is Succeeded;

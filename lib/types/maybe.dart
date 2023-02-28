@@ -1,3 +1,5 @@
+import 'package:convenience_types/types/request_status.dart';
+import 'package:convenience_types/types/result.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'maybe.freezed.dart';
@@ -87,6 +89,22 @@ class Maybe<T> with _$Maybe<T> {
     } else {
       return Just<T>(input);
     }
+  }
+
+  /// Factory for helping building a [Maybe] from a [Result] input. It produces a [Nothing] if the input is [Failure], and a [Just] if the input is [Success]
+  factory Maybe.fromResult(Result<T> input) {
+    return input.handle(
+      onSuccess: (data) => Just<T>(data),
+      onFailure: (_) => Nothing<T>(),
+    );
+  }
+
+  /// Factory for helping building a [Maybe] from a [RequestStatus] input. It produces a [Just] if the input is [Succeeded], and a [Nothing] otherwise
+  factory Maybe.fromRequest(RequestStatus<T> input) {
+    return input.maybeWhen(
+      orElse: () => Nothing<T>(),
+      succeeded: (data) => Just(data),
+    );
   }
 
   /// Method chain access to data held by the [Maybe]. If `this` is [Nothing] returns [Nothing], if `this` is [Just], returns the result of the `combiner` method over the `value` inside [Just]
