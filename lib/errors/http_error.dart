@@ -44,9 +44,6 @@ class HttpUnknownError extends HttpError {
 class HttpBadRequestError extends HttpError {
   final Map<String, dynamic> errors;
 
-  @override
-  String get msg => errors['msg'] ?? '';
-
   String get msgDev => errors['msg_dev'] ?? '';
 
   const HttpBadRequestError({
@@ -109,9 +106,6 @@ class HttpGoneError extends HttpError {
 
 class UnprocessableEntityError extends HttpError {
   final Map<String, dynamic> errors;
-
-  @override
-  String get msg => errors['msg'] ?? '';
 
   String get msgDev => errors['msg_dev'] ?? '';
 
