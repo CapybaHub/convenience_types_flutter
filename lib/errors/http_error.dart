@@ -167,7 +167,7 @@ Future<HttpError> parseHttpError({
       }
     }
 
-    if (error.type == DioErrorType.response) {
+    if (error.type == DioErrorType.badResponse) {
       switch (error.response?.statusCode) {
         case 400:
           return HttpBadRequestError(
@@ -212,10 +212,10 @@ Future<HttpError> parseHttpError({
             msg: msg,
           );
       }
-    } else if (error.type == DioErrorType.connectTimeout ||
+    } else if (error.type == DioErrorType.connectionTimeout ||
         error.type == DioErrorType.receiveTimeout ||
         error.type == DioErrorType.sendTimeout ||
-        error.type == DioErrorType.other) {
+        error.type == DioErrorType.unknown) {
       return await parseSocketException(error);
     } else {
       return const HttpUnknownError();

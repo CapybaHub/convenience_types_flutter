@@ -8,19 +8,19 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
-  connectivity_plus: ^2.3.3
-  dio: ^4.0.6
+  connectivity_plus: ^3.0.6
+  dio: ^5.1.2
   flutter:
     sdk: flutter
-  freezed_annotation: ^2.0.3
+  freezed_annotation: ^2.2.0
   state_notifier: ^0.7.2+1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
-  build_runner: ^2.1.11
-  freezed: ^2.0.3+1
+  build_runner: ^2.3.3
+  freezed: ^2.3.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

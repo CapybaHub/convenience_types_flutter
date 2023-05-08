@@ -7,14 +7,14 @@ name: Flutter
 
 on:
   push:
-    branches: 
+    branches:
       - main
   pull_request:
     branches:
       - main
 
 env:
-  flutter_version: "3.0.0" # same as pubspec.yaml
+  flutter_version: "3.7.12" # same as pubspec.yaml
 
 jobs:
   test:

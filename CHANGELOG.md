@@ -1,3 +1,10 @@
+## [UNRELEASED]
+
+## changed
+
+- update Flutter sdk to 3.7.12
+- update dependencies
+
 ## 0.2.0
 
 ## new
