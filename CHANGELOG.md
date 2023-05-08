@@ -1,3 +1,11 @@
+## [UNRELEASED]
+
+## changed
+
+- update Flutter sdk to 3.7.12
+- update dependencies
+- fix msg field on HttpBadRequestError and UnprocessableEntityError
+
 ## 0.2.0
 
 ## new
