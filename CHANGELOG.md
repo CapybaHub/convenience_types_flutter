@@ -1,4 +1,4 @@
-## [UNRELEASED]
+## 0.2.1
 
 ## changed
 
