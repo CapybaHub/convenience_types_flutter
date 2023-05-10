@@ -1,3 +1,9 @@
+## unreleased
+
+## fixes
+
+- add 'slug' in the parameters of 'parseHttpError' and utilize it in the errors 'slug' field.
+
 ## 0.2.1
 
 ## changed
