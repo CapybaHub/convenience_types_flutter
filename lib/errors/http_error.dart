@@ -151,6 +151,12 @@ Future<HttpError> parseHttpError({
   try {
     String msg = defaultErrorMessage;
 
+    slug = slug.isNotEmpty ? slug : error.message ?? error.requestOptions.path;
+
+    String formattedStackTrace =
+        (stackTrace.toString().isNotEmpty ? stackTrace : error.stackTrace)
+            .toString();
+
     if (handleErrorMessage != null) {
       msg = handleErrorMessage(error: error);
     } else {
@@ -166,51 +172,51 @@ Future<HttpError> parseHttpError({
       switch (error.response?.statusCode) {
         case 400:
           return HttpBadRequestError(
-            stackTrace: stackTrace.toString(),
+            stackTrace: formattedStackTrace,
             slug: slug,
             msg: msg,
             errors: error.response?.data,
           );
         case 401:
           return HttpUnauthorizedError(
-            stackTrace: stackTrace.toString(),
+            stackTrace: formattedStackTrace,
             slug: slug,
             msg: msg,
           );
         case 403:
           return HttpForbiddenError(
-            stackTrace: stackTrace.toString(),
+            stackTrace: formattedStackTrace,
             slug: slug,
             msg: msg,
           );
         case 404:
           return HttpNotFoundError(
-            stackTrace: stackTrace.toString(),
+            stackTrace: formattedStackTrace,
             slug: slug,
             msg: msg,
           );
         case 410:
           return HttpGoneError(
-            stackTrace: stackTrace.toString(),
+            stackTrace: formattedStackTrace,
             slug: slug,
             msg: msg,
           );
         case 422:
           return UnprocessableEntityError(
-            stackTrace: stackTrace.toString(),
+            stackTrace: formattedStackTrace,
             slug: slug,
             msg: msg,
             errors: error.response?.data,
           );
         case 500:
           return HttpInternalServerError(
-            stackTrace: stackTrace.toString(),
+            stackTrace: formattedStackTrace,
             slug: slug,
             msg: msg,
           );
         default:
           return HttpUnknownError(
-            stackTrace: stackTrace.toString(),
+            stackTrace: formattedStackTrace,
             slug: slug,
             msg: msg,
           );
