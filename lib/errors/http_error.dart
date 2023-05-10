@@ -142,13 +142,20 @@ class NoInternetConnectionError extends HttpError {
 
 Future<HttpError> parseHttpError({
   required DioError error,
-  required StackTrace stackTrace,
+  StackTrace stackTrace = StackTrace.empty,
+  String slug = '',
   String Function({required DioError error})? handleErrorMessage,
   String defaultErrorMessage =
       "Algo inesperado aconteceu. Tente novamente mais tarde.",
 }) async {
   try {
     String msg = defaultErrorMessage;
+
+    slug = slug.isNotEmpty ? slug : error.message ?? error.requestOptions.path;
+
+    String formattedStackTrace =
+        (stackTrace.toString().isNotEmpty ? stackTrace : error.stackTrace)
+            .toString();
 
     if (handleErrorMessage != null) {
       msg = handleErrorMessage(error: error);
@@ -165,44 +172,52 @@ Future<HttpError> parseHttpError({
       switch (error.response?.statusCode) {
         case 400:
           return HttpBadRequestError(
-            slug: stackTrace.toString(),
+            stackTrace: formattedStackTrace,
+            slug: slug,
             msg: msg,
             errors: error.response?.data,
           );
         case 401:
           return HttpUnauthorizedError(
-            slug: stackTrace.toString(),
+            stackTrace: formattedStackTrace,
+            slug: slug,
             msg: msg,
           );
         case 403:
           return HttpForbiddenError(
-            slug: stackTrace.toString(),
+            stackTrace: formattedStackTrace,
+            slug: slug,
             msg: msg,
           );
         case 404:
           return HttpNotFoundError(
-            slug: stackTrace.toString(),
+            stackTrace: formattedStackTrace,
+            slug: slug,
             msg: msg,
           );
         case 410:
           return HttpGoneError(
-            slug: stackTrace.toString(),
+            stackTrace: formattedStackTrace,
+            slug: slug,
             msg: msg,
           );
         case 422:
           return UnprocessableEntityError(
-            slug: stackTrace.toString(),
+            stackTrace: formattedStackTrace,
+            slug: slug,
             msg: msg,
             errors: error.response?.data,
           );
         case 500:
           return HttpInternalServerError(
-            slug: stackTrace.toString(),
+            stackTrace: formattedStackTrace,
+            slug: slug,
             msg: msg,
           );
         default:
           return HttpUnknownError(
-            slug: stackTrace.toString(),
+            stackTrace: formattedStackTrace,
+            slug: slug,
             msg: msg,
           );
       }
@@ -210,23 +225,30 @@ Future<HttpError> parseHttpError({
         error.type == DioErrorType.receiveTimeout ||
         error.type == DioErrorType.sendTimeout ||
         error.type == DioErrorType.unknown) {
-      return await parseSocketException(error);
+      return await parseSocketException(exception: error, slug: slug);
     } else {
       return const HttpUnknownError();
     }
   } catch (e) {
-    return HttpUnknownError(slug: e.toString());
+    return HttpUnknownError(
+      stackTrace: e.toString(),
+      slug: slug,
+    );
   }
 }
 
-Future<HttpError> parseSocketException(exception) async {
+Future<HttpError> parseSocketException({
+  required DioError exception,
+  String slug = '',
+}) async {
   var connectivityResult = await (Connectivity().checkConnectivity());
 
   if (connectivityResult == ConnectivityResult.none) {
     return const NoInternetConnectionError();
   } else {
     return HttpNetworkError(
-      slug: exception.toString(),
+      stackTrace: exception.toString(),
+      slug: slug,
     );
   }
 }
