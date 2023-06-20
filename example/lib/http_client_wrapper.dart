@@ -8,7 +8,7 @@ class HttpClientWrapper {
   final Dio _httpClient;
 
   _handleErrors(
-      HttpError error, DioError exception, StackTrace stackTrace) async {
+      HttpError error, DioException exception, StackTrace stackTrace) async {
     // Deal with errors as you like
   }
 
@@ -22,7 +22,7 @@ class HttpClientWrapper {
         data: body,
       );
       return Success(response.data);
-    } on DioError catch (exception, stackTrace) {
+    } on DioException catch (exception, stackTrace) {
       final HttpError error = await parseHttpError(
         error: exception,
         stackTrace: stackTrace,
@@ -50,7 +50,7 @@ class HttpClientWrapper {
       );
 
       return Success(response.data);
-    } on DioError catch (exception, stackTrace) {
+    } on DioException catch (exception, stackTrace) {
       final HttpError error = await parseHttpError(
         error: exception,
         stackTrace: stackTrace,
@@ -76,7 +76,7 @@ class HttpClientWrapper {
         data: body,
       );
       return Success(response.data);
-    } on DioError catch (exception, stackTrace) {
+    } on DioException catch (exception, stackTrace) {
       final HttpError error = await parseHttpError(
         error: exception,
         stackTrace: stackTrace,
@@ -103,7 +103,7 @@ class HttpClientWrapper {
         data: body,
       );
       return Success(response.data);
-    } on DioError catch (exception, stackTrace) {
+    } on DioException catch (exception, stackTrace) {
       final HttpError error = await parseHttpError(
         error: exception,
         stackTrace: stackTrace,
@@ -130,7 +130,7 @@ class HttpClientWrapper {
         data: body,
       );
       return Success(response.data);
-    } on DioError catch (exception, stackTrace) {
+    } on DioException catch (exception, stackTrace) {
       final HttpError error = await parseHttpError(
         error: exception,
         stackTrace: stackTrace,

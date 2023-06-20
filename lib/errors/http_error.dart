@@ -154,10 +154,10 @@ class NoInternetConnectionError<T> extends HttpError<T> {
 }
 
 Future<HttpError<T>> parseHttpError<T>({
-  required DioError error,
+  required DioException error,
   StackTrace stackTrace = StackTrace.empty,
   String slug = '',
-  String Function({required DioError error})? handleErrorMessage,
+  String Function({required DioException error})? handleErrorMessage,
   T? Function(dynamic)? errorResponseSerializer,
   String defaultErrorMessage =
       "Algo inesperado aconteceu. Tente novamente mais tarde.",
@@ -186,7 +186,7 @@ Future<HttpError<T>> parseHttpError<T>({
       }
     }
 
-    if (error.type == DioErrorType.badResponse) {
+    if (error.type == DioExceptionType.badResponse) {
       switch (error.response?.statusCode) {
         case 400:
           return HttpBadRequestError(
@@ -247,10 +247,10 @@ Future<HttpError<T>> parseHttpError<T>({
             response: maybeErrorResponse,
           );
       }
-    } else if (error.type == DioErrorType.connectionTimeout ||
-        error.type == DioErrorType.receiveTimeout ||
-        error.type == DioErrorType.sendTimeout ||
-        error.type == DioErrorType.unknown) {
+    } else if (error.type == DioExceptionType.connectionTimeout ||
+        error.type == DioExceptionType.receiveTimeout ||
+        error.type == DioExceptionType.sendTimeout ||
+        error.type == DioExceptionType.unknown) {
       return await parseSocketException(
         exception: error,
         slug: slug,
@@ -269,7 +269,7 @@ Future<HttpError<T>> parseHttpError<T>({
 }
 
 Future<HttpError<T>> parseSocketException<T>({
-  required DioError exception,
+  required DioException exception,
   String slug = '',
   Maybe<T> maybeErrorResponse = const Nothing(),
 }) async {
