@@ -8,7 +8,7 @@ typedef Validator<Type> = String? Function(Type);
 /// Class used as a dart `Mixin` to a `Form` class, providing methods to conviniently
 /// deal with validation and serialization of fields.
 ///
-class FormUtils {
+mixin class FormUtils {
   /// Method to help validate a [FormField<Type>] providing its value represented by its `Maybe<Type>`, and
   /// a `List<Validator<Type>>`, returning a `Result<String>` with possible error message.
   Result<String> validateField<Type>({
