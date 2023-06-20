@@ -1,21 +1,5 @@
 import 'package:convenience_types/errors/app_error.dart';
 import 'package:convenience_types/types/maybe.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-part 'result.freezed.dart';
-
-@Freezed(
-  map: FreezedMapOptions(
-    map: false,
-    mapOrNull: false,
-    maybeMap: false,
-  ),
-  when: FreezedWhenOptions(
-    maybeWhen: false,
-    when: false,
-    whenOrNull: false,
-  ),
-)
 
 /// Every asynchronus task can have two possible outcomes as a [Result].
 /// It is either a [Success] or a [Failure].
@@ -56,31 +40,8 @@ part 'result.freezed.dart';
 /// In this way one always needs to deal in a declarative way with both the
 /// success and failure possible outcomes as unfortunatelly any asynchronus
 /// task needs
-class Result<ResultType> with _$Result<ResultType> {
-  const Result._();
-
-  /// Type representing the [Success] case of a [Result] of a asynchronus task
-  /// possible outcome
-  const factory Result.success(ResultType data) = Success<ResultType>;
-
-  /// Type representing the [Failure] case of a [Result] of a asynchronus task
-  /// possible outcome
-  const factory Result.failure(AppError error) = Failure;
-
-  bool get isSuccess => this is Success;
-  bool get isFailure => this is Failure;
-
-  /// Cast [this] into a [Success], and throw an exception if the cast fails!
-  /// `It might be tempting to just cast the result into the desired type, but it's `
-  /// `strongly advised to not do that`. Although, it might be convenient to have
-  /// this cast sometimes. Use it wisely!
-  Success<ResultType> get asSuccess => this as Success<ResultType>;
-
-  /// Cast [this] into a [Failure], and throw an exception if the cast fails!
-  /// `It might be tempting to just cast the result into the desired type, but it's `
-  /// `strongly advised to not do that`. Although, it might be convenient to have
-  /// this cast sometimes. Use it wisely!
-  Failure<AppError> get asFailure => this as Failure<AppError>;
+sealed class Result<ResultType> {
+  const Result();
 
   /// the [handle] method which has two required parameters
   /// an onSuccess callback
@@ -111,12 +72,26 @@ class Result<ResultType> with _$Result<ResultType> {
     required T Function(ResultType data) onSuccess,
     required T Function(AppError error) onFailure,
   }) {
-    if (this is Success) {
-      return onSuccess((this as Success).data);
-    } else {
-      return onFailure((this as Failure).error);
-    }
+    return switch (this) {
+      Success success => onSuccess(success.data),
+      Failure failure => onFailure(failure.error),
+    };
   }
+
+  bool get isSuccess => this is Success;
+  bool get isFailure => this is Failure;
+
+  /// Cast [this] into a [Success], and throw an exception if the cast fails!
+  /// `It might be tempting to just cast the result into the desired type, but it's `
+  /// `strongly advised to not do that`. Although, it might be convenient to have
+  /// this cast sometimes. Use it wisely!
+  Success<ResultType> get asSuccess => this as Success<ResultType>;
+
+  /// Cast [this] into a [Failure], and throw an exception if the cast fails!
+  /// `It might be tempting to just cast the result into the desired type, but it's `
+  /// `strongly advised to not do that`. Although, it might be convenient to have
+  /// this cast sometimes. Use it wisely!
+  Failure<AppError> get asFailure => this as Failure<AppError>;
 
   /// Method chain access to data held by the [Result]. If `this` is [Failure] returns [Failure], if `this` is [Success], returns the result of the `combiner` method over the `data` inside [Success]
   Result<K> mapSuccess<K>(Result<K> Function(ResultType) combiner) {
@@ -130,4 +105,24 @@ class Result<ResultType> with _$Result<ResultType> {
         onSuccess: (data) => Just(data),
         onFailure: (_) => Nothing<ResultType>(),
       );
+}
+
+/// Type representing the [Success] case of a [Result] of a asynchronus task
+/// possible outcome
+class Success<ResultType> extends Result<ResultType> {
+  final ResultType data;
+
+  /// Type representing the [Success] case of a [Result] of a asynchronus task
+  /// possible outcome
+  const Success(this.data);
+}
+
+/// Type representing the [Failure] case of a [Result] of a asynchronus task
+/// possible outcome
+class Failure<ResultType> extends Result<ResultType> {
+  final AppError error;
+
+  /// Type representing the [Failure] case of a [Result] of a asynchronus task
+  /// possible outcome
+  const Failure(this.error);
 }

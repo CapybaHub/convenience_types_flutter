@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'form_field.dart';
 
@@ -31,41 +31,46 @@ mixin _$FormField<T> {
 abstract class $FormFieldCopyWith<T, $Res> {
   factory $FormFieldCopyWith(
           FormField<T> value, $Res Function(FormField<T>) then) =
-      _$FormFieldCopyWithImpl<T, $Res>;
+      _$FormFieldCopyWithImpl<T, $Res, FormField<T>>;
+  @useResult
   $Res call({String name, Maybe<T> field});
 
   $MaybeCopyWith<T, $Res> get field;
 }
 
 /// @nodoc
-class _$FormFieldCopyWithImpl<T, $Res> implements $FormFieldCopyWith<T, $Res> {
+class _$FormFieldCopyWithImpl<T, $Res, $Val extends FormField<T>>
+    implements $FormFieldCopyWith<T, $Res> {
   _$FormFieldCopyWithImpl(this._value, this._then);
 
-  final FormField<T> _value;
   // ignore: unused_field
-  final $Res Function(FormField<T>) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = freezed,
-    Object? field = freezed,
+    Object? name = null,
+    Object? field = null,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      field: field == freezed
+      field: null == field
           ? _value.field
           : field // ignore: cast_nullable_to_non_nullable
               as Maybe<T>,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $MaybeCopyWith<T, $Res> get field {
     return $MaybeCopyWith<T, $Res>(_value.field, (value) {
-      return _then(_value.copyWith(field: value));
+      return _then(_value.copyWith(field: value) as $Val);
     });
   }
 }
@@ -77,6 +82,7 @@ abstract class _$$_FormFieldCopyWith<T, $Res>
           _$_FormField<T> value, $Res Function(_$_FormField<T>) then) =
       __$$_FormFieldCopyWithImpl<T, $Res>;
   @override
+  @useResult
   $Res call({String name, Maybe<T> field});
 
   @override
@@ -85,26 +91,24 @@ abstract class _$$_FormFieldCopyWith<T, $Res>
 
 /// @nodoc
 class __$$_FormFieldCopyWithImpl<T, $Res>
-    extends _$FormFieldCopyWithImpl<T, $Res>
+    extends _$FormFieldCopyWithImpl<T, $Res, _$_FormField<T>>
     implements _$$_FormFieldCopyWith<T, $Res> {
   __$$_FormFieldCopyWithImpl(
       _$_FormField<T> _value, $Res Function(_$_FormField<T>) _then)
-      : super(_value, (v) => _then(v as _$_FormField<T>));
+      : super(_value, _then);
 
-  @override
-  _$_FormField<T> get _value => super._value as _$_FormField<T>;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = freezed,
-    Object? field = freezed,
+    Object? name = null,
+    Object? field = null,
   }) {
     return _then(_$_FormField<T>(
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      field: field == freezed
+      field: null == field
           ? _value.field
           : field // ignore: cast_nullable_to_non_nullable
               as Maybe<T>,
@@ -136,18 +140,16 @@ class _$_FormField<T> implements _FormField<T> {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_FormField<T> &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality().equals(other.field, field));
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.field, field) || other.field == field));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(field));
+  int get hashCode => Object.hash(runtimeType, name, field);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_FormFieldCopyWith<T, _$_FormField<T>> get copyWith =>
       __$$_FormFieldCopyWithImpl<T, _$_FormField<T>>(this, _$identity);
 }
@@ -159,11 +161,11 @@ abstract class _FormField<T> implements FormField<T> {
   @override
 
   /// Property representing the name of this [FormField] in a possible json request body
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
 
   /// Property representing the value of this [FormField] in a possible json request body
-  Maybe<T> get field => throw _privateConstructorUsedError;
+  Maybe<T> get field;
   @override
   @JsonKey(ignore: true)
   _$$_FormFieldCopyWith<T, _$_FormField<T>> get copyWith =>

@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'request_status.dart';
 
@@ -26,10 +26,10 @@ mixin _$RequestStatus<ResultType> {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? idle,
-    TResult Function()? loading,
-    TResult Function(ResultType data)? succeeded,
-    TResult Function(AppError error)? failed,
+    TResult? Function()? idle,
+    TResult? Function()? loading,
+    TResult? Function(ResultType data)? succeeded,
+    TResult? Function(AppError error)? failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -51,10 +51,10 @@ mixin _$RequestStatus<ResultType> {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(Idle<ResultType> value)? idle,
-    TResult Function(Loading<ResultType> value)? loading,
-    TResult Function(Succeeded<ResultType> value)? succeeded,
-    TResult Function(Failed<ResultType> value)? failed,
+    TResult? Function(Idle<ResultType> value)? idle,
+    TResult? Function(Loading<ResultType> value)? loading,
+    TResult? Function(Succeeded<ResultType> value)? succeeded,
+    TResult? Function(Failed<ResultType> value)? failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -72,17 +72,19 @@ mixin _$RequestStatus<ResultType> {
 abstract class $RequestStatusCopyWith<ResultType, $Res> {
   factory $RequestStatusCopyWith(RequestStatus<ResultType> value,
           $Res Function(RequestStatus<ResultType>) then) =
-      _$RequestStatusCopyWithImpl<ResultType, $Res>;
+      _$RequestStatusCopyWithImpl<ResultType, $Res, RequestStatus<ResultType>>;
 }
 
 /// @nodoc
-class _$RequestStatusCopyWithImpl<ResultType, $Res>
+class _$RequestStatusCopyWithImpl<ResultType, $Res,
+        $Val extends RequestStatus<ResultType>>
     implements $RequestStatusCopyWith<ResultType, $Res> {
   _$RequestStatusCopyWithImpl(this._value, this._then);
 
-  final RequestStatus<ResultType> _value;
   // ignore: unused_field
-  final $Res Function(RequestStatus<ResultType>) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 }
 
 /// @nodoc
@@ -94,14 +96,11 @@ abstract class _$$IdleCopyWith<ResultType, $Res> {
 
 /// @nodoc
 class __$$IdleCopyWithImpl<ResultType, $Res>
-    extends _$RequestStatusCopyWithImpl<ResultType, $Res>
+    extends _$RequestStatusCopyWithImpl<ResultType, $Res, _$Idle<ResultType>>
     implements _$$IdleCopyWith<ResultType, $Res> {
   __$$IdleCopyWithImpl(
       _$Idle<ResultType> _value, $Res Function(_$Idle<ResultType>) _then)
-      : super(_value, (v) => _then(v as _$Idle<ResultType>));
-
-  @override
-  _$Idle<ResultType> get _value => super._value as _$Idle<ResultType>;
+      : super(_value, _then);
 }
 
 /// @nodoc
@@ -137,10 +136,10 @@ class _$Idle<ResultType> extends Idle<ResultType> {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? idle,
-    TResult Function()? loading,
-    TResult Function(ResultType data)? succeeded,
-    TResult Function(AppError error)? failed,
+    TResult? Function()? idle,
+    TResult? Function()? loading,
+    TResult? Function(ResultType data)? succeeded,
+    TResult? Function(AppError error)? failed,
   }) {
     return idle?.call();
   }
@@ -174,10 +173,10 @@ class _$Idle<ResultType> extends Idle<ResultType> {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(Idle<ResultType> value)? idle,
-    TResult Function(Loading<ResultType> value)? loading,
-    TResult Function(Succeeded<ResultType> value)? succeeded,
-    TResult Function(Failed<ResultType> value)? failed,
+    TResult? Function(Idle<ResultType> value)? idle,
+    TResult? Function(Loading<ResultType> value)? loading,
+    TResult? Function(Succeeded<ResultType> value)? succeeded,
+    TResult? Function(Failed<ResultType> value)? failed,
   }) {
     return idle?.call(this);
   }
@@ -212,14 +211,11 @@ abstract class _$$LoadingCopyWith<ResultType, $Res> {
 
 /// @nodoc
 class __$$LoadingCopyWithImpl<ResultType, $Res>
-    extends _$RequestStatusCopyWithImpl<ResultType, $Res>
+    extends _$RequestStatusCopyWithImpl<ResultType, $Res, _$Loading<ResultType>>
     implements _$$LoadingCopyWith<ResultType, $Res> {
   __$$LoadingCopyWithImpl(
       _$Loading<ResultType> _value, $Res Function(_$Loading<ResultType>) _then)
-      : super(_value, (v) => _then(v as _$Loading<ResultType>));
-
-  @override
-  _$Loading<ResultType> get _value => super._value as _$Loading<ResultType>;
+      : super(_value, _then);
 }
 
 /// @nodoc
@@ -255,10 +251,10 @@ class _$Loading<ResultType> extends Loading<ResultType> {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? idle,
-    TResult Function()? loading,
-    TResult Function(ResultType data)? succeeded,
-    TResult Function(AppError error)? failed,
+    TResult? Function()? idle,
+    TResult? Function()? loading,
+    TResult? Function(ResultType data)? succeeded,
+    TResult? Function(AppError error)? failed,
   }) {
     return loading?.call();
   }
@@ -292,10 +288,10 @@ class _$Loading<ResultType> extends Loading<ResultType> {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(Idle<ResultType> value)? idle,
-    TResult Function(Loading<ResultType> value)? loading,
-    TResult Function(Succeeded<ResultType> value)? succeeded,
-    TResult Function(Failed<ResultType> value)? failed,
+    TResult? Function(Idle<ResultType> value)? idle,
+    TResult? Function(Loading<ResultType> value)? loading,
+    TResult? Function(Succeeded<ResultType> value)? succeeded,
+    TResult? Function(Failed<ResultType> value)? failed,
   }) {
     return loading?.call(this);
   }
@@ -326,26 +322,26 @@ abstract class _$$SucceededCopyWith<ResultType, $Res> {
   factory _$$SucceededCopyWith(_$Succeeded<ResultType> value,
           $Res Function(_$Succeeded<ResultType>) then) =
       __$$SucceededCopyWithImpl<ResultType, $Res>;
+  @useResult
   $Res call({ResultType data});
 }
 
 /// @nodoc
 class __$$SucceededCopyWithImpl<ResultType, $Res>
-    extends _$RequestStatusCopyWithImpl<ResultType, $Res>
+    extends _$RequestStatusCopyWithImpl<ResultType, $Res,
+        _$Succeeded<ResultType>>
     implements _$$SucceededCopyWith<ResultType, $Res> {
   __$$SucceededCopyWithImpl(_$Succeeded<ResultType> _value,
       $Res Function(_$Succeeded<ResultType>) _then)
-      : super(_value, (v) => _then(v as _$Succeeded<ResultType>));
+      : super(_value, _then);
 
-  @override
-  _$Succeeded<ResultType> get _value => super._value as _$Succeeded<ResultType>;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? data = freezed,
   }) {
     return _then(_$Succeeded<ResultType>(
-      data == freezed
+      freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
               as ResultType,
@@ -380,6 +376,7 @@ class _$Succeeded<ResultType> extends Succeeded<ResultType> {
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$SucceededCopyWith<ResultType, _$Succeeded<ResultType>> get copyWith =>
       __$$SucceededCopyWithImpl<ResultType, _$Succeeded<ResultType>>(
           this, _$identity);
@@ -398,10 +395,10 @@ class _$Succeeded<ResultType> extends Succeeded<ResultType> {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? idle,
-    TResult Function()? loading,
-    TResult Function(ResultType data)? succeeded,
-    TResult Function(AppError error)? failed,
+    TResult? Function()? idle,
+    TResult? Function()? loading,
+    TResult? Function(ResultType data)? succeeded,
+    TResult? Function(AppError error)? failed,
   }) {
     return succeeded?.call(data);
   }
@@ -435,10 +432,10 @@ class _$Succeeded<ResultType> extends Succeeded<ResultType> {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(Idle<ResultType> value)? idle,
-    TResult Function(Loading<ResultType> value)? loading,
-    TResult Function(Succeeded<ResultType> value)? succeeded,
-    TResult Function(Failed<ResultType> value)? failed,
+    TResult? Function(Idle<ResultType> value)? idle,
+    TResult? Function(Loading<ResultType> value)? loading,
+    TResult? Function(Succeeded<ResultType> value)? succeeded,
+    TResult? Function(Failed<ResultType> value)? failed,
   }) {
     return succeeded?.call(this);
   }
@@ -463,7 +460,7 @@ abstract class Succeeded<ResultType> extends RequestStatus<ResultType> {
   const factory Succeeded(final ResultType data) = _$Succeeded<ResultType>;
   const Succeeded._() : super._();
 
-  ResultType get data => throw _privateConstructorUsedError;
+  ResultType get data;
   @JsonKey(ignore: true)
   _$$SucceededCopyWith<ResultType, _$Succeeded<ResultType>> get copyWith =>
       throw _privateConstructorUsedError;
@@ -474,26 +471,25 @@ abstract class _$$FailedCopyWith<ResultType, $Res> {
   factory _$$FailedCopyWith(_$Failed<ResultType> value,
           $Res Function(_$Failed<ResultType>) then) =
       __$$FailedCopyWithImpl<ResultType, $Res>;
+  @useResult
   $Res call({AppError error});
 }
 
 /// @nodoc
 class __$$FailedCopyWithImpl<ResultType, $Res>
-    extends _$RequestStatusCopyWithImpl<ResultType, $Res>
+    extends _$RequestStatusCopyWithImpl<ResultType, $Res, _$Failed<ResultType>>
     implements _$$FailedCopyWith<ResultType, $Res> {
   __$$FailedCopyWithImpl(
       _$Failed<ResultType> _value, $Res Function(_$Failed<ResultType>) _then)
-      : super(_value, (v) => _then(v as _$Failed<ResultType>));
+      : super(_value, _then);
 
-  @override
-  _$Failed<ResultType> get _value => super._value as _$Failed<ResultType>;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? error = freezed,
+    Object? error = null,
   }) {
     return _then(_$Failed<ResultType>(
-      error == freezed
+      null == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
               as AppError,
@@ -519,15 +515,15 @@ class _$Failed<ResultType> extends Failed<ResultType> {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$Failed<ResultType> &&
-            const DeepCollectionEquality().equals(other.error, error));
+            (identical(other.error, error) || other.error == error));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(error));
+  int get hashCode => Object.hash(runtimeType, error);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$FailedCopyWith<ResultType, _$Failed<ResultType>> get copyWith =>
       __$$FailedCopyWithImpl<ResultType, _$Failed<ResultType>>(
           this, _$identity);
@@ -546,10 +542,10 @@ class _$Failed<ResultType> extends Failed<ResultType> {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? idle,
-    TResult Function()? loading,
-    TResult Function(ResultType data)? succeeded,
-    TResult Function(AppError error)? failed,
+    TResult? Function()? idle,
+    TResult? Function()? loading,
+    TResult? Function(ResultType data)? succeeded,
+    TResult? Function(AppError error)? failed,
   }) {
     return failed?.call(error);
   }
@@ -583,10 +579,10 @@ class _$Failed<ResultType> extends Failed<ResultType> {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(Idle<ResultType> value)? idle,
-    TResult Function(Loading<ResultType> value)? loading,
-    TResult Function(Succeeded<ResultType> value)? succeeded,
-    TResult Function(Failed<ResultType> value)? failed,
+    TResult? Function(Idle<ResultType> value)? idle,
+    TResult? Function(Loading<ResultType> value)? loading,
+    TResult? Function(Succeeded<ResultType> value)? succeeded,
+    TResult? Function(Failed<ResultType> value)? failed,
   }) {
     return failed?.call(this);
   }
@@ -611,7 +607,7 @@ abstract class Failed<ResultType> extends RequestStatus<ResultType> {
   const factory Failed(final AppError error) = _$Failed<ResultType>;
   const Failed._() : super._();
 
-  AppError get error => throw _privateConstructorUsedError;
+  AppError get error;
   @JsonKey(ignore: true)
   _$$FailedCopyWith<ResultType, _$Failed<ResultType>> get copyWith =>
       throw _privateConstructorUsedError;
