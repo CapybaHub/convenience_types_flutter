@@ -1,4 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:convenience_types/types/maybe.dart';
 import 'package:dio/dio.dart';
 
 import 'app_error.dart';
@@ -6,42 +7,46 @@ import 'app_error.dart';
 /// Abstract class to model errors on the application. As a presset of foreseen
 /// specific errors there are some different implementations of this type.
 /// [HttpError] models errors related to http requests
-abstract class HttpError extends AppError {
+abstract class HttpError<T> extends AppError {
   final int code;
+  final Maybe<T> response;
 
   const HttpError({
     super.slug,
     super.msg,
     super.stackTrace,
     this.code = -2,
+    this.response = const Nothing(),
   });
 
   @override
   String toString() =>
-      '[$runtimeType]: (slug: $slug, msg: $msg, stackTrace: $stackTrace, code: $code)';
+      '[$runtimeType]: (slug: $slug, msg: $msg, stackTrace: $stackTrace, code: $code, response: $response,)';
 }
 
 /// [HttpNetworkError] models errors related to network connection
-class HttpNetworkError extends HttpError {
+class HttpNetworkError<T> extends HttpError<T> {
   const HttpNetworkError({
     super.slug,
     super.msg,
     super.stackTrace,
+    super.response,
   });
 }
 
 /// [HttpUnknownError] models unknown http errors
 
-class HttpUnknownError extends HttpError {
+class HttpUnknownError<T> extends HttpError<T> {
   const HttpUnknownError({
     super.slug,
     super.msg,
     super.stackTrace,
+    super.response,
   });
 }
 
 /// [HttpNetworkError] models http errors with `status 400`
-class HttpBadRequestError extends HttpError {
+class HttpBadRequestError<T> extends HttpError<T> {
   final Map<String, dynamic> errors;
 
   String get msgDev => errors['msg_dev'] ?? '';
@@ -50,6 +55,7 @@ class HttpBadRequestError extends HttpError {
     super.slug,
     super.msg,
     super.stackTrace,
+    super.response,
     this.errors = const {},
   }) : super(
           code: 400,
@@ -58,22 +64,24 @@ class HttpBadRequestError extends HttpError {
 
 /// [HttpUnauthorizedError] models http errors with `status 401`
 
-class HttpUnauthorizedError extends HttpError {
+class HttpUnauthorizedError<T> extends HttpError<T> {
   const HttpUnauthorizedError({
     super.slug,
     super.msg,
     super.stackTrace,
+    super.response,
   }) : super(
           code: 401,
         );
 }
 
 /// [HttpForbiddenError] models http errors with `status 403`
-class HttpForbiddenError extends HttpError {
+class HttpForbiddenError<T> extends HttpError<T> {
   const HttpForbiddenError({
     super.slug,
     super.msg,
     super.stackTrace,
+    super.response,
   }) : super(
           code: 403,
         );
@@ -81,22 +89,24 @@ class HttpForbiddenError extends HttpError {
 
 /// [HttpNotFoundError] models http errors with `status 404`
 
-class HttpNotFoundError extends HttpError {
+class HttpNotFoundError<T> extends HttpError<T> {
   const HttpNotFoundError({
     super.slug,
     super.msg,
     super.stackTrace,
+    super.response,
   }) : super(
           code: 404,
         );
 }
 
 /// [HttpGoneError] models http errors with `status 410`
-class HttpGoneError extends HttpError {
+class HttpGoneError<T> extends HttpError<T> {
   const HttpGoneError({
     super.slug,
     super.msg,
     super.stackTrace,
+    super.response,
   }) : super(
           code: 410,
         );
@@ -104,7 +114,7 @@ class HttpGoneError extends HttpError {
 
 /// [UnprocessableEntityError] models http errors with `status 422`
 
-class UnprocessableEntityError extends HttpError {
+class UnprocessableEntityError<T> extends HttpError<T> {
   final Map<String, dynamic> errors;
 
   String get msgDev => errors['msg_dev'] ?? '';
@@ -114,17 +124,19 @@ class UnprocessableEntityError extends HttpError {
     super.msg,
     super.stackTrace,
     this.errors = const {},
+    super.response,
   }) : super(
           code: 422,
         );
 }
 
 /// [HttpInternalServerError] models http errors with `status 500`
-class HttpInternalServerError extends HttpError {
+class HttpInternalServerError<T> extends HttpError<T> {
   const HttpInternalServerError({
     super.slug,
     super.msg,
     super.stackTrace,
+    super.response,
   }) : super(
           code: 500,
         );
@@ -132,22 +144,28 @@ class HttpInternalServerError extends HttpError {
 
 /// [NoInternetConnectionError] models errors related with failure in
 /// communication associated with failure of internet connection
-class NoInternetConnectionError extends HttpError {
+class NoInternetConnectionError<T> extends HttpError<T> {
   const NoInternetConnectionError({
     super.slug,
     super.msg,
     super.stackTrace,
+    super.response,
   });
 }
 
-Future<HttpError> parseHttpError({
+Future<HttpError<T>> parseHttpError<T>({
   required DioError error,
   StackTrace stackTrace = StackTrace.empty,
   String slug = '',
   String Function({required DioError error})? handleErrorMessage,
+  T? Function(dynamic)? errorResponseSerializer,
   String defaultErrorMessage =
       "Algo inesperado aconteceu. Tente novamente mais tarde.",
 }) async {
+  Maybe<T> maybeErrorResponse = Maybe.from(errorResponseSerializer != null
+      ? errorResponseSerializer(error.response?.data)
+      : null);
+
   try {
     String msg = defaultErrorMessage;
 
@@ -176,30 +194,35 @@ Future<HttpError> parseHttpError({
             slug: slug,
             msg: msg,
             errors: error.response?.data,
+            response: maybeErrorResponse,
           );
         case 401:
           return HttpUnauthorizedError(
             stackTrace: formattedStackTrace,
             slug: slug,
             msg: msg,
+            response: maybeErrorResponse,
           );
         case 403:
           return HttpForbiddenError(
             stackTrace: formattedStackTrace,
             slug: slug,
             msg: msg,
+            response: maybeErrorResponse,
           );
         case 404:
           return HttpNotFoundError(
             stackTrace: formattedStackTrace,
             slug: slug,
             msg: msg,
+            response: maybeErrorResponse,
           );
         case 410:
           return HttpGoneError(
             stackTrace: formattedStackTrace,
             slug: slug,
             msg: msg,
+            response: maybeErrorResponse,
           );
         case 422:
           return UnprocessableEntityError(
@@ -207,48 +230,60 @@ Future<HttpError> parseHttpError({
             slug: slug,
             msg: msg,
             errors: error.response?.data,
+            response: maybeErrorResponse,
           );
         case 500:
           return HttpInternalServerError(
             stackTrace: formattedStackTrace,
             slug: slug,
             msg: msg,
+            response: maybeErrorResponse,
           );
         default:
           return HttpUnknownError(
             stackTrace: formattedStackTrace,
             slug: slug,
             msg: msg,
+            response: maybeErrorResponse,
           );
       }
     } else if (error.type == DioErrorType.connectionTimeout ||
         error.type == DioErrorType.receiveTimeout ||
         error.type == DioErrorType.sendTimeout ||
         error.type == DioErrorType.unknown) {
-      return await parseSocketException(exception: error, slug: slug);
+      return await parseSocketException(
+        exception: error,
+        slug: slug,
+        maybeErrorResponse: maybeErrorResponse,
+      );
     } else {
-      return const HttpUnknownError();
+      return HttpUnknownError(response: maybeErrorResponse);
     }
   } catch (e) {
     return HttpUnknownError(
       stackTrace: e.toString(),
       slug: slug,
+      response: maybeErrorResponse,
     );
   }
 }
 
-Future<HttpError> parseSocketException({
+Future<HttpError<T>> parseSocketException<T>({
   required DioError exception,
   String slug = '',
+  Maybe<T> maybeErrorResponse = const Nothing(),
 }) async {
   var connectivityResult = await (Connectivity().checkConnectivity());
 
   if (connectivityResult == ConnectivityResult.none) {
-    return const NoInternetConnectionError();
+    return NoInternetConnectionError(
+      response: maybeErrorResponse,
+    );
   } else {
-    return HttpNetworkError(
+    return HttpNetworkError<T>(
       stackTrace: exception.toString(),
       slug: slug,
+      response: maybeErrorResponse,
     );
   }
 }
