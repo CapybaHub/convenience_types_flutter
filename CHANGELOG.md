@@ -1,5 +1,11 @@
 ## 0.3.0
 
+## fixes
+
+- `FormUtils` as a mixin class
+
+## 0.3.0
+
 ## new
 
 - add generic type to `httpError` to accomodate possible error.responses
