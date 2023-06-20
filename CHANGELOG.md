@@ -1,3 +1,9 @@
+## 0.3.0
+
+## new
+
+- add generic type to `httpError` to accomodate possible error.responses
+
 ## 0.2.2
 
 ## fixes
