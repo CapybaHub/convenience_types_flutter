@@ -1,3 +1,6 @@
+import 'package:convenience_types/errors/http_error.dart';
+import 'package:convenience_types/types/maybe.dart';
+
 /// Abstract class to model errors on the application. As a presset of foreseen
 /// specific errors there are some different implementations of this type. Namely:
 /// [HttpError]  models errors related to http requests
@@ -35,6 +38,9 @@ abstract class AppError {
   @override
   String toString() =>
       '[$runtimeType]: (slug: $slug, msg: $msg, stackTrace: $stackTrace,)';
+
+  Maybe<T> maybeResponse<T>() =>
+      this is HttpError<T> ? (this as HttpError<T>).response : const Nothing();
 }
 
 class AppUnknownError extends AppError {
