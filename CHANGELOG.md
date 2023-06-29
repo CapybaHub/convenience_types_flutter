@@ -1,3 +1,9 @@
+## 0.3.2
+
+## fixes
+
+- add `maybeResponse<T>()` generic method to AppError
+
 ## 0.3.1
 
 ## fixes
