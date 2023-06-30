@@ -1,3 +1,9 @@
+## 0.3.3
+
+## fixes
+
+- add `defaultNoInternetConnectionMessage` to `parseHttpError` method
+
 ## 0.3.2
 
 ## fixes
