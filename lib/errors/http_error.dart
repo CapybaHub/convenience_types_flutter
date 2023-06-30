@@ -161,6 +161,7 @@ Future<HttpError<T>> parseHttpError<T>({
   T? Function(dynamic)? errorResponseSerializer,
   String defaultErrorMessage =
       "Algo inesperado aconteceu. Tente novamente mais tarde.",
+  String defaultNoInternetConnectionMessage = '',
 }) async {
   Maybe<T> maybeErrorResponse = Maybe.from(errorResponseSerializer != null
       ? errorResponseSerializer(error.response?.data)
@@ -168,6 +169,10 @@ Future<HttpError<T>> parseHttpError<T>({
 
   try {
     String msg = defaultErrorMessage;
+    defaultNoInternetConnectionMessage =
+        defaultNoInternetConnectionMessage.isNotEmpty
+            ? defaultNoInternetConnectionMessage
+            : defaultErrorMessage;
 
     slug = slug.isNotEmpty ? slug : error.message ?? error.requestOptions.path;
 
@@ -254,21 +259,27 @@ Future<HttpError<T>> parseHttpError<T>({
       return await parseSocketException(
         exception: error,
         slug: slug,
+        msg: defaultNoInternetConnectionMessage,
         maybeErrorResponse: maybeErrorResponse,
       );
     } else {
-      return HttpUnknownError(response: maybeErrorResponse);
+      return HttpUnknownError(
+        msg: defaultErrorMessage,
+        response: maybeErrorResponse,
+      );
     }
   } catch (e) {
     return HttpUnknownError(
       stackTrace: e.toString(),
       slug: slug,
+      msg: defaultErrorMessage,
       response: maybeErrorResponse,
     );
   }
 }
 
 Future<HttpError<T>> parseSocketException<T>({
+  required String msg,
   required DioException exception,
   String slug = '',
   Maybe<T> maybeErrorResponse = const Nothing(),
@@ -277,12 +288,14 @@ Future<HttpError<T>> parseSocketException<T>({
 
   if (connectivityResult == ConnectivityResult.none) {
     return NoInternetConnectionError(
+      msg: msg,
       response: maybeErrorResponse,
     );
   } else {
     return HttpNetworkError<T>(
       stackTrace: exception.toString(),
       slug: slug,
+      msg: msg,
       response: maybeErrorResponse,
     );
   }
