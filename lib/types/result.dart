@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:convenience_types/errors/app_error.dart';
 import 'package:convenience_types/types/maybe.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -118,8 +120,21 @@ class Result<ResultType> with _$Result<ResultType> {
     }
   }
 
-  /// Method chain access to data held by the [Result]. If `this` is [Failure] returns [Failure], if `this` is [Success], returns the result of the `combiner` method over the `data` inside [Success]
-  Result<K> mapSuccess<K>(Result<K> Function(ResultType) combiner) {
+  /// A method used to chain access to data held by the [Result]. If `this` is [Failure] returns [Failure], if `this` is [Success], returns the result of the `combiner` method over the `data` inside [Success]
+  // ignore: empty_constructor_bodies
+  Result<K> mapSuccess<K>(
+    Result<K> Function(ResultType) combiner,
+  ) {
+    return handle(
+        onSuccess: (data) => combiner(data),
+        onFailure: (error) => Failure(error));
+  }
+
+  /// A method to chain asynchronous access to data held by the [Result]. If `this` is [Failure] returns `[FutureOr<Failure>]`, if `this` is [Success], returns the result of the `combiner` method over the `data` inside [Success]
+  // ignore: empty_constructor_bodies
+  FutureOr<Result<K>> mapAsyncSuccess<K>(
+    FutureOr<Result<K>> Function(ResultType) combiner,
+  ) {
     return handle(
         onSuccess: (data) => combiner(data),
         onFailure: (error) => Failure(error));

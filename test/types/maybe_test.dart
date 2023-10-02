@@ -212,4 +212,102 @@ void main() {
       );
     },
   );
+
+  group(
+    'mapAsyncJust',
+    () {
+      test(
+        'It should return Nothing if this is Nothing',
+        () {
+          Maybe testNothing = const Nothing();
+
+          expect(
+            testNothing.mapAsyncJust((_) => const Just(true)),
+            const Nothing<bool>(),
+          );
+        },
+      );
+
+      test(
+        'It should return the result of the combiner method passing value if this is just',
+        () async {
+          Maybe<bool> testJust = const Just(true);
+          Future<Maybe<String>> combiner(bool val) async {
+            return Just(val.toString());
+          }
+
+          expect(
+            await testJust.mapAsyncJust<String>(combiner),
+            const Just('true'),
+          );
+        },
+      );
+    },
+  );
+
+  group(
+    'maybeCombine',
+    () {
+      Maybe<String> firstJust(int val) => Just(val.toString());
+      Maybe<String> secondJust(bool val) => Just(val.toString());
+      Maybe<String> bothJust(int number, bool val) =>
+          Just('$number${val.toString()}');
+      Maybe<String> bothNothing() => const Just('bothNothing');
+
+      test(
+        'It should return Nothing if both are Just but no method is passed',
+        () {
+          var testRecord = (const Just(1), const Just(true));
+          expect(
+            testRecord.maybeCombine(),
+            const Nothing(),
+          );
+        },
+      );
+
+      test(
+        'It should return the result of bothJust method if both are Just and bothJust is not null',
+        () {
+          var testRecord = (const Just(1), const Just(true));
+          expect(
+            testRecord.maybeCombine(bothJust: bothJust),
+            const Just('1true'),
+          );
+        },
+      );
+
+      test(
+        'It should return the result of firstJust method if only first value is Just and firstJust is not null',
+        () {
+          var testRecord = (const Just(1), const Nothing());
+          expect(
+            testRecord.maybeCombine(firstJust: firstJust),
+            const Just('1'),
+          );
+        },
+      );
+
+      test(
+        'It should return the result of secondJust method if only second value is Just and secondJust is not null',
+        () {
+          var testRecord = (const Nothing(), const Just(true));
+          expect(
+            testRecord.maybeCombine(secondJust: secondJust),
+            const Just('true'),
+          );
+        },
+      );
+
+      test(
+        'It should return the result of bothJust method if both values are Nothing and bothNothing is not null',
+        () {
+          var testRecord = (const Nothing(), const Nothing());
+          expect(
+            testRecord.maybeCombine(bothNothing: bothNothing),
+            const Just('bothNothing'),
+          );
+        },
+      );
+    },
+  );
 }

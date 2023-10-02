@@ -125,25 +125,25 @@ class RequestStatus<ResultType> with _$RequestStatus<ResultType> {
   bool get isFailed => this is Failed;
 
   /// Cast [this] into an [Idle], and throw an exception if the cast fails!
-  /// `It might be tempting to just cast the RequestSttatus into the desired type, but it's `
+  /// `It might be tempting to just cast the RequestStatus into the desired type, but it's `
   /// `strongly advised to not do that indiscriminately`. Although, it might be convenient to have
   /// this cast sometimes. Use it wisely!
   Idle get asIdle => this as Idle;
 
   /// Cast [this] into a [Loading], and throw an exception if the cast fails!
-  /// `It might be tempting to just cast the RequestSttatus into the desired type, but it's `
+  /// `It might be tempting to just cast the RequestStatus into the desired type, but it's `
   /// `strongly advised to not do that indiscriminately`. Although, it might be convenient to have
   /// this cast sometimes. Use it wisely!
   Loading get asLoading => this as Loading;
 
   /// Cast [this] into a [Succeeded], and throw an exception if the cast fails!
-  /// `It might be tempting to just cast the RequestSttatus into the desired type, but it's `
+  /// `It might be tempting to just cast the RequestStatus into the desired type, but it's `
   /// `strongly advised to not do that indiscriminately`. Although, it might be convenient to have
   /// this cast sometimes. Use it wisely!
   Succeeded get asSucceeded => this as Succeeded;
 
   /// Cast [this] into a [Failed], and throw an exception if the cast fails!
-  /// `It might be tempting to just cast the RequestSttatus into the desired type, but it's `
+  /// `It might be tempting to just cast the RequestStatus into the desired type, but it's `
   /// `strongly advised to not do that indiscriminately`. Although, it might be convenient to have
   /// this cast sometimes. Use it wisely!
   Failed get asFailed => this as Failed;

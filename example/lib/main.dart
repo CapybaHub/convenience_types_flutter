@@ -108,6 +108,10 @@ class _MyHomePageState extends State<MyHomePage> {
       numberRes = (await clientWrapper.get(
               url: '${numberField.field.getOrElse('')}?json'))
           .mapSuccess(_mapRequestToNumber);
+
+      numberRes = (await numberRes.mapAsyncSuccess((number) async =>
+              await clientWrapper.get(url: '${number.number * 2}?json')))
+          .mapSuccess(_mapRequestToNumber);
     } catch (e) {
       numberRes = Failure(
         AppUnknownError(

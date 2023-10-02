@@ -100,4 +100,44 @@ void main() {
       );
     },
   );
+
+  group(
+    'mapAsyncSuccess',
+    () {
+      test(
+        'It should return Failure, if this is a Failure',
+        () {
+          Result<String> testResult = const Failure(AppUnknownError());
+          Future<Result<TestMapType>> combiner(String data) async {
+            return Success(TestMapType(data));
+          }
+
+          expect(
+            testResult.mapAsyncSuccess(combiner),
+            isA<Failure>(),
+          );
+        },
+      );
+
+      test(
+        'It should return the result of the combiner passing the data inside Result, if this is a Success',
+        () async {
+          Result<String> testResult = const Success('test');
+          Future<Result<TestMapType>> combiner(String data) async {
+            return Success(TestMapType(data));
+          }
+
+          (await testResult.mapAsyncSuccess(combiner)).handle(
+            onSuccess: (data) {
+              expect(data, isA<TestMapType>());
+              expect(data.data, 'test');
+            },
+            onFailure: (error) {
+              fail('unexpected failure');
+            },
+          );
+        },
+      );
+    },
+  );
 }
