@@ -1,3 +1,11 @@
+## 0.4.0
+
+## New
+
+- add `mapAsyncSuccess<K>` method to `Result` to chain asynchronous access to data
+- add `mapAsyncJust<K>` method to `Maybe` to chain asynchronous access to data
+- add `(Maybe<J>, Maybe<K>).maybeCombine` extension method to `(Maybe<J>, Maybe<K>)` records to neatly control access to an ordered pair of two `Maybe`s possible values
+
 ## 0.3.3
 
 ## fixes

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:convenience_types/types/request_status.dart';
 import 'package:convenience_types/types/result.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -107,8 +109,16 @@ class Maybe<T> with _$Maybe<T> {
     );
   }
 
-  /// Method chain access to data held by the [Maybe]. If `this` is [Nothing] returns [Nothing], if `this` is [Just], returns the result of the `combiner` method over the `value` inside [Just]
+  /// A method to chain access to data held by the [Maybe]. If `this` is [Nothing] returns [Nothing], if `this` is [Just], returns the result of the `combiner` method over the `value` inside [Just]
   Maybe<K> mapJust<K>(Maybe<K> Function(T) combiner) {
+    return when(
+      nothing: () => Nothing<K>(),
+      just: (T data) => combiner(data),
+    );
+  }
+
+  /// A Method to chain async access to data held by the [Maybe]. If `this` is [Nothing] returns [Nothing], if `this` is [Just], returns the result of the `combiner` method over the `value` inside [Just]
+  FutureOr<Maybe<K>> mapAsyncJust<K>(FutureOr<Maybe<K>> Function(T) combiner) {
     return when(
       nothing: () => Nothing<K>(),
       just: (T data) => combiner(data),
@@ -143,6 +153,48 @@ class Maybe<T> with _$Maybe<T> {
           return value is Type ? value as Type : fallback;
         }
       },
+    );
+  }
+}
+
+extension MaybeRecordX<K, J> on (Maybe<K>, Maybe<J>) {
+  /// Use it to combine two different Maybe's into a new one. Input `firstJust` to map case where only the first value is [Just], `secondJust` to map case where only the second value is [Just], `bothJust` to map case where both first and second value are [Just] and `bothNothing` to map case where both are [Nothing]
+  /// Example:
+  /// ```dart
+  ///
+  ///     Maybe<Number> combined = (testString, testInt).maybeCombine<Number>(
+  ///       bothJust: (val, number) => Just(Number(val, number, '$number$val',)),
+  ///       firstJust: (val) => Just(Number(val, -1, '-1$val',)),
+  ///       secondJust: (number) => Just(Number('not a trivia', number, 'NonTrivia',)),
+  ///       bothNothing: () => Just(Number('not a trivia', -1, 'NonTrivia',)),
+  ///     );
+  ///
+  ///
+  /// ```
+  Maybe<T> maybeCombine<T>({
+    /// Used to map case where only the first value is [Just]
+    Maybe<T> Function(K)? firstJust,
+
+    /// Used to map case where only the second value is [Just]
+    Maybe<T> Function(J)? secondJust,
+
+    /// Used to map case where both values are [Just]
+    Maybe<T> Function(K, J)? bothJust,
+
+    /// Used to map case where both values are [Nothing]
+    Maybe<T> Function()? bothNothing,
+  }) {
+    return $1.when(
+      nothing: () => $2.when(
+        nothing: () => bothNothing != null ? bothNothing() : Nothing<T>(),
+        just: (J secondData) =>
+            secondJust != null ? secondJust(secondData) : Nothing<T>(),
+      ),
+      just: (firstData) => $2.when(
+        nothing: () => firstJust != null ? firstJust(firstData) : Nothing<T>(),
+        just: (J secondData) =>
+            bothJust != null ? bothJust(firstData, secondData) : Nothing<T>(),
+      ),
     );
   }
 }

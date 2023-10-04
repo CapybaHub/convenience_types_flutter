@@ -93,7 +93,45 @@ In this way one always needs to deal in a declarative way with both the
 success and failure possible outcomes as unfortunatelly any asynchronus
 task needs.
 
-`anti-patern alert!`: The `Result` generic Union type comes with casts convenience methods `asSuccess`, `asFailure`, but although it might be temping to just cast the result into the desired type, it is strongly advised you not to do it, once if you try to cast diferent types (`Success` as `Failure` or the other way around) it would throw an exception.
+`anti-patern alert!`: The `Result` generic Union type comes with casts convenience methods `asSuccess`, `asFailure`, but although it might be temping to just cast the result into the desired type, it is strongly advised you not to do it, once if you try to cast diferent types (`Success` as `Failure` or the other way around) it would throw an exception.<br>
+
+```dart
+Result<K> mapSuccess<K>(
+    Result<K> Function(ResultType) combiner,
+  );
+```
+
+A method used to chain access to data held by the [Result]. If `this` is [Failure] returns [Failure], if `this` is [Success], returns the result of the `combiner` method over the `data` inside [Success] <br>
+
+Example:
+
+```dart
+Result<String> asyncTaskResturningStringResult = await someFutureOfResultString();
+
+Result<double> parseResult = asyncTaskResturningStringResult.mapSuccess((String data) => methodThatTakesStringDataAndTriesToParseDouble(data));
+```
+
+```dart
+FutureOr<Result<K>> mapAsyncSuccess<K>(
+    FutureOr<Result<K>> Function(ResultType) combiner,
+);
+```
+
+A method to chain asynchronous access to data held by the [Result]. If `this` is [Failure] returns `[FutureOr<Failure>]`, if `this` is [Success], returns the result of the `combiner` method over the `data` inside [Success] <br>
+
+Example:
+
+```dart
+Result<String> asyncTaskResturningStringResult = await someFutureOfResultString();
+
+Result<double> parseResult = await asyncTaskResturningStringResult.mapAsyncSuccess((String data) => methodThatTakesStringDataAndAsynchronouslyTriesToParseDouble(data));
+```
+
+```dart
+Maybe<ResultType> get maybeData;
+```
+
+Getter that results in a [Just] if the [Result] is [Success] and [Nothing] othterwise <br>
 
 ### Maybe
 
@@ -162,6 +200,60 @@ Example:
 
 So, `Maybe` provides a safe and declarative way to always deal with the two possible states of a optional value.
 
+```dart
+factory Maybe.from(T? input);
+```
+
+Factory for helping building a [Maybe] from a nullable input. It produces a [Nothing] if the input is null, and a [Just] otherwise
+
+```dart
+Type getOrElse<Type>(Type fallback);
+```
+
+The [getOrElse] method which receives a parameter to return as a
+fallback value, when the value is a [Nothing], or there is no value in the [Just] <br>
+
+```dart
+ Maybe<K> mapJust<K>(Maybe<K> Function(T) combiner);
+```
+
+A method to chain access to data held by the [Maybe]. If `this` is [Nothing] returns [Nothing], if `this` is [Just], returns the result of the `combiner` method over the `value` inside [Just] <br>
+
+```dart
+FutureOr<Maybe<K>> mapAsyncJust<K>(FutureOr<Maybe<K>> Function(T) combiner);
+```
+
+A Method to chain async access to data held by the [Maybe]. If `this` is [Nothing] returns [Nothing], if `this` is [Just], returns the result of the `combiner` method over the `value` inside [Just]<br>
+
+```dart
+Maybe<T> maybeCombine<T>({
+    /// Used to map case where only the first value is [Just]
+    Maybe<T> Function(K)? firstJust,
+
+    /// Used to map case where only the second value is [Just]
+    Maybe<T> Function(J)? secondJust,
+
+    /// Used to map case where both values are [Just]
+    Maybe<T> Function(K, J)? bothJust,
+
+    /// Used to map case where both values are [Nothing]
+    Maybe<T> Function()? bothNothing,
+  })
+```
+
+Use it to combine two different Maybe's into a new one. Input `firstJust` to map case where only the first value is [Just], `secondJust` to map case where only the second value is [Just], `bothJust` to map case where both first and second value are [Just] and `bothNothing` to map case where both are [Nothing]<br>
+
+Example:
+
+````dart
+Maybe<Number> combined = (testString, testInt).maybeCombine<Number>(
+  bothJust: (val, number) => Just(Number(val, number, '$number$val',)),
+  firstJust: (val) => Just(Number(val, -1, '-1$val',)),
+  secondJust: (number) => Just(Number('not a trivia', number, 'NonTrivia',)),
+  bothNothing: () => Just(Number('not a trivia', -1, 'NonTrivia',)),
+       );
+```
+
 ### RequestStatus
 
 When one is dealing with ui responses to different request states, in the course of it,
@@ -170,7 +262,7 @@ So the convenience generic union type
 
 ```dart
 RequestStatus<ResultType>
-```
+````
 
 serves the purpose of modeling those states. `Idle` and `Loading`, carry no inner state, but
 
@@ -235,7 +327,14 @@ Example:
   }
 ```
 
-So, `RequestStatus` provides a safe and declarative way to always deal with all possible or desired states of a request.
+So, `RequestStatus` provides a safe and declarative way to always deal with all possible or desired states of a request. <br>
+
+```dart
+Maybe<ResultType> get maybeData;
+```
+
+Getter that results in a [Maybe] that is [Just] if the [RequestStatus] is [Succeeded] and [Nothing] otherwise
+<br>
 
 ### FormField
 
