@@ -1,3 +1,9 @@
+## Unreleased
+
+## New
+
+- add `castInto<k>` method to `FormField<T>` to help casting field types leaving names unchanged
+
 ## 0.4.0
 
 ## New

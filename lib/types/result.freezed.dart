@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'result.dart';
 
@@ -21,17 +21,18 @@ mixin _$Result<ResultType> {}
 abstract class $ResultCopyWith<ResultType, $Res> {
   factory $ResultCopyWith(
           Result<ResultType> value, $Res Function(Result<ResultType>) then) =
-      _$ResultCopyWithImpl<ResultType, $Res>;
+      _$ResultCopyWithImpl<ResultType, $Res, Result<ResultType>>;
 }
 
 /// @nodoc
-class _$ResultCopyWithImpl<ResultType, $Res>
+class _$ResultCopyWithImpl<ResultType, $Res, $Val extends Result<ResultType>>
     implements $ResultCopyWith<ResultType, $Res> {
   _$ResultCopyWithImpl(this._value, this._then);
 
-  final Result<ResultType> _value;
   // ignore: unused_field
-  final $Res Function(Result<ResultType>) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 }
 
 /// @nodoc
@@ -39,26 +40,25 @@ abstract class _$$SuccessCopyWith<ResultType, $Res> {
   factory _$$SuccessCopyWith(_$Success<ResultType> value,
           $Res Function(_$Success<ResultType>) then) =
       __$$SuccessCopyWithImpl<ResultType, $Res>;
+  @useResult
   $Res call({ResultType data});
 }
 
 /// @nodoc
 class __$$SuccessCopyWithImpl<ResultType, $Res>
-    extends _$ResultCopyWithImpl<ResultType, $Res>
+    extends _$ResultCopyWithImpl<ResultType, $Res, _$Success<ResultType>>
     implements _$$SuccessCopyWith<ResultType, $Res> {
   __$$SuccessCopyWithImpl(
       _$Success<ResultType> _value, $Res Function(_$Success<ResultType>) _then)
-      : super(_value, (v) => _then(v as _$Success<ResultType>));
+      : super(_value, _then);
 
-  @override
-  _$Success<ResultType> get _value => super._value as _$Success<ResultType>;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? data = freezed,
   }) {
     return _then(_$Success<ResultType>(
-      data == freezed
+      freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
               as ResultType,
@@ -93,6 +93,7 @@ class _$Success<ResultType> extends Success<ResultType> {
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$SuccessCopyWith<ResultType, _$Success<ResultType>> get copyWith =>
       __$$SuccessCopyWithImpl<ResultType, _$Success<ResultType>>(
           this, _$identity);
@@ -102,7 +103,7 @@ abstract class Success<ResultType> extends Result<ResultType> {
   const factory Success(final ResultType data) = _$Success<ResultType>;
   const Success._() : super._();
 
-  ResultType get data => throw _privateConstructorUsedError;
+  ResultType get data;
   @JsonKey(ignore: true)
   _$$SuccessCopyWith<ResultType, _$Success<ResultType>> get copyWith =>
       throw _privateConstructorUsedError;
@@ -113,26 +114,25 @@ abstract class _$$FailureCopyWith<ResultType, $Res> {
   factory _$$FailureCopyWith(_$Failure<ResultType> value,
           $Res Function(_$Failure<ResultType>) then) =
       __$$FailureCopyWithImpl<ResultType, $Res>;
+  @useResult
   $Res call({AppError error});
 }
 
 /// @nodoc
 class __$$FailureCopyWithImpl<ResultType, $Res>
-    extends _$ResultCopyWithImpl<ResultType, $Res>
+    extends _$ResultCopyWithImpl<ResultType, $Res, _$Failure<ResultType>>
     implements _$$FailureCopyWith<ResultType, $Res> {
   __$$FailureCopyWithImpl(
       _$Failure<ResultType> _value, $Res Function(_$Failure<ResultType>) _then)
-      : super(_value, (v) => _then(v as _$Failure<ResultType>));
+      : super(_value, _then);
 
-  @override
-  _$Failure<ResultType> get _value => super._value as _$Failure<ResultType>;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? error = freezed,
+    Object? error = null,
   }) {
     return _then(_$Failure<ResultType>(
-      error == freezed
+      null == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
               as AppError,
@@ -158,15 +158,15 @@ class _$Failure<ResultType> extends Failure<ResultType> {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$Failure<ResultType> &&
-            const DeepCollectionEquality().equals(other.error, error));
+            (identical(other.error, error) || other.error == error));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(error));
+  int get hashCode => Object.hash(runtimeType, error);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$FailureCopyWith<ResultType, _$Failure<ResultType>> get copyWith =>
       __$$FailureCopyWithImpl<ResultType, _$Failure<ResultType>>(
           this, _$identity);
@@ -176,7 +176,7 @@ abstract class Failure<ResultType> extends Result<ResultType> {
   const factory Failure(final AppError error) = _$Failure<ResultType>;
   const Failure._() : super._();
 
-  AppError get error => throw _privateConstructorUsedError;
+  AppError get error;
   @JsonKey(ignore: true)
   _$$FailureCopyWith<ResultType, _$Failure<ResultType>> get copyWith =>
       throw _privateConstructorUsedError;
