@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'maybe.dart';
 
@@ -24,8 +24,8 @@ mixin _$Maybe<T> {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? nothing,
-    TResult Function(T value)? just,
+    TResult? Function()? nothing,
+    TResult? Function(T value)? just,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -43,8 +43,8 @@ mixin _$Maybe<T> {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(Nothing<T> value)? nothing,
-    TResult Function(Just<T> value)? just,
+    TResult? Function(Nothing<T> value)? nothing,
+    TResult? Function(Just<T> value)? just,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -59,16 +59,18 @@ mixin _$Maybe<T> {
 /// @nodoc
 abstract class $MaybeCopyWith<T, $Res> {
   factory $MaybeCopyWith(Maybe<T> value, $Res Function(Maybe<T>) then) =
-      _$MaybeCopyWithImpl<T, $Res>;
+      _$MaybeCopyWithImpl<T, $Res, Maybe<T>>;
 }
 
 /// @nodoc
-class _$MaybeCopyWithImpl<T, $Res> implements $MaybeCopyWith<T, $Res> {
+class _$MaybeCopyWithImpl<T, $Res, $Val extends Maybe<T>>
+    implements $MaybeCopyWith<T, $Res> {
   _$MaybeCopyWithImpl(this._value, this._then);
 
-  final Maybe<T> _value;
   // ignore: unused_field
-  final $Res Function(Maybe<T>) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 }
 
 /// @nodoc
@@ -79,14 +81,12 @@ abstract class _$$NothingCopyWith<T, $Res> {
 }
 
 /// @nodoc
-class __$$NothingCopyWithImpl<T, $Res> extends _$MaybeCopyWithImpl<T, $Res>
+class __$$NothingCopyWithImpl<T, $Res>
+    extends _$MaybeCopyWithImpl<T, $Res, _$Nothing<T>>
     implements _$$NothingCopyWith<T, $Res> {
   __$$NothingCopyWithImpl(
       _$Nothing<T> _value, $Res Function(_$Nothing<T>) _then)
-      : super(_value, (v) => _then(v as _$Nothing<T>));
-
-  @override
-  _$Nothing<T> get _value => super._value as _$Nothing<T>;
+      : super(_value, _then);
 }
 
 /// @nodoc
@@ -120,8 +120,8 @@ class _$Nothing<T> extends Nothing<T> {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? nothing,
-    TResult Function(T value)? just,
+    TResult? Function()? nothing,
+    TResult? Function(T value)? just,
   }) {
     return nothing?.call();
   }
@@ -151,8 +151,8 @@ class _$Nothing<T> extends Nothing<T> {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(Nothing<T> value)? nothing,
-    TResult Function(Just<T> value)? just,
+    TResult? Function(Nothing<T> value)? nothing,
+    TResult? Function(Just<T> value)? just,
   }) {
     return nothing?.call(this);
   }
@@ -180,24 +180,24 @@ abstract class Nothing<T> extends Maybe<T> {
 abstract class _$$JustCopyWith<T, $Res> {
   factory _$$JustCopyWith(_$Just<T> value, $Res Function(_$Just<T>) then) =
       __$$JustCopyWithImpl<T, $Res>;
+  @useResult
   $Res call({T value});
 }
 
 /// @nodoc
-class __$$JustCopyWithImpl<T, $Res> extends _$MaybeCopyWithImpl<T, $Res>
+class __$$JustCopyWithImpl<T, $Res>
+    extends _$MaybeCopyWithImpl<T, $Res, _$Just<T>>
     implements _$$JustCopyWith<T, $Res> {
   __$$JustCopyWithImpl(_$Just<T> _value, $Res Function(_$Just<T>) _then)
-      : super(_value, (v) => _then(v as _$Just<T>));
+      : super(_value, _then);
 
-  @override
-  _$Just<T> get _value => super._value as _$Just<T>;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? value = freezed,
   }) {
     return _then(_$Just<T>(
-      value == freezed
+      freezed == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
               as T,
@@ -232,6 +232,7 @@ class _$Just<T> extends Just<T> {
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$JustCopyWith<T, _$Just<T>> get copyWith =>
       __$$JustCopyWithImpl<T, _$Just<T>>(this, _$identity);
 
@@ -247,8 +248,8 @@ class _$Just<T> extends Just<T> {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? nothing,
-    TResult Function(T value)? just,
+    TResult? Function()? nothing,
+    TResult? Function(T value)? just,
   }) {
     return just?.call(value);
   }
@@ -278,8 +279,8 @@ class _$Just<T> extends Just<T> {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(Nothing<T> value)? nothing,
-    TResult Function(Just<T> value)? just,
+    TResult? Function(Nothing<T> value)? nothing,
+    TResult? Function(Just<T> value)? just,
   }) {
     return just?.call(this);
   }
@@ -302,7 +303,7 @@ abstract class Just<T> extends Maybe<T> {
   const factory Just(final T value) = _$Just<T>;
   const Just._() : super._();
 
-  T get value => throw _privateConstructorUsedError;
+  T get value;
   @JsonKey(ignore: true)
   _$$JustCopyWith<T, _$Just<T>> get copyWith =>
       throw _privateConstructorUsedError;

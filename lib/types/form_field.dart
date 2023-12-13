@@ -102,6 +102,7 @@ part 'form_field.freezed.dart';
 
 @freezed
 class FormField<T> with _$FormField<T> {
+  const FormField._();
   const factory FormField({
     /// Property representing the name of this [FormField] in a possible json request body
     required String name,
@@ -109,4 +110,10 @@ class FormField<T> with _$FormField<T> {
     /// Property representing the value of this [FormField] in a possible json request body
     @Default(Nothing()) Maybe<T> field,
   }) = _FormField<T>;
+
+  /// A method to help casting a FormField from a type T into a type K.
+  FormField<K> castInto<K>({
+    required Maybe<K> Function(T) combiner,
+  }) =>
+      FormField<K>(name: name, field: field.mapJust<K>(combiner));
 }
