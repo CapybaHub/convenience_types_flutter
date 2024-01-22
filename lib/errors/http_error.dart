@@ -255,7 +255,8 @@ Future<HttpError<T>> parseHttpError<T>({
     } else if (error.type == DioExceptionType.connectionTimeout ||
         error.type == DioExceptionType.receiveTimeout ||
         error.type == DioExceptionType.sendTimeout ||
-        error.type == DioExceptionType.unknown) {
+        error.type == DioExceptionType.unknown ||
+        error.type == DioExceptionType.connectionError) {
       return await parseSocketException(
         exception: error,
         slug: slug,
