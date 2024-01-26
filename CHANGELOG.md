@@ -3,6 +3,7 @@
 ## New
 
 - add `maybeAsyncCombine`
+- add connectionError to `parseHttpError`
 
 ## Fix
 
