@@ -1,3 +1,14 @@
+## 0.5.2
+
+## New
+
+- add `maybeAsyncCombine`
+
+## Fix
+
+- remove async return to `maybeCombine`
+
+
 ## 0.5.1
 
 ## Change
