@@ -171,7 +171,47 @@ extension MaybeRecordX<K, J> on (Maybe<K>, Maybe<J>) {
   ///
   ///
   /// ```
-  FutureOr<Maybe<T>> maybeCombine<T>({
+  Maybe<T> maybeCombine<T>({
+    /// Used to map case where only the first value is [Just]
+    Maybe<T> Function(K)? firstJust,
+
+    /// Used to map case where only the second value is [Just]
+    Maybe<T> Function(J)? secondJust,
+
+    /// Used to map case where both values are [Just]
+    Maybe<T> Function(K, J)? bothJust,
+
+    /// Used to map case where both values are [Nothing]
+    Maybe<T> Function()? bothNothing,
+  }) {
+    return $1.when(
+      nothing: () => $2.when(
+        nothing: () => bothNothing != null ? bothNothing() : Nothing<T>(),
+        just: (J secondData) =>
+            secondJust != null ? secondJust(secondData) : Nothing<T>(),
+      ),
+      just: (firstData) => $2.when(
+        nothing: () => firstJust != null ? firstJust(firstData) : Nothing<T>(),
+        just: (J secondData) =>
+            bothJust != null ? bothJust(firstData, secondData) : Nothing<T>(),
+      ),
+    );
+  }
+
+  /// Use it to asynchronously combine two different Maybe's into a new one. Input `firstJust` to map case where only the first value is [Just], `secondJust` to map case where only the second value is [Just], `bothJust` to map case where both first and second value are [Just] and `bothNothing` to map case where both are [Nothing]
+  /// Example:
+  /// ```dart
+  ///
+  ///     Maybe<Number> combined = await (testString, testInt).maybeAsyncCombine<Number>(
+  ///       bothJust: (val, number) async => await ...,
+  ///       firstJust: (val) async => await ...,
+  ///       secondJust: (number) async => await ...,
+  ///       bothNothing: () async => await ....,
+  ///     );
+  ///
+  ///
+  /// ```
+  FutureOr<Maybe<T>> maybeAsyncCombine<T>({
     /// Used to map case where only the first value is [Just]
     FutureOr<Maybe<T>> Function(K)? firstJust,
 
