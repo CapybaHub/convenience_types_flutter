@@ -1,3 +1,9 @@
+## 0.5.1
+
+## Change
+
+- add async return to `maybeCombine`
+
 ## 0.5.0
 
 ## New
