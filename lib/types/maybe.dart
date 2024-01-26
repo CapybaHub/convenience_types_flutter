@@ -171,18 +171,18 @@ extension MaybeRecordX<K, J> on (Maybe<K>, Maybe<J>) {
   ///
   ///
   /// ```
-  Maybe<T> maybeCombine<T>({
+  FutureOr<Maybe<T>> maybeCombine<T>({
     /// Used to map case where only the first value is [Just]
-    Maybe<T> Function(K)? firstJust,
+    FutureOr<Maybe<T>> Function(K)? firstJust,
 
     /// Used to map case where only the second value is [Just]
-    Maybe<T> Function(J)? secondJust,
+    FutureOr<Maybe<T>> Function(J)? secondJust,
 
     /// Used to map case where both values are [Just]
-    Maybe<T> Function(K, J)? bothJust,
+    FutureOr<Maybe<T>> Function(K, J)? bothJust,
 
     /// Used to map case where both values are [Nothing]
-    Maybe<T> Function()? bothNothing,
+    FutureOr<Maybe<T>> Function()? bothNothing,
   }) {
     return $1.when(
       nothing: () => $2.when(
