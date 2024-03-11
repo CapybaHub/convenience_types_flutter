@@ -12,7 +12,7 @@ part of 'form_field.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$FormField<T> {
@@ -76,11 +76,11 @@ class _$FormFieldCopyWithImpl<T, $Res, $Val extends FormField<T>>
 }
 
 /// @nodoc
-abstract class _$$_FormFieldCopyWith<T, $Res>
+abstract class _$$FormFieldImplCopyWith<T, $Res>
     implements $FormFieldCopyWith<T, $Res> {
-  factory _$$_FormFieldCopyWith(
-          _$_FormField<T> value, $Res Function(_$_FormField<T>) then) =
-      __$$_FormFieldCopyWithImpl<T, $Res>;
+  factory _$$FormFieldImplCopyWith(
+          _$FormFieldImpl<T> value, $Res Function(_$FormFieldImpl<T>) then) =
+      __$$FormFieldImplCopyWithImpl<T, $Res>;
   @override
   @useResult
   $Res call({String name, Maybe<T> field});
@@ -90,11 +90,11 @@ abstract class _$$_FormFieldCopyWith<T, $Res>
 }
 
 /// @nodoc
-class __$$_FormFieldCopyWithImpl<T, $Res>
-    extends _$FormFieldCopyWithImpl<T, $Res, _$_FormField<T>>
-    implements _$$_FormFieldCopyWith<T, $Res> {
-  __$$_FormFieldCopyWithImpl(
-      _$_FormField<T> _value, $Res Function(_$_FormField<T>) _then)
+class __$$FormFieldImplCopyWithImpl<T, $Res>
+    extends _$FormFieldCopyWithImpl<T, $Res, _$FormFieldImpl<T>>
+    implements _$$FormFieldImplCopyWith<T, $Res> {
+  __$$FormFieldImplCopyWithImpl(
+      _$FormFieldImpl<T> _value, $Res Function(_$FormFieldImpl<T>) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -103,7 +103,7 @@ class __$$_FormFieldCopyWithImpl<T, $Res>
     Object? name = null,
     Object? field = null,
   }) {
-    return _then(_$_FormField<T>(
+    return _then(_$FormFieldImpl<T>(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -118,8 +118,8 @@ class __$$_FormFieldCopyWithImpl<T, $Res>
 
 /// @nodoc
 
-class _$_FormField<T> extends _FormField<T> {
-  const _$_FormField({required this.name, this.field = const Nothing()})
+class _$FormFieldImpl<T> extends _FormField<T> {
+  const _$FormFieldImpl({required this.name, this.field = const Nothing()})
       : super._();
 
   /// Property representing the name of this [FormField] in a possible json request body
@@ -137,10 +137,10 @@ class _$_FormField<T> extends _FormField<T> {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_FormField<T> &&
+            other is _$FormFieldImpl<T> &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.field, field) || other.field == field));
   }
@@ -151,13 +151,13 @@ class _$_FormField<T> extends _FormField<T> {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_FormFieldCopyWith<T, _$_FormField<T>> get copyWith =>
-      __$$_FormFieldCopyWithImpl<T, _$_FormField<T>>(this, _$identity);
+  _$$FormFieldImplCopyWith<T, _$FormFieldImpl<T>> get copyWith =>
+      __$$FormFieldImplCopyWithImpl<T, _$FormFieldImpl<T>>(this, _$identity);
 }
 
 abstract class _FormField<T> extends FormField<T> {
   const factory _FormField({required final String name, final Maybe<T> field}) =
-      _$_FormField<T>;
+      _$FormFieldImpl<T>;
   const _FormField._() : super._();
 
   @override
@@ -170,6 +170,6 @@ abstract class _FormField<T> extends FormField<T> {
   Maybe<T> get field;
   @override
   @JsonKey(ignore: true)
-  _$$_FormFieldCopyWith<T, _$_FormField<T>> get copyWith =>
+  _$$FormFieldImplCopyWith<T, _$FormFieldImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }

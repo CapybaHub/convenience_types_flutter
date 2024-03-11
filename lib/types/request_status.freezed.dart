@@ -12,7 +12,7 @@ part of 'request_status.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$RequestStatus<ResultType> {
@@ -88,25 +88,26 @@ class _$RequestStatusCopyWithImpl<ResultType, $Res,
 }
 
 /// @nodoc
-abstract class _$$IdleCopyWith<ResultType, $Res> {
-  factory _$$IdleCopyWith(
-          _$Idle<ResultType> value, $Res Function(_$Idle<ResultType>) then) =
-      __$$IdleCopyWithImpl<ResultType, $Res>;
+abstract class _$$IdleImplCopyWith<ResultType, $Res> {
+  factory _$$IdleImplCopyWith(_$IdleImpl<ResultType> value,
+          $Res Function(_$IdleImpl<ResultType>) then) =
+      __$$IdleImplCopyWithImpl<ResultType, $Res>;
 }
 
 /// @nodoc
-class __$$IdleCopyWithImpl<ResultType, $Res>
-    extends _$RequestStatusCopyWithImpl<ResultType, $Res, _$Idle<ResultType>>
-    implements _$$IdleCopyWith<ResultType, $Res> {
-  __$$IdleCopyWithImpl(
-      _$Idle<ResultType> _value, $Res Function(_$Idle<ResultType>) _then)
+class __$$IdleImplCopyWithImpl<ResultType, $Res>
+    extends _$RequestStatusCopyWithImpl<ResultType, $Res,
+        _$IdleImpl<ResultType>>
+    implements _$$IdleImplCopyWith<ResultType, $Res> {
+  __$$IdleImplCopyWithImpl(_$IdleImpl<ResultType> _value,
+      $Res Function(_$IdleImpl<ResultType>) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$Idle<ResultType> extends Idle<ResultType> {
-  const _$Idle() : super._();
+class _$IdleImpl<ResultType> extends Idle<ResultType> {
+  const _$IdleImpl() : super._();
 
   @override
   String toString() {
@@ -114,9 +115,9 @@ class _$Idle<ResultType> extends Idle<ResultType> {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$Idle<ResultType>);
+        (other.runtimeType == runtimeType && other is _$IdleImpl<ResultType>);
   }
 
   @override
@@ -198,30 +199,31 @@ class _$Idle<ResultType> extends Idle<ResultType> {
 }
 
 abstract class Idle<ResultType> extends RequestStatus<ResultType> {
-  const factory Idle() = _$Idle<ResultType>;
+  const factory Idle() = _$IdleImpl<ResultType>;
   const Idle._() : super._();
 }
 
 /// @nodoc
-abstract class _$$LoadingCopyWith<ResultType, $Res> {
-  factory _$$LoadingCopyWith(_$Loading<ResultType> value,
-          $Res Function(_$Loading<ResultType>) then) =
-      __$$LoadingCopyWithImpl<ResultType, $Res>;
+abstract class _$$LoadingImplCopyWith<ResultType, $Res> {
+  factory _$$LoadingImplCopyWith(_$LoadingImpl<ResultType> value,
+          $Res Function(_$LoadingImpl<ResultType>) then) =
+      __$$LoadingImplCopyWithImpl<ResultType, $Res>;
 }
 
 /// @nodoc
-class __$$LoadingCopyWithImpl<ResultType, $Res>
-    extends _$RequestStatusCopyWithImpl<ResultType, $Res, _$Loading<ResultType>>
-    implements _$$LoadingCopyWith<ResultType, $Res> {
-  __$$LoadingCopyWithImpl(
-      _$Loading<ResultType> _value, $Res Function(_$Loading<ResultType>) _then)
+class __$$LoadingImplCopyWithImpl<ResultType, $Res>
+    extends _$RequestStatusCopyWithImpl<ResultType, $Res,
+        _$LoadingImpl<ResultType>>
+    implements _$$LoadingImplCopyWith<ResultType, $Res> {
+  __$$LoadingImplCopyWithImpl(_$LoadingImpl<ResultType> _value,
+      $Res Function(_$LoadingImpl<ResultType>) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$Loading<ResultType> extends Loading<ResultType> {
-  const _$Loading() : super._();
+class _$LoadingImpl<ResultType> extends Loading<ResultType> {
+  const _$LoadingImpl() : super._();
 
   @override
   String toString() {
@@ -229,9 +231,10 @@ class _$Loading<ResultType> extends Loading<ResultType> {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$Loading<ResultType>);
+        (other.runtimeType == runtimeType &&
+            other is _$LoadingImpl<ResultType>);
   }
 
   @override
@@ -313,26 +316,26 @@ class _$Loading<ResultType> extends Loading<ResultType> {
 }
 
 abstract class Loading<ResultType> extends RequestStatus<ResultType> {
-  const factory Loading() = _$Loading<ResultType>;
+  const factory Loading() = _$LoadingImpl<ResultType>;
   const Loading._() : super._();
 }
 
 /// @nodoc
-abstract class _$$SucceededCopyWith<ResultType, $Res> {
-  factory _$$SucceededCopyWith(_$Succeeded<ResultType> value,
-          $Res Function(_$Succeeded<ResultType>) then) =
-      __$$SucceededCopyWithImpl<ResultType, $Res>;
+abstract class _$$SucceededImplCopyWith<ResultType, $Res> {
+  factory _$$SucceededImplCopyWith(_$SucceededImpl<ResultType> value,
+          $Res Function(_$SucceededImpl<ResultType>) then) =
+      __$$SucceededImplCopyWithImpl<ResultType, $Res>;
   @useResult
   $Res call({ResultType data});
 }
 
 /// @nodoc
-class __$$SucceededCopyWithImpl<ResultType, $Res>
+class __$$SucceededImplCopyWithImpl<ResultType, $Res>
     extends _$RequestStatusCopyWithImpl<ResultType, $Res,
-        _$Succeeded<ResultType>>
-    implements _$$SucceededCopyWith<ResultType, $Res> {
-  __$$SucceededCopyWithImpl(_$Succeeded<ResultType> _value,
-      $Res Function(_$Succeeded<ResultType>) _then)
+        _$SucceededImpl<ResultType>>
+    implements _$$SucceededImplCopyWith<ResultType, $Res> {
+  __$$SucceededImplCopyWithImpl(_$SucceededImpl<ResultType> _value,
+      $Res Function(_$SucceededImpl<ResultType>) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -340,7 +343,7 @@ class __$$SucceededCopyWithImpl<ResultType, $Res>
   $Res call({
     Object? data = freezed,
   }) {
-    return _then(_$Succeeded<ResultType>(
+    return _then(_$SucceededImpl<ResultType>(
       freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -351,8 +354,8 @@ class __$$SucceededCopyWithImpl<ResultType, $Res>
 
 /// @nodoc
 
-class _$Succeeded<ResultType> extends Succeeded<ResultType> {
-  const _$Succeeded(this.data) : super._();
+class _$SucceededImpl<ResultType> extends Succeeded<ResultType> {
+  const _$SucceededImpl(this.data) : super._();
 
   @override
   final ResultType data;
@@ -363,10 +366,10 @@ class _$Succeeded<ResultType> extends Succeeded<ResultType> {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$Succeeded<ResultType> &&
+            other is _$SucceededImpl<ResultType> &&
             const DeepCollectionEquality().equals(other.data, data));
   }
 
@@ -377,9 +380,9 @@ class _$Succeeded<ResultType> extends Succeeded<ResultType> {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SucceededCopyWith<ResultType, _$Succeeded<ResultType>> get copyWith =>
-      __$$SucceededCopyWithImpl<ResultType, _$Succeeded<ResultType>>(
-          this, _$identity);
+  _$$SucceededImplCopyWith<ResultType, _$SucceededImpl<ResultType>>
+      get copyWith => __$$SucceededImplCopyWithImpl<ResultType,
+          _$SucceededImpl<ResultType>>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -457,30 +460,31 @@ class _$Succeeded<ResultType> extends Succeeded<ResultType> {
 }
 
 abstract class Succeeded<ResultType> extends RequestStatus<ResultType> {
-  const factory Succeeded(final ResultType data) = _$Succeeded<ResultType>;
+  const factory Succeeded(final ResultType data) = _$SucceededImpl<ResultType>;
   const Succeeded._() : super._();
 
   ResultType get data;
   @JsonKey(ignore: true)
-  _$$SucceededCopyWith<ResultType, _$Succeeded<ResultType>> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$SucceededImplCopyWith<ResultType, _$SucceededImpl<ResultType>>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$FailedCopyWith<ResultType, $Res> {
-  factory _$$FailedCopyWith(_$Failed<ResultType> value,
-          $Res Function(_$Failed<ResultType>) then) =
-      __$$FailedCopyWithImpl<ResultType, $Res>;
+abstract class _$$FailedImplCopyWith<ResultType, $Res> {
+  factory _$$FailedImplCopyWith(_$FailedImpl<ResultType> value,
+          $Res Function(_$FailedImpl<ResultType>) then) =
+      __$$FailedImplCopyWithImpl<ResultType, $Res>;
   @useResult
   $Res call({AppError error});
 }
 
 /// @nodoc
-class __$$FailedCopyWithImpl<ResultType, $Res>
-    extends _$RequestStatusCopyWithImpl<ResultType, $Res, _$Failed<ResultType>>
-    implements _$$FailedCopyWith<ResultType, $Res> {
-  __$$FailedCopyWithImpl(
-      _$Failed<ResultType> _value, $Res Function(_$Failed<ResultType>) _then)
+class __$$FailedImplCopyWithImpl<ResultType, $Res>
+    extends _$RequestStatusCopyWithImpl<ResultType, $Res,
+        _$FailedImpl<ResultType>>
+    implements _$$FailedImplCopyWith<ResultType, $Res> {
+  __$$FailedImplCopyWithImpl(_$FailedImpl<ResultType> _value,
+      $Res Function(_$FailedImpl<ResultType>) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -488,7 +492,7 @@ class __$$FailedCopyWithImpl<ResultType, $Res>
   $Res call({
     Object? error = null,
   }) {
-    return _then(_$Failed<ResultType>(
+    return _then(_$FailedImpl<ResultType>(
       null == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -499,8 +503,8 @@ class __$$FailedCopyWithImpl<ResultType, $Res>
 
 /// @nodoc
 
-class _$Failed<ResultType> extends Failed<ResultType> {
-  const _$Failed(this.error) : super._();
+class _$FailedImpl<ResultType> extends Failed<ResultType> {
+  const _$FailedImpl(this.error) : super._();
 
   @override
   final AppError error;
@@ -511,10 +515,10 @@ class _$Failed<ResultType> extends Failed<ResultType> {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$Failed<ResultType> &&
+            other is _$FailedImpl<ResultType> &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -524,8 +528,8 @@ class _$Failed<ResultType> extends Failed<ResultType> {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$FailedCopyWith<ResultType, _$Failed<ResultType>> get copyWith =>
-      __$$FailedCopyWithImpl<ResultType, _$Failed<ResultType>>(
+  _$$FailedImplCopyWith<ResultType, _$FailedImpl<ResultType>> get copyWith =>
+      __$$FailedImplCopyWithImpl<ResultType, _$FailedImpl<ResultType>>(
           this, _$identity);
 
   @override
@@ -604,11 +608,11 @@ class _$Failed<ResultType> extends Failed<ResultType> {
 }
 
 abstract class Failed<ResultType> extends RequestStatus<ResultType> {
-  const factory Failed(final AppError error) = _$Failed<ResultType>;
+  const factory Failed(final AppError error) = _$FailedImpl<ResultType>;
   const Failed._() : super._();
 
   AppError get error;
   @JsonKey(ignore: true)
-  _$$FailedCopyWith<ResultType, _$Failed<ResultType>> get copyWith =>
+  _$$FailedImplCopyWith<ResultType, _$FailedImpl<ResultType>> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -12,7 +12,7 @@ part of 'maybe.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$Maybe<T> {
@@ -74,25 +74,25 @@ class _$MaybeCopyWithImpl<T, $Res, $Val extends Maybe<T>>
 }
 
 /// @nodoc
-abstract class _$$NothingCopyWith<T, $Res> {
-  factory _$$NothingCopyWith(
-          _$Nothing<T> value, $Res Function(_$Nothing<T>) then) =
-      __$$NothingCopyWithImpl<T, $Res>;
+abstract class _$$NothingImplCopyWith<T, $Res> {
+  factory _$$NothingImplCopyWith(
+          _$NothingImpl<T> value, $Res Function(_$NothingImpl<T>) then) =
+      __$$NothingImplCopyWithImpl<T, $Res>;
 }
 
 /// @nodoc
-class __$$NothingCopyWithImpl<T, $Res>
-    extends _$MaybeCopyWithImpl<T, $Res, _$Nothing<T>>
-    implements _$$NothingCopyWith<T, $Res> {
-  __$$NothingCopyWithImpl(
-      _$Nothing<T> _value, $Res Function(_$Nothing<T>) _then)
+class __$$NothingImplCopyWithImpl<T, $Res>
+    extends _$MaybeCopyWithImpl<T, $Res, _$NothingImpl<T>>
+    implements _$$NothingImplCopyWith<T, $Res> {
+  __$$NothingImplCopyWithImpl(
+      _$NothingImpl<T> _value, $Res Function(_$NothingImpl<T>) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$Nothing<T> extends Nothing<T> {
-  const _$Nothing() : super._();
+class _$NothingImpl<T> extends Nothing<T> {
+  const _$NothingImpl() : super._();
 
   @override
   String toString() {
@@ -100,9 +100,9 @@ class _$Nothing<T> extends Nothing<T> {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$Nothing<T>);
+        (other.runtimeType == runtimeType && other is _$NothingImpl<T>);
   }
 
   @override
@@ -172,23 +172,25 @@ class _$Nothing<T> extends Nothing<T> {
 }
 
 abstract class Nothing<T> extends Maybe<T> {
-  const factory Nothing() = _$Nothing<T>;
+  const factory Nothing() = _$NothingImpl<T>;
   const Nothing._() : super._();
 }
 
 /// @nodoc
-abstract class _$$JustCopyWith<T, $Res> {
-  factory _$$JustCopyWith(_$Just<T> value, $Res Function(_$Just<T>) then) =
-      __$$JustCopyWithImpl<T, $Res>;
+abstract class _$$JustImplCopyWith<T, $Res> {
+  factory _$$JustImplCopyWith(
+          _$JustImpl<T> value, $Res Function(_$JustImpl<T>) then) =
+      __$$JustImplCopyWithImpl<T, $Res>;
   @useResult
   $Res call({T value});
 }
 
 /// @nodoc
-class __$$JustCopyWithImpl<T, $Res>
-    extends _$MaybeCopyWithImpl<T, $Res, _$Just<T>>
-    implements _$$JustCopyWith<T, $Res> {
-  __$$JustCopyWithImpl(_$Just<T> _value, $Res Function(_$Just<T>) _then)
+class __$$JustImplCopyWithImpl<T, $Res>
+    extends _$MaybeCopyWithImpl<T, $Res, _$JustImpl<T>>
+    implements _$$JustImplCopyWith<T, $Res> {
+  __$$JustImplCopyWithImpl(
+      _$JustImpl<T> _value, $Res Function(_$JustImpl<T>) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -196,7 +198,7 @@ class __$$JustCopyWithImpl<T, $Res>
   $Res call({
     Object? value = freezed,
   }) {
-    return _then(_$Just<T>(
+    return _then(_$JustImpl<T>(
       freezed == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
@@ -207,8 +209,8 @@ class __$$JustCopyWithImpl<T, $Res>
 
 /// @nodoc
 
-class _$Just<T> extends Just<T> {
-  const _$Just(this.value) : super._();
+class _$JustImpl<T> extends Just<T> {
+  const _$JustImpl(this.value) : super._();
 
   @override
   final T value;
@@ -219,10 +221,10 @@ class _$Just<T> extends Just<T> {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$Just<T> &&
+            other is _$JustImpl<T> &&
             const DeepCollectionEquality().equals(other.value, value));
   }
 
@@ -233,8 +235,8 @@ class _$Just<T> extends Just<T> {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$JustCopyWith<T, _$Just<T>> get copyWith =>
-      __$$JustCopyWithImpl<T, _$Just<T>>(this, _$identity);
+  _$$JustImplCopyWith<T, _$JustImpl<T>> get copyWith =>
+      __$$JustImplCopyWithImpl<T, _$JustImpl<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -300,11 +302,11 @@ class _$Just<T> extends Just<T> {
 }
 
 abstract class Just<T> extends Maybe<T> {
-  const factory Just(final T value) = _$Just<T>;
+  const factory Just(final T value) = _$JustImpl<T>;
   const Just._() : super._();
 
   T get value;
   @JsonKey(ignore: true)
-  _$$JustCopyWith<T, _$Just<T>> get copyWith =>
+  _$$JustImplCopyWith<T, _$JustImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
