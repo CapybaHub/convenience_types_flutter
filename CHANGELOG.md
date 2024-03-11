@@ -1,3 +1,15 @@
+## 0.6.0
+
+## New
+
+- connectivity_plus: 5.0.2
+- dio: 5.4.1
+- state_notifier: 1.0.0
+- freezed_annotation: 2.4.1
+- freezed: 2.4.7
+
+
+
 ## 0.5.2
 
 ## New
