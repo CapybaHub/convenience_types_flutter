@@ -1,3 +1,14 @@
+## 0.6.1
+
+## New
+
+- connectivity_plus: 6.0.5
+- dio: 5.7.0
+- state_notifier: 1.0.0
+- freezed_annotation: 2.4.4
+- freezed: 2.5.7
+- build_runner: 2.4.13
+
 ## 0.6.0
 
 ## New
@@ -7,8 +18,6 @@
 - state_notifier: 1.0.0
 - freezed_annotation: 2.4.1
 - freezed: 2.4.7
-
-
 
 ## 0.5.2
 
@@ -20,7 +29,6 @@
 ## Fix
 
 - remove async return to `maybeCombine`
-
 
 ## 0.5.1
 
