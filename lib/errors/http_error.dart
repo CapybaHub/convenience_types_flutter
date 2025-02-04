@@ -287,7 +287,7 @@ Future<HttpError<T>> parseSocketException<T>({
 }) async {
   var connectivityResult = await (Connectivity().checkConnectivity());
 
-  if (connectivityResult == ConnectivityResult.none) {
+  if (connectivityResult.contains(ConnectivityResult.none)) {
     return NoInternetConnectionError(
       msg: msg,
       response: maybeErrorResponse,

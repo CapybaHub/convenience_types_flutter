@@ -1,3 +1,9 @@
+## 0.6.2
+
+## New
+
+- warning fixes
+
 ## 0.6.1
 
 ## New
