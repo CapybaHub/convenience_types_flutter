@@ -2,6 +2,13 @@
 
 ## New
 
+- connectivity_plus: 6.1.2
+- dio: 5.8.0+1
+
+## 0.6.1
+
+## New
+
 - connectivity_plus: 6.0.5
 - dio: 5.7.0
 - state_notifier: 1.0.0

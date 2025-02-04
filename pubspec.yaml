@@ -8,8 +8,8 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
-  connectivity_plus: ^6.0.5
-  dio: ^5.7.0
+  connectivity_plus: 6.1.2
+  dio: 5.8.0+1
   flutter:
     sdk: flutter
   freezed_annotation: ^2.4.4
