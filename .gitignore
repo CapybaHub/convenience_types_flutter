@@ -33,3 +33,6 @@ build/
 
 # FVM Version Cache
 .fvm/
+!.fvm/fvm_config.json
+!example/.fvm/.gitignore
+!example/.fvm/fvm_config.json
