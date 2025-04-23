@@ -52,10 +52,10 @@ void main() {
         () {
           Maybe testMaybe = Maybe.from(null);
 
-          testMaybe.when(
-            nothing: () => expect(true, true),
-            just: (_) => fail("unexpected just"),
-          );
+          var _ = switch (testMaybe) {
+            Nothing() => expect(true, true),
+            Just() => fail("unexpected just"),
+          };
         },
       );
 
@@ -155,13 +155,13 @@ void main() {
             return Just(TestMapType(value));
           }
 
-          testMaybe.mapJust(combiner).when(
-                nothing: () => fail("unexpected Nothing"),
-                just: (combined) {
-                  expect(combined, isA<TestMapType>());
-                  expect(combined.data, 'test');
-                },
-              );
+          var _ = switch (testMaybe.mapJust(combiner)) {
+            Nothing() => fail("unexpected Nothing"),
+            Just() => (combined) {
+                expect(combined, isA<TestMapType>());
+                expect(combined.data, 'test');
+              },
+          };
         },
       );
 

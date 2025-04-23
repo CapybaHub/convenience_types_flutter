@@ -78,14 +78,14 @@ class _MyHomePageState extends State<MyHomePage> {
               const SizedBox(
                 height: 8,
               ),
-              numberRequestStatus.when(
-                idle: () => const SizedBox(),
-                loading: () => const LinearProgressIndicator(),
-                succeeded: (data) => Text(
+              switch (numberRequestStatus) {
+                Idle() => const SizedBox(),
+                Loading() => const LinearProgressIndicator(),
+                Succeeded(:final data) => Text(
                     'You\'ve just searched ${data.number}, here is a trivia for it: ${data.text}!'),
-                failed: (error) => Text(
-                    'Something didn\'t go well! Sorry! hint: ${error.slug}'),
-              ),
+                Failed(:final error) =>
+                  Text('Something didn\'t go well! Sorry! hint: ${error.slug}'),
+              },
             ],
           ),
         ),

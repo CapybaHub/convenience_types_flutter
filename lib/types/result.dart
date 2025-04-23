@@ -6,18 +6,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'result.freezed.dart';
 
-@Freezed(
-  map: FreezedMapOptions(
-    map: false,
-    mapOrNull: false,
-    maybeMap: false,
-  ),
-  when: FreezedWhenOptions(
-    maybeWhen: false,
-    when: false,
-    whenOrNull: false,
-  ),
-)
+@Freezed()
 
 /// Every asynchronus task can have two possible outcomes as a [Result].
 /// It is either a [Success] or a [Failure].
