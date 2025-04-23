@@ -18,10 +18,10 @@ mixin class FormUtils {
     List<String> errorMsgs = [];
 
     for (Function validator in validators) {
-      String? error = validator(field.when(
-        nothing: () => '',
-        just: (val) => val != null ? val.toString() : '',
-      ));
+      String? error = validator(switch (field) {
+        Nothing<Type>() => '',
+        Just<Type>(:final value) => value != null ? value.toString() : '',
+      });
       if (error != null) errorMsgs.add(error);
     }
 
@@ -41,12 +41,10 @@ mixin class FormUtils {
 
     int index = 0;
     while (index < fields.length) {
-      fields[index].field.map(
-            nothing: (_) => {},
-            just: (val) {
-              data[fields[index].name] = val.value;
-            },
-          );
+      var _ = switch (fields[index].field) {
+        Nothing() => null,
+        Just(:final value) => data[fields[index].name] = value,
+      };
 
       index++;
     }

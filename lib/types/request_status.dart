@@ -91,7 +91,7 @@ part 'request_status.freezed.dart';
 /// So, `RequestStatus` provides a safe and declarative way to always deal with all possible states of a request.
 
 @freezed
-class RequestStatus<ResultType> with _$RequestStatus<ResultType> {
+sealed class RequestStatus<ResultType> with _$RequestStatus<ResultType> {
   const RequestStatus._();
 
   /// Type representing the [Idle] state of a request still not fired
@@ -114,10 +114,10 @@ class RequestStatus<ResultType> with _$RequestStatus<ResultType> {
       );
 
   /// Getter that results in a [Maybe] that is [Just] if the [RequestStatus] is [Succeeded] and [Nothing] otherwise
-  Maybe<ResultType> get maybeData => maybeWhen(
-        orElse: () => Nothing<ResultType>(),
-        succeeded: (data) => Just(data),
-      );
+  Maybe<ResultType> get maybeData => switch (this) {
+        Succeeded(:final data) => Just(data),
+        _ => Nothing<ResultType>(),
+      };
 
   bool get isIdle => this is Idle;
   bool get isLoading => this is Loading;

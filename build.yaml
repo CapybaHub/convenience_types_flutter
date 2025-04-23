@@ -1,0 +1,16 @@
+targets:
+  $default:
+    builders:
+      freezed:
+        generate_for:
+          - "lib/**_usecase.dart"
+          - "lib/**_entity.dart"
+          - "lib/**_model.dart"
+          - "lib/**_form.dart"
+          - "lib/**_type.dart"
+          - "lib/**/maybe.dart"
+          - "lib/**/form_field.dart"
+          - "lib/**/result.dart"
+          - "lib/**/request_status.dart"
+          - "lib/**/shipment_status.dart"
+          - "lib/src/shared/types/api_state.dart"

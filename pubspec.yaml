@@ -1,6 +1,6 @@
 name: convenience_types
 description: A package to ensamble convenience types commonly used through flutter projects developed by Capyba.
-version: 0.6.3
+version: 0.7.0
 repository: https://github.com/CapybaHub/convenience_types_flutter
 
 environment:
@@ -12,15 +12,15 @@ dependencies:
   dio: ^5.8.0+1
   flutter:
     sdk: flutter
-  freezed_annotation: ^2.4.4
+  freezed_annotation: ^3.0.0
   state_notifier: ^1.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.1
+  flutter_lints: ^5.0.0
   build_runner: ^2.4.13
-  freezed: ^2.5.7
+  freezed: ^3.0.6
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

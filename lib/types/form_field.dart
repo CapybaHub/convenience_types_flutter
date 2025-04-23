@@ -28,7 +28,7 @@ part 'form_field.freezed.dart';
 ///  example (using `freezed` to create the `Form` class):
 /// ```dart
 ///  @freezed
-///  class FormExampleWithFreezed with _$FormExampleWithFreezed, FormUtils {
+///  abstract class FormExampleWithFreezed with _$FormExampleWithFreezed, FormUtils {
 ///    const FormExampleWithFreezed._();
 ///    const factory FormExampleWithFreezed({
 ///      @Default(FormField(name: 'firstFieldJsonName'))
@@ -101,7 +101,7 @@ part 'form_field.freezed.dart';
 /// ```
 
 @freezed
-class FormField<T> with _$FormField<T> {
+abstract class FormField<T> with _$FormField<T> {
   const FormField._();
   const factory FormField({
     /// Property representing the name of this [FormField] in a possible json request body

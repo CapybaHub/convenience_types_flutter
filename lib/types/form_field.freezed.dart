@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,29 +10,48 @@ part of 'form_field.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$FormField<T> {
   /// Property representing the name of this [FormField] in a possible json request body
-  String get name => throw _privateConstructorUsedError;
+  String get name;
 
   /// Property representing the value of this [FormField] in a possible json request body
-  Maybe<T> get field => throw _privateConstructorUsedError;
+  Maybe<T> get field;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of FormField
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $FormFieldCopyWith<T, FormField<T>> get copyWith =>
-      throw _privateConstructorUsedError;
+      _$FormFieldCopyWithImpl<T, FormField<T>>(
+          this as FormField<T>, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is FormField<T> &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.field, field) || other.field == field));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, name, field);
+
+  @override
+  String toString() {
+    return 'FormField<$T>(name: $name, field: $field)';
+  }
 }
 
 /// @nodoc
-abstract class $FormFieldCopyWith<T, $Res> {
+abstract mixin class $FormFieldCopyWith<T, $Res> {
   factory $FormFieldCopyWith(
-          FormField<T> value, $Res Function(FormField<T>) then) =
-      _$FormFieldCopyWithImpl<T, $Res, FormField<T>>;
+          FormField<T> value, $Res Function(FormField<T>) _then) =
+      _$FormFieldCopyWithImpl;
   @useResult
   $Res call({String name, Maybe<T> field});
 
@@ -39,87 +59,47 @@ abstract class $FormFieldCopyWith<T, $Res> {
 }
 
 /// @nodoc
-class _$FormFieldCopyWithImpl<T, $Res, $Val extends FormField<T>>
-    implements $FormFieldCopyWith<T, $Res> {
-  _$FormFieldCopyWithImpl(this._value, this._then);
+class _$FormFieldCopyWithImpl<T, $Res> implements $FormFieldCopyWith<T, $Res> {
+  _$FormFieldCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final FormField<T> _self;
+  final $Res Function(FormField<T>) _then;
 
+  /// Create a copy of FormField
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? name = null,
     Object? field = null,
   }) {
-    return _then(_value.copyWith(
+    return _then(_self.copyWith(
       name: null == name
-          ? _value.name
+          ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
       field: null == field
-          ? _value.field
+          ? _self.field
           : field // ignore: cast_nullable_to_non_nullable
               as Maybe<T>,
-    ) as $Val);
+    ));
   }
 
+  /// Create a copy of FormField
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $MaybeCopyWith<T, $Res> get field {
-    return $MaybeCopyWith<T, $Res>(_value.field, (value) {
-      return _then(_value.copyWith(field: value) as $Val);
+    return $MaybeCopyWith<T, $Res>(_self.field, (value) {
+      return _then(_self.copyWith(field: value));
     });
   }
 }
 
 /// @nodoc
-abstract class _$$FormFieldImplCopyWith<T, $Res>
-    implements $FormFieldCopyWith<T, $Res> {
-  factory _$$FormFieldImplCopyWith(
-          _$FormFieldImpl<T> value, $Res Function(_$FormFieldImpl<T>) then) =
-      __$$FormFieldImplCopyWithImpl<T, $Res>;
-  @override
-  @useResult
-  $Res call({String name, Maybe<T> field});
 
-  @override
-  $MaybeCopyWith<T, $Res> get field;
-}
-
-/// @nodoc
-class __$$FormFieldImplCopyWithImpl<T, $Res>
-    extends _$FormFieldCopyWithImpl<T, $Res, _$FormFieldImpl<T>>
-    implements _$$FormFieldImplCopyWith<T, $Res> {
-  __$$FormFieldImplCopyWithImpl(
-      _$FormFieldImpl<T> _value, $Res Function(_$FormFieldImpl<T>) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? name = null,
-    Object? field = null,
-  }) {
-    return _then(_$FormFieldImpl<T>(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      field: null == field
-          ? _value.field
-          : field // ignore: cast_nullable_to_non_nullable
-              as Maybe<T>,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$FormFieldImpl<T> extends _FormField<T> {
-  const _$FormFieldImpl({required this.name, this.field = const Nothing()})
+class _FormField<T> extends FormField<T> {
+  const _FormField({required this.name, this.field = const Nothing()})
       : super._();
 
   /// Property representing the name of this [FormField] in a possible json request body
@@ -131,16 +111,19 @@ class _$FormFieldImpl<T> extends _FormField<T> {
   @JsonKey()
   final Maybe<T> field;
 
+  /// Create a copy of FormField
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'FormField<$T>(name: $name, field: $field)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$FormFieldCopyWith<T, _FormField<T>> get copyWith =>
+      __$FormFieldCopyWithImpl<T, _FormField<T>>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$FormFieldImpl<T> &&
+            other is _FormField<T> &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.field, field) || other.field == field));
   }
@@ -148,28 +131,63 @@ class _$FormFieldImpl<T> extends _FormField<T> {
   @override
   int get hashCode => Object.hash(runtimeType, name, field);
 
-  @JsonKey(ignore: true)
+  @override
+  String toString() {
+    return 'FormField<$T>(name: $name, field: $field)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$FormFieldCopyWith<T, $Res>
+    implements $FormFieldCopyWith<T, $Res> {
+  factory _$FormFieldCopyWith(
+          _FormField<T> value, $Res Function(_FormField<T>) _then) =
+      __$FormFieldCopyWithImpl;
+  @override
+  @useResult
+  $Res call({String name, Maybe<T> field});
+
+  @override
+  $MaybeCopyWith<T, $Res> get field;
+}
+
+/// @nodoc
+class __$FormFieldCopyWithImpl<T, $Res>
+    implements _$FormFieldCopyWith<T, $Res> {
+  __$FormFieldCopyWithImpl(this._self, this._then);
+
+  final _FormField<T> _self;
+  final $Res Function(_FormField<T>) _then;
+
+  /// Create a copy of FormField
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  _$$FormFieldImplCopyWith<T, _$FormFieldImpl<T>> get copyWith =>
-      __$$FormFieldImplCopyWithImpl<T, _$FormFieldImpl<T>>(this, _$identity);
+  $Res call({
+    Object? name = null,
+    Object? field = null,
+  }) {
+    return _then(_FormField<T>(
+      name: null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      field: null == field
+          ? _self.field
+          : field // ignore: cast_nullable_to_non_nullable
+              as Maybe<T>,
+    ));
+  }
+
+  /// Create a copy of FormField
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $MaybeCopyWith<T, $Res> get field {
+    return $MaybeCopyWith<T, $Res>(_self.field, (value) {
+      return _then(_self.copyWith(field: value));
+    });
+  }
 }
 
-abstract class _FormField<T> extends FormField<T> {
-  const factory _FormField({required final String name, final Maybe<T> field}) =
-      _$FormFieldImpl<T>;
-  const _FormField._() : super._();
-
-  @override
-
-  /// Property representing the name of this [FormField] in a possible json request body
-  String get name;
-  @override
-
-  /// Property representing the value of this [FormField] in a possible json request body
-  Maybe<T> get field;
-  @override
-  @JsonKey(ignore: true)
-  _$$FormFieldImplCopyWith<T, _$FormFieldImpl<T>> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on
