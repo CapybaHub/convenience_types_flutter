@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:convenience_types/errors/app_error.dart';
 import 'package:convenience_types/types/maybe.dart';
+import 'package:convenience_types/types/unit.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'result.freezed.dart';
@@ -86,21 +87,21 @@ sealed class Result<ResultType> with _$Result<ResultType> {
         onFailure: (error) => Failure(error));
   }
 
-  /// If [Failure], applies [combiner] to the error and returns the result; if [Success], returns a [Failure] with [AppUnknownError].
-  Result<K> mapFailure<K>(
+  /// If [Failure], applies [combiner] to the error and returns the result; if [Success], returns this [Result] unchanged.
+  Result mapFailure<K>(
     Result<K> Function(AppError error) combiner,
   ) {
     return handle(
-        onSuccess: (_) => Failure(AppUnknownError()),
+        onSuccess: (_) => identity(this),
         onFailure: (error) => combiner(error));
   }
 
-  /// Async version of [mapFailure]: if [Failure], runs [combiner] on the error; if [Success], returns a [Failure] with [AppUnknownError].
-  FutureOr<Result<K>> mapAsyncFailure<K>(
+  /// Async version of [mapFailure]: if [Failure], runs [combiner] on the error; if [Success], returns this [Result] unchanged.
+  FutureOr<Result> mapAsyncFailure<K>(
     FutureOr<Result<K>> Function(AppError error) combiner,
   ) {
     return handle(
-        onSuccess: (_) => Failure(AppUnknownError()),
+        onSuccess: (_) => identity(this),
         onFailure: (error) => combiner(error));
   }
 
