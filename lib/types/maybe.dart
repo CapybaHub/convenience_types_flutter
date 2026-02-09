@@ -6,49 +6,47 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'maybe.freezed.dart';
 
-/// Dealing with optional values ​​in ui has always been verbose and unsafe.
-/// So the
+/// A type-safe, declarative way to model optional values.
+///
+/// [Maybe]\<T> is a union type with two variants:
+/// - [Nothing] — no value (type-safe alternative to null)
+/// - [Just]\<T> — a value of type T
+///
+/// Using [Maybe] instead of nullable types (T?) makes the "present or absent"
+/// distinction explicit in the type system and forces handling both cases,
+/// typically via pattern matching or the provided methods ([mapJust], [mapNothing],
+/// [getOrElse]).
+///
+/// Example — pattern matching:
 /// ```dart
-/// Maybe<T>
-/// ```
-/// generic union type is a convenience type to model
-/// and help safelly deal with any optional value outcomes.
-///
-/// Where we can have two types that will represent the state of a value that can be null. The [Nothing], representing when it has no value, and the [Just], when it has a value.
-///
-/// The approach is declarative, so in order to deal with the states of [Maybe], one
-/// should use one of the dart patern matching.
-/// ///
-/// Example:
-/// ```dart
-///
-///
-///     Maybe<String> someMaybeValue = Just("test");
-///
-///     final debugValue = switch(someMaybeValue) {
-///         Nothing() => "",
-///         Just(:final value) => value,
-///     };
-///
-///     print(debugValue); // test
-///
-///
-///
+/// Maybe<String> name = Just("test");
+/// final display = switch (name) {
+///   Nothing() => "",
+///   Just(:final value) => value,
+/// };
 /// ```
 ///
+/// Example — from nullable input:
+/// ```dart
+/// Maybe.from(null);   // Nothing()
+/// Maybe.from("hi");   // Just("hi")
+/// ```
 ///
-/// So, `Maybe` provides a safe and declarative way to always deal with the two possible states of a optional value.
+/// Example — [Result] to [Maybe] (discard error, keep success):
+/// ```dart
+/// Maybe.fromResult(someResult);  // Just(data) or Nothing()
+/// ```
 @freezed
 sealed class Maybe<T> with _$Maybe<T> {
   const Maybe._();
 
-  /// Type representing the [Nothing] state of a value, which would be equivalent to having a null value
+  /// No value present (type-safe alternative to null).
   const factory Maybe.nothing() = Nothing;
 
-  /// Type representing the [Just] state of a value, which would be equivalent to having a value
+  /// A present value of type [T].
   const factory Maybe.just(T value) = Just<T>;
 
-  /// Factory for helping building a [Maybe] from a nullable input. It produces a [Nothing] if the input is null, and a [Just] otherwise
+  /// Builds a [Maybe] from a nullable [input]: [Nothing] if null, [Just] otherwise.
   factory Maybe.from(T? input) {
     if (input == null) {
       return Nothing<T>();
@@ -57,7 +55,7 @@ sealed class Maybe<T> with _$Maybe<T> {
     }
   }
 
-  /// Factory for helping building a [Maybe] from a [Result] input. It produces a [Nothing] if the input is [Failure], and a [Just] if the input is [Success]
+  /// Converts a [Result] to a [Maybe]: [Success] → [Just], [Failure] → [Nothing].
   factory Maybe.fromResult(Result<T> input) {
     return input.handle(
       onSuccess: (data) => Just<T>(data),
@@ -65,7 +63,7 @@ sealed class Maybe<T> with _$Maybe<T> {
     );
   }
 
-  /// Factory for helping building a [Maybe] from a [RequestStatus] input. It produces a [Just] if the input is [Succeeded], and a [Nothing] otherwise
+  /// Converts a [RequestStatus] to a [Maybe]: [Succeeded] → [Just], otherwise [Nothing].
   factory Maybe.fromRequest(RequestStatus<T> input) {
     return switch (input) {
       Succeeded(:final data) => Just(data),
@@ -73,7 +71,7 @@ sealed class Maybe<T> with _$Maybe<T> {
     };
   }
 
-  /// A method to chain access to data held by the [Maybe]. If `this` is [Nothing] returns [Nothing], if `this` is [Just], returns the result of the `combiner` method over the `value` inside [Just]
+  /// If [Just], applies [combiner] to the value and returns the result; if [Nothing], returns [Nothing].
   Maybe<K> mapJust<K>(Maybe<K> Function(T) combiner) {
     return switch (this) {
       Nothing<T>() => Nothing<K>(),
@@ -81,7 +79,7 @@ sealed class Maybe<T> with _$Maybe<T> {
     };
   }
 
-  /// A Method to chain async access to data held by the [Maybe]. If `this` is [Nothing] returns [Nothing], if `this` is [Just], returns the result of the `combiner` method over the `value` inside [Just]
+  /// Async version of [mapJust]: if [Just], runs [combiner] on the value; if [Nothing], returns [Nothing].
   FutureOr<Maybe<K>> mapAsyncJust<K>(FutureOr<Maybe<K>> Function(T) combiner) {
     return switch (this) {
       Nothing<T>() => Nothing<K>(),
@@ -89,30 +87,42 @@ sealed class Maybe<T> with _$Maybe<T> {
     };
   }
 
+  /// If [Nothing], applies [combiner] and returns the result; if [Just], returns [Nothing].
+  Maybe<K> mapNothing<K>(Maybe<K> Function() combiner) {
+    return switch (this) {
+      Nothing<T>() => combiner(),
+      Just<T>() => Nothing<K>(),
+    };
+  }
+
+  /// Async version of [mapNothing]: if [Nothing], runs [combiner]; if [Just], returns [Nothing].
+  FutureOr<Maybe<K>> mapAsyncNothing<K>(
+      FutureOr<Maybe<K>> Function() combiner) {
+    return switch (this) {
+      Nothing<T>() => combiner(),
+      Just<T>() => Nothing<K>(),
+    };
+  }
+
+  /// True if this is [Nothing].
   bool get isNothing => this is Nothing;
+
+  /// True if this is [Just].
   bool get isJust => this is Just;
 
-  /// Cast [this] into a [Nothing], and throw an exception if the cast fails!
-  /// `It might be tempting to just cast the Maybe into the desired type, but it's `
-  /// `strongly advised to not do that indiscriminately`. Although, it might be convenient to have
-  /// this cast sometimes. Use it wisely!
+  /// Casts to [Nothing]; throws if this is [Just]. Prefer pattern matching when possible.
   Nothing get asNothing => this as Nothing;
 
-  /// Cast [this] into a [Just], and throw an exception if the cast fails!
-  /// `It might be tempting to just cast the Maybe into the desired type, but it's `
-  /// `strongly advised to not do that indiscriminately`. Although, it might be convenient to have
-  /// this cast sometimes. Use it wisely!
+  /// Casts to [Just]\<T>; throws if this is [Nothing]. Prefer pattern matching when possible.
   Just<T> get asJust => this as Just<T>;
 
-  /// The [getOrElse] method which receives a parameter to return as a
-  /// fallback value, when the value is a [Nothing], or there is
-  /// no value in the [Just].
-  Type getOrElse<Type>(Type fallback) {
+  /// Returns the value inside [Just], or [fallback] when [Nothing] or when the inner value is null.
+  dynamic getOrElse<K>(K fallback) {
     fallbackOrValue(T value) {
       if (value == null) {
         return fallback;
       } else {
-        return value is Type ? value as Type : fallback;
+        return value;
       }
     }
 
@@ -124,30 +134,30 @@ sealed class Maybe<T> with _$Maybe<T> {
 }
 
 extension MaybeRecordX<K, J> on (Maybe<K>, Maybe<J>) {
-  /// Use it to combine two different Maybe's into a new one. Input `firstJust` to map case where only the first value is [Just], `secondJust` to map case where only the second value is [Just], `bothJust` to map case where both first and second value are [Just] and `bothNothing` to map case where both are [Nothing]
+  /// Combines this pair of [Maybe]s into a single [Maybe]\<T> by providing
+  /// callbacks for each case: [firstJust], [secondJust], [bothJust], [bothNothing].
+  /// Omitted callbacks yield [Nothing].
+  ///
   /// Example:
   /// ```dart
-  ///
-  ///     Maybe<Number> combined = (testString, testInt).maybeCombine<Number>(
-  ///       bothJust: (val, number) => Just(Number(val, number, '$number$val',)),
-  ///       firstJust: (val) => Just(Number(val, -1, '-1$val',)),
-  ///       secondJust: (number) => Just(Number('not a trivia', number, 'NonTrivia',)),
-  ///       bothNothing: () => Just(Number('not a trivia', -1, 'NonTrivia',)),
-  ///     );
-  ///
-  ///
+  /// final combined = (maybeName, maybeCount).maybeCombine<String>(
+  ///   bothJust: (name, count) => Just('$name: $count'),
+  ///   firstJust: (name) => Just(name),
+  ///   secondJust: (count) => Just(count.toString()),
+  ///   bothNothing: () => Just('unknown'),
+  /// );
   /// ```
   Maybe<T> maybeCombine<T>({
-    /// Used to map case where only the first value is [Just]
+    /// When only the first [Maybe] is [Just].
     Maybe<T> Function(K)? firstJust,
 
-    /// Used to map case where only the second value is [Just]
+    /// When only the second [Maybe] is [Just].
     Maybe<T> Function(J)? secondJust,
 
-    /// Used to map case where both values are [Just]
+    /// When both are [Just].
     Maybe<T> Function(K, J)? bothJust,
 
-    /// Used to map case where both values are [Nothing]
+    /// When both are [Nothing].
     Maybe<T> Function()? bothNothing,
   }) {
     return switch ($1) {
@@ -164,30 +174,18 @@ extension MaybeRecordX<K, J> on (Maybe<K>, Maybe<J>) {
     };
   }
 
-  /// Use it to asynchronously combine two different Maybe's into a new one. Input `firstJust` to map case where only the first value is [Just], `secondJust` to map case where only the second value is [Just], `bothJust` to map case where both first and second value are [Just] and `bothNothing` to map case where both are [Nothing]
-  /// Example:
-  /// ```dart
-  ///
-  ///     Maybe<Number> combined = await (testString, testInt).maybeAsyncCombine<Number>(
-  ///       bothJust: (val, number) async => await ...,
-  ///       firstJust: (val) async => await ...,
-  ///       secondJust: (number) async => await ...,
-  ///       bothNothing: () async => await ....,
-  ///     );
-  ///
-  ///
-  /// ```
+  /// Async version of [maybeCombine]: same cases, callbacks may return [FutureOr]<[Maybe]\<T>>.
   FutureOr<Maybe<T>> maybeAsyncCombine<T>({
-    /// Used to map case where only the first value is [Just]
+    /// When only the first [Maybe] is [Just].
     FutureOr<Maybe<T>> Function(K)? firstJust,
 
-    /// Used to map case where only the second value is [Just]
+    /// When only the second [Maybe] is [Just].
     FutureOr<Maybe<T>> Function(J)? secondJust,
 
-    /// Used to map case where both values are [Just]
+    /// When both are [Just].
     FutureOr<Maybe<T>> Function(K, J)? bothJust,
 
-    /// Used to map case where both values are [Nothing]
+    /// When both are [Nothing].
     FutureOr<Maybe<T>> Function()? bothNothing,
   }) {
     return switch ($1) {

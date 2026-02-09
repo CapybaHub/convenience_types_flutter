@@ -1,3 +1,15 @@
+## 0.8.0
+
+- add mapNothing and mapAsynNothing to Maybe type
+- add mapFailure and mapAsyncFailure to Result type
+- add Unit type
+- fix getOrElse behavior
+
+## New
+
+- dart built-in pattern matching
+- sdk updtate
+
 ## 0.7.0
 
 ## New

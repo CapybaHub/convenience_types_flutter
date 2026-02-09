@@ -6,98 +6,55 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'result.freezed.dart';
 
-@Freezed()
-
-/// Every asynchronus task can have two possible outcomes as a [Result].
-/// It is either a [Success] or a [Failure].
-/// So the
-/// ```dart
-/// Result<ResultType>
-/// ```
-/// generic union type is a convenience type to model
-/// and help safelly deal with any asynchronus task outcomes
+/// A type-safe way to model operations that can succeed or fail.
 ///
-/// The approach is declarative, so in order to deal with the result, one
-/// should call the [handle] method which has two required parameters
-/// an onSuccess callback
-/// ```dart
-/// Type onSuccess(Type data)
-/// ```
-/// and an [onFailure] callback
-/// ```dart
-/// Type onFailure(AppError data)
-/// ```
-/// Where AppError is a convenience type to model errors in the application
+/// [Result]\<ResultType> is a union type with two variants:
+/// - [Success]\<ResultType> — carries a value of type [ResultType]
+/// - [Failure] — carries an [AppError] describing what went wrong
 ///
-/// Example:
+/// Using [Result] instead of throwing or returning nullable values makes
+/// success and failure explicit and forces both cases to be handled, typically
+/// via [handle], pattern matching, or the [mapSuccess] / [mapFailure] methods.
 ///
+/// Example — handling a result:
 /// ```dart
-/// Result<String> asyncTaskResturningStringResult = await someFutureOfResultString();
-///
-/// asyncTaskResturningStringResult.handle(
-///   onSuccess: (String data) {
-///     "here one have access to the succesful value of the async task and might use it as desired"
-///   },
-///   onFailure: (AppError error) {
-///     "here one have access to the failure modeled as AppError representing this async task"
-///   }
+/// Result<String> result = await fetchUserName();
+/// final message = result.handle(
+///   onSuccess: (name) => 'Hello, $name',
+///   onFailure: (error) => 'Error: ${error.message}',
 /// );
 /// ```
 ///
-/// In this way one always needs to deal in a declarative way with both the
-/// success and failure possible outcomes as unfortunatelly any asynchronus
-/// task needs
-class Result<ResultType> with _$Result<ResultType> {
+/// Example — pattern matching:
+/// ```dart
+/// switch (result) {
+///   Success(:final data) => print(data),
+///   Failure(:final error) => showError(error),
+/// }
+/// ```
+@Freezed()
+sealed class Result<ResultType> with _$Result<ResultType> {
   const Result._();
 
-  /// Type representing the [Success] case of a [Result] of a asynchronus task
-  /// possible outcome
+  /// Success case carrying [data] of type [ResultType].
   const factory Result.success(ResultType data) = Success<ResultType>;
 
-  /// Type representing the [Failure] case of a [Result] of a asynchronus task
-  /// possible outcome
+  /// Failure case carrying an [AppError].
   const factory Result.failure(AppError error) = Failure;
 
+  /// True if this is [Success].
   bool get isSuccess => this is Success;
+
+  /// True if this is [Failure].
   bool get isFailure => this is Failure;
 
-  /// Cast [this] into a [Success], and throw an exception if the cast fails!
-  /// `It might be tempting to just cast the result into the desired type, but it's `
-  /// `strongly advised to not do that`. Although, it might be convenient to have
-  /// this cast sometimes. Use it wisely!
+  /// Casts to [Success]\<ResultType>; throws if this is [Failure]. Prefer pattern matching when possible.
   Success<ResultType> get asSuccess => this as Success<ResultType>;
 
-  /// Cast [this] into a [Failure], and throw an exception if the cast fails!
-  /// `It might be tempting to just cast the result into the desired type, but it's `
-  /// `strongly advised to not do that`. Although, it might be convenient to have
-  /// this cast sometimes. Use it wisely!
+  /// Casts to [Failure]\<AppError>; throws if this is [Success]. Prefer pattern matching when possible.
   Failure<AppError> get asFailure => this as Failure<AppError>;
 
-  /// the [handle] method which has two required parameters
-  /// an onSuccess callback
-  /// ```dart
-  /// Type onSuccess(Type data)
-  /// ```
-  /// and an [onFailure] callback
-  /// ```dart
-  /// Type onFailure(AppError data)
-  /// ```
-  /// Where AppError is a convenience type to model errors in the application
-  ///
-  /// Example:
-  ///
-  /// ```dart
-  /// Result<String> asyncTaskResturningStringResult = await someFutureOfResultString();
-  ///
-  /// asyncTaskResturningStringResult.handle(
-  ///   onSuccess: (String data) {
-  ///     "here one have access to the succesful value of the async task and might use it as desired"
-  ///   },
-  ///   onFailure: (AppError error) {
-  ///     "here one have access to the failure modeled as AppError representing this async task"
-  ///   }
-  /// );
-  /// ```
+  /// Handles both outcomes: calls [onSuccess] with the value when [Success], [onFailure] with the error when [Failure]. Returns the callback's return value.
   T handle<T>({
     required T Function(ResultType data) onSuccess,
     required T Function(AppError error) onFailure,
@@ -109,7 +66,7 @@ class Result<ResultType> with _$Result<ResultType> {
     }
   }
 
-  /// A method used to chain access to data held by the [Result]. If `this` is [Failure] returns [Failure], if `this` is [Success], returns the result of the `combiner` method over the `data` inside [Success]
+  /// If [Success], applies [combiner] to the value and returns the result; if [Failure], returns the same [Failure].
   // ignore: empty_constructor_bodies
   Result<K> mapSuccess<K>(
     Result<K> Function(ResultType) combiner,
@@ -119,7 +76,7 @@ class Result<ResultType> with _$Result<ResultType> {
         onFailure: (error) => Failure(error));
   }
 
-  /// A method to chain asynchronous access to data held by the [Result]. If `this` is [Failure] returns `[FutureOr<Failure>]`, if `this` is [Success], returns the result of the `combiner` method over the `data` inside [Success]
+  /// Async version of [mapSuccess]: if [Success], runs [combiner] on the value; if [Failure], returns the same [Failure].
   // ignore: empty_constructor_bodies
   FutureOr<Result<K>> mapAsyncSuccess<K>(
     FutureOr<Result<K>> Function(ResultType) combiner,
@@ -129,7 +86,25 @@ class Result<ResultType> with _$Result<ResultType> {
         onFailure: (error) => Failure(error));
   }
 
-  /// Getter that results in a [Just] if the [Result] is [Success] and [Nothing] othterwise
+  /// If [Failure], applies [combiner] to the error and returns the result; if [Success], returns a [Failure] with [AppUnknownError].
+  Result<K> mapFailure<K>(
+    Result<K> Function(AppError error) combiner,
+  ) {
+    return handle(
+        onSuccess: (_) => Failure(AppUnknownError()),
+        onFailure: (error) => combiner(error));
+  }
+
+  /// Async version of [mapFailure]: if [Failure], runs [combiner] on the error; if [Success], returns a [Failure] with [AppUnknownError].
+  FutureOr<Result<K>> mapAsyncFailure<K>(
+    FutureOr<Result<K>> Function(AppError error) combiner,
+  ) {
+    return handle(
+        onSuccess: (_) => Failure(AppUnknownError()),
+        onFailure: (error) => combiner(error));
+  }
+
+  /// Converts to [Maybe]: [Success] → [Just](data), [Failure] → [Nothing].
   Maybe<ResultType> get maybeData => handle(
         onSuccess: (data) => Just(data),
         onFailure: (_) => Nothing<ResultType>(),
