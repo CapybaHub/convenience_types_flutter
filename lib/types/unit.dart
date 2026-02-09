@@ -40,5 +40,5 @@ abstract class Unit with _$Unit {
 /// The identity function: returns [value] unchanged.
 ///
 /// Useful in generic code or when you need to pass a "do nothing" transformation
-/// (e.g. `list.map(id)` to clone a list, or as a default combiner).
-T id<T>(T value) => value;
+/// (e.g. `list.map(identity)` to clone a list, or as a default combiner).
+T identity<T>(T value) => value;

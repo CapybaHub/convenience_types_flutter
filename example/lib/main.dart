@@ -3,7 +3,6 @@ import 'package:convenience_types/types/form_field.dart' as form;
 import 'package:convenience_types/types/maybe.dart';
 import 'package:convenience_types/types/request_status.dart';
 import 'package:convenience_types/types/result.dart';
-import 'package:convenience_types/types/unit.dart';
 import 'package:dio/dio.dart';
 import 'package:example/http_client_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -128,8 +127,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Result<Number> _mapRequestToNumber(data) {
     try {
-      const unit = Unit();
-      unit.toString();
       return Success(Number.fromJson(data));
     } catch (e) {
       return Failure(HttpUnknownError(slug: e.toString()));

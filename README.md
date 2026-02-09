@@ -74,7 +74,7 @@ switch (result) {
 }
 ```
 
-**Chaining:** `mapSuccess` and `mapAsyncSuccess` transform the value when `Success` and pass through `Failure`. `mapFailure` and `mapAsyncFailure` transform the error when `Failure` (when `Success`, they return a `Failure` with `AppUnknownError`).
+**Chaining:** `mapSuccess` and `mapAsyncSuccess` transform the value when `Success` and pass through `Failure`. `mapFailure` and `mapAsyncFailure` transform the error when `Failure`; when `Success`, they return this `Result` unchanged.
 
 **Conversion:** The `maybeData` getter converts to `Maybe`: `Success` → `Just(data)`, `Failure` → `Nothing`.
 
@@ -106,7 +106,7 @@ Maybe.from(null);   // Nothing()
 Maybe.from("hi");   // Just("hi")
 ```
 
-**Chaining:** `mapJust` / `mapAsyncJust` transform the value when `Just` and preserve `Nothing`. `mapNothing` / `mapAsyncNothing` run a callback when `Nothing` and return `Nothing` when `Just`. Use `getOrElse(fallback)` to get the value or a fallback when `Nothing` (or when the inner value is null).
+**Chaining:** `mapJust` / `mapAsyncJust` transform the value when `Just` and preserve `Nothing`. `mapNothing` / `mapAsyncNothing` run a callback when `Nothing` and return this `Maybe` unchanged when `Just`. Use `getOrElse(fallback)` to get the value or a fallback when `Nothing` (or when the inner value is null).
 
 **Combining two Maybes:** On a record `(Maybe<K>, Maybe<J>)`, call `maybeCombine` (or `maybeAsyncCombine`) with optional callbacks for `firstJust`, `secondJust`, `bothJust`, and `bothNothing`; omitted callbacks yield `Nothing`.
 
@@ -133,7 +133,7 @@ Future<Result<Unit>> deleteItem(String id) async {
 }
 ```
 
-The package also provides an **identity function** `id<T>(T value) => value` for use in generic code or as a no-op transformation (e.g. `list.map(id)`).
+The package also provides an **identity function** `identity<T>(T value) => value` for use in generic code or as a no-op transformation (e.g. `list.map(identity)`).
 
 ### RequestStatus
 

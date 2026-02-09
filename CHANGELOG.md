@@ -1,3 +1,10 @@
+## 0.8.1
+
+- changed id to identity to avoid conflicts
+- changed behavior of mapNothing/mapAsyncNothing
+- changed behavior of mapFailure/mapAsyncFailure
+
+
 ## 0.8.0
 
 - add mapNothing and mapAsynNothing to Maybe type

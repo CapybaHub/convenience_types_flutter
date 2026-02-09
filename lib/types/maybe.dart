@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:convenience_types/types/request_status.dart';
 import 'package:convenience_types/types/result.dart';
+import 'package:convenience_types/types/unit.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'maybe.freezed.dart';
@@ -87,20 +88,19 @@ sealed class Maybe<T> with _$Maybe<T> {
     };
   }
 
-  /// If [Nothing], applies [combiner] and returns the result; if [Just], returns [Nothing].
-  Maybe<K> mapNothing<K>(Maybe<K> Function() combiner) {
+  /// If [Nothing], applies [combiner] and returns the result; if [Just], returns this [Maybe] unchanged.
+  Maybe mapNothing<K>(Maybe<K> Function() combiner) {
     return switch (this) {
       Nothing<T>() => combiner(),
-      Just<T>() => Nothing<K>(),
+      Just<T>() => identity(this),
     };
   }
 
-  /// Async version of [mapNothing]: if [Nothing], runs [combiner]; if [Just], returns [Nothing].
-  FutureOr<Maybe<K>> mapAsyncNothing<K>(
-      FutureOr<Maybe<K>> Function() combiner) {
+  /// Async version of [mapNothing]: if [Nothing], runs [combiner]; if [Just], returns this [Maybe] unchanged.
+  FutureOr<Maybe> mapAsyncNothing<K>(FutureOr<Maybe<K>> Function() combiner) {
     return switch (this) {
       Nothing<T>() => combiner(),
-      Just<T>() => Nothing<K>(),
+      Just<T>() => identity(this),
     };
   }
 

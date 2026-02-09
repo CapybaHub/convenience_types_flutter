@@ -17,12 +17,13 @@ mixin class FormUtils {
   }) {
     List<String> errorMsgs = [];
 
-    for (Function validator in validators) {
-      String? error = validator(switch (field) {
-        Nothing<T>() => '',
-        Just<T>(:final value) => value != null ? value.toString() : '',
-      });
-      if (error != null) errorMsgs.add(error);
+    if (field case Just<T>(:final value)) {
+      for (final validator in validators) {
+        final error = validator(value);
+        if (error != null) {
+          errorMsgs.add(error);
+        }
+      }
     }
 
     return errorMsgs.isEmpty
