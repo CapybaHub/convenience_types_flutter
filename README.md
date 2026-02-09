@@ -6,11 +6,11 @@
 
 # Convenience Types
 
-A package to ensamble <a href="#">convenience types</a> commonly used through flutter projects developed by <a href="https://capyba.com">Capyba</a>.
+A package of <a href="#">convenience types</a> commonly used in Flutter projects developed by <a href="https://capyba.com">Capyba</a>.
 
 ## Motivation
 
-Along our development cycle of numerous projects we have adopted the usage of some types that helped us to keep things safer, more error prone and, in the long run, more productive. In order to share those types between the projects we work, and possibly to inspire others to use those types too, we have created this package.
+Across our projects we have adopted types that keep code safer, less error-prone and, in the long run, more productive. In order to share those types between the projects we work, and possibly to inspire others to use those types too, we have created this package.
 
 ## Table of contents
 
@@ -20,6 +20,7 @@ Along our development cycle of numerous projects we have adopted the usage of so
     <ol>
       <li><a href="#result">Result</a></li>
       <li><a href="#maybe">Maybe</a></li>
+      <li><a href="#unit">Unit</a></li>
       <li><a href="#requestStatus">RequestStatus</a></li>
       <li><a href="#formField">FormField</a></li>
     </ol>
@@ -47,217 +48,97 @@ If you're on a Dart project, run:
 
 ### Result
 
-Every asynchronus task can have two possible outcomes as a `Result`.
-It is either a `Success` or a `Failure`.<br>
-So the
+A type-safe way to model operations that can succeed or fail. `Result<ResultType>` is a union type with two variants:
+
+- **Success&lt;ResultType&gt;** — carries a value of type `ResultType`
+- **Failure** — carries an `AppError` describing what went wrong
+
+Using `Result` instead of throwing or nullable return values makes both outcomes explicit and encourages handling them via `handle`, pattern matching, or the `mapSuccess` / `mapFailure` methods.
+
+**Handle both outcomes:**
 
 ```dart
-Result<ResultType>
-```
-
-generic union type is a convenience type to model
-and help safelly deal with any asynchronus task outcomes.
-
-The approach is declarative, so in order to deal with the result, one
-should call the `handle` method which has two required parameters
-an `onSuccess` callback
-
-```dart
-Type onSuccess(Type data)
-```
-
-and an `onFailure` callback
-
-```dart
-Type onFailure(AppError data)
-```
-
-Where AppError is a convenience type to model errors in the application
-
-Example:
-
-```dart
-Result<String> asyncTaskResturningStringResult = await someFutureOfResultString();
-
-asyncTaskResturningStringResult.handle(
-  onSuccess: (String data) {
-    "here one have access to the succesful value of the async task and might use it as desired"
-  },
-  onFailure: (AppError error) {
-    "here one have access to the failure modeled as AppError representing this async task"
-  }
+Result<String> result = await fetchUserName();
+final message = result.handle(
+  onSuccess: (name) => 'Hello, $name',
+  onFailure: (error) => 'Error: ${error.message}',
 );
 ```
 
-In this way one always needs to deal in a declarative way with both the
-success and failure possible outcomes as unfortunatelly any asynchronus
-task needs.
-
-`anti-patern alert!`: The `Result` generic Union type comes with casts convenience methods `asSuccess`, `asFailure`, but although it might be temping to just cast the result into the desired type, it is strongly advised you not to do it, once if you try to cast diferent types (`Success` as `Failure` or the other way around) it would throw an exception.<br>
+**Pattern matching:**
 
 ```dart
-Result<K> mapSuccess<K>(
-    Result<K> Function(ResultType) combiner,
-  );
+switch (result) {
+  Success(:final data) => print(data),
+  Failure(:final error) => showError(error),
+}
 ```
 
-A method used to chain access to data held by the [Result]. If `this` is [Failure] returns [Failure], if `this` is [Success], returns the result of the `combiner` method over the `data` inside [Success] <br>
+**Chaining:** `mapSuccess` and `mapAsyncSuccess` transform the value when `Success` and pass through `Failure`. `mapFailure` and `mapAsyncFailure` transform the error when `Failure` (when `Success`, they return a `Failure` with `AppUnknownError`).
 
-Example:
+**Conversion:** The `maybeData` getter converts to `Maybe`: `Success` → `Just(data)`, `Failure` → `Nothing`.
 
-```dart
-Result<String> asyncTaskResturningStringResult = await someFutureOfResultString();
-
-Result<double> parseResult = asyncTaskResturningStringResult.mapSuccess((String data) => methodThatTakesStringDataAndTriesToParseDouble(data));
-```
-
-```dart
-FutureOr<Result<K>> mapAsyncSuccess<K>(
-    FutureOr<Result<K>> Function(ResultType) combiner,
-);
-```
-
-A method to chain asynchronous access to data held by the [Result]. If `this` is [Failure] returns `[FutureOr<Failure>]`, if `this` is [Success], returns the result of the `combiner` method over the `data` inside [Success] <br>
-
-Example:
-
-```dart
-Result<String> asyncTaskResturningStringResult = await someFutureOfResultString();
-
-Result<double> parseResult = await asyncTaskResturningStringResult.mapAsyncSuccess((String data) => methodThatTakesStringDataAndAsynchronouslyTriesToParseDouble(data));
-```
-
-```dart
-Maybe<ResultType> get maybeData;
-```
-
-Getter that results in a [Just] if the [Result] is [Success] and [Nothing] othterwise <br>
+**Note:** `asSuccess` and `asFailure` are casting helpers; they throw if the variant is wrong. Prefer `handle` or pattern matching instead.
 
 ### Maybe
 
-Dealing with optional values ​​in ui has always been verbose and unsafe.
-So the
+A type-safe, declarative way to model optional values. `Maybe<T>` is a union type with two variants:
+
+- **Nothing** — no value (type-safe alternative to null)
+- **Just&lt;T&gt;** — a value of type `T`
+
+Using `Maybe` instead of nullable types (`T?`) makes the presence or absence of a value explicit and encourages handling both cases via pattern matching or methods like `mapJust`, `mapNothing`, and `getOrElse`.
+
+**Pattern matching:**
 
 ```dart
-Maybe<T>
+Maybe<String> name = Just("test");
+final display = switch (name) {
+  Nothing() => "",
+  Just(:final value) => value,
+};
 ```
 
-generic union type is a convenience type to model
-and help safelly deal with any optional value outcomes.
-
-Where we can have two types that will represent the state of a value that can be null. The [Nothing], representing when it has no value, and the [Just], when it has a value.
-
-The approach is declarative, so in order to deal with the states of [Maybe], one
-should use one of the unions methods.
-
-The `.map` forces you to deal with all the two states explicitly, passing callbacks for
-each state with undestructured states.
-Example:
+**From nullable input:**
 
 ```dart
-    Maybe<String> someMaybeValue = Just("test");
-
-    final debugValue = someMaybeValue.map(
-        nothing: (_) => "",
-        just: (data) => data.value,
-    );
-
-    print(debugValue); // test
+Maybe.from(null);   // Nothing()
+Maybe.from("hi");   // Just("hi")
 ```
 
-The `.when` forces you to deal with all the two states explicitly, passing callbacks for
-each state with destructured states
+**Chaining:** `mapJust` / `mapAsyncJust` transform the value when `Just` and preserve `Nothing`. `mapNothing` / `mapAsyncNothing` run a callback when `Nothing` and return `Nothing` when `Just`. Use `getOrElse(fallback)` to get the value or a fallback when `Nothing` (or when the inner value is null).
 
-Example:
+**Combining two Maybes:** On a record `(Maybe<K>, Maybe<J>)`, call `maybeCombine` (or `maybeAsyncCombine`) with optional callbacks for `firstJust`, `secondJust`, `bothJust`, and `bothNothing`; omitted callbacks yield `Nothing`.
 
 ```dart
-    Maybe<String> someMaybeValue = Nothing();
-
-    final debugValue = someMaybeValue.map(
-        nothing: () => "test",
-        just: (data) => data,
-    );
-
-    print(debugValue); // test
+final combined = (maybeName, maybeCount).maybeCombine<String>(
+  bothJust: (name, count) => Just('$name: $count'),
+  firstJust: (name) => Just(name),
+  secondJust: (count) => Just(count.toString()),
+  bothNothing: () => Just('unknown'),
+);
 ```
 
-and one also might want to not deal explicitly with all states diferently, so
-there are the `.maybeMap`, and `.maybeWhen` methods where you need only expclitly to pass a
-`orElse` callback. But I would say that it is not so useful in this case since we only have two states to be treated.
+### Unit
 
-Example:
+A type that represents the absence of a meaningful value. `Unit` has exactly one value, `Unit()`, and carries no data. Use it when you need a type-safe way to express "no value" or "success with nothing to return", for example:
+
+- **Result&lt;Unit&gt;** for operations that succeed but return nothing (e.g. delete, logout)
+- Callbacks or generic code that require a concrete type instead of `void`
 
 ```dart
-    Maybe<String> someMaybeValue = Just("test");
-
-    final debugValue = someMaybeValue.maybeWhen(
-        just: (data) => data,
-        orElse() => "",
-    );
-
-    print(debugValue); // test
+Future<Result<Unit>> deleteItem(String id) async {
+  await api.delete(id);
+  return Result.success(Unit());
+}
 ```
 
-So, `Maybe` provides a safe and declarative way to always deal with the two possible states of a optional value.
-
-```dart
-factory Maybe.from(T? input);
-```
-
-Factory for helping building a [Maybe] from a nullable input. It produces a [Nothing] if the input is null, and a [Just] otherwise
-
-```dart
-Type getOrElse<Type>(Type fallback);
-```
-
-The [getOrElse] method which receives a parameter to return as a
-fallback value, when the value is a [Nothing], or there is no value in the [Just] <br>
-
-```dart
- Maybe<K> mapJust<K>(Maybe<K> Function(T) combiner);
-```
-
-A method to chain access to data held by the [Maybe]. If `this` is [Nothing] returns [Nothing], if `this` is [Just], returns the result of the `combiner` method over the `value` inside [Just] <br>
-
-```dart
-FutureOr<Maybe<K>> mapAsyncJust<K>(FutureOr<Maybe<K>> Function(T) combiner);
-```
-
-A Method to chain async access to data held by the [Maybe]. If `this` is [Nothing] returns [Nothing], if `this` is [Just], returns the result of the `combiner` method over the `value` inside [Just]<br>
-
-```dart
-Maybe<T> maybeCombine<T>({
-    /// Used to map case where only the first value is [Just]
-    Maybe<T> Function(K)? firstJust,
-
-    /// Used to map case where only the second value is [Just]
-    Maybe<T> Function(J)? secondJust,
-
-    /// Used to map case where both values are [Just]
-    Maybe<T> Function(K, J)? bothJust,
-
-    /// Used to map case where both values are [Nothing]
-    Maybe<T> Function()? bothNothing,
-  })
-```
-
-Use it to combine two different Maybe's into a new one. Input `firstJust` to map case where only the first value is [Just], `secondJust` to map case where only the second value is [Just], `bothJust` to map case where both first and second value are [Just] and `bothNothing` to map case where both are [Nothing]<br>
-
-Example:
-
-````dart
-Maybe<Number> combined = (testString, testInt).maybeCombine<Number>(
-  bothJust: (val, number) => Just(Number(val, number, '$number$val',)),
-  firstJust: (val) => Just(Number(val, -1, '-1$val',)),
-  secondJust: (number) => Just(Number('not a trivia', number, 'NonTrivia',)),
-  bothNothing: () => Just(Number('not a trivia', -1, 'NonTrivia',)),
-       );
-```
+The package also provides an **identity function** `id<T>(T value) => value` for use in generic code or as a no-op transformation (e.g. `list.map(id)`).
 
 ### RequestStatus
 
 When one is dealing with ui responses to different request states, in the course of it,
-usually there are four states of interest `Idle`, `Loading`, `Succeded` or `Failed`.<br>
+usually there are four states of interest: `Idle`, `Loading`, `Succeeded` or `Failed`.<br>
 So the convenience generic union type
 
 ```dart
@@ -280,7 +161,7 @@ contains a field `error` of type `AppError`. Where `AppError` is the convenience
 that models errors in the app.<br>
 To deal with the request states one should use one of the unions methods.<br>
 The `.map` forces you to deal with all the four states explicitly, passing callbacks for
-each state with undestructured states.
+each state with non-destructured states.
 Example:
 
 ```dart
@@ -311,16 +192,14 @@ Example:
   }
 ```
 
-and one also might want to not deal explicitly with all states diferently, so
-there are the `.maybeMap`, and `.maybeWhen` methods where you need only expclitly to pass a
-`orElse` callback.
+You can also use `.maybeMap` and `.maybeWhen`, passing only the cases you care about and an `orElse` callback for the rest.
 Example:
 
 ```dart
   Widget build(context) {
     final someRequestStatus = someStateManagement.desiredRequestStatus;
     return someRequestStatus.maybeWhen(
-              orElse: () => "default widget to be displayed other wise the current state is not specified in other callbacks"
+              orElse: () => "default widget to be displayed when the current state is not specified in other callbacks",
               loading: () => "widget for loading state",
               succeeded: (data) => "widget for succeeded state using possibly data within succeeded.data",
           );
@@ -333,15 +212,14 @@ So, `RequestStatus` provides a safe and declarative way to always deal with all 
 Maybe<ResultType> get maybeData;
 ```
 
-Getter that results in a [Maybe] that is [Just] if the [RequestStatus] is [Succeeded] and [Nothing] otherwise
-<br>
+Getter that results in a [Maybe] that is [Just] if the [RequestStatus] is [Succeeded] and [Nothing] otherwise.<br>
 
 ### FormField
 
 When providing data to a form and then passing it forward, for instance,
 in a request body, one problem that is common here is the need of dealing
-with the cases where the field is not filled, and than one might need to
-treat every possible resulting Map (json) separetily, either passing the not
+with the cases where the field is not filled, and then one might need to
+treat every possible resulting Map (json) separately, either passing the not
 filled field with no value or not passing it at all. <br>
 
 The generic sealed data class
@@ -356,7 +234,7 @@ Here we are already passing the [name] of the field in its possible `Map`
 (json) position, and the actual [field] data is a `Maybe<Type>`.
 <br>
 `FormField`s are usually used in a `Form` defined class, and with the usage of
-our convinice mixin `FormUtils`, one should have everything it needs to have
+our convenience mixin `FormUtils`, one should have everything it needs to have
 form validation, and `toJson` method. It might introduce some verbose api, to
 deal with, but the convenience of dealing with the most critical parts, like
 validating and passing the `Form` information through, makes the usage of our
@@ -433,7 +311,7 @@ class FormExample with FormUtils {
 ```
 
 Using a `Form` class as presented, one has a safe way to pass the values of
-the field to a request body with easy. <br>
+the field to a request body with ease.<br>
 Example:
 
 ```dart
@@ -442,21 +320,21 @@ Example:
 
 ## AppError
 
-Abstract class to model errors on the application. As a presset of foreseen
-specific errors there are some different implementations of this type. Namely:
+Abstract class to model errors in the application. As a preset of foreseen
+specific errors there are several implementations of this type. Namely:
 [HttpError] models errors related to http requests
 [CacheError] models cache errors
 [DeviceInfoError] models device's information gathering related errors
 [FormError] models form related errors
 [StorageError] models storage operations related errors
 
-In addition to the [AppError], there are a presset of foreseen [Exceptions]
+In addition to the [AppError], there are a preset of foreseen [Exceptions].
 
 ## Util
 
 ### FormUtils
 
-Class used as a dart `Mixin` to a `Form` class, providing methods to conviniently
+Class used as a Dart `Mixin` on a `Form` class, providing methods to conveniently
 deal with validation and serialization of fields.
 
 ```dart

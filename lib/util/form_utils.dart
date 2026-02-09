@@ -3,24 +3,24 @@ import 'package:convenience_types/types/form_field.dart';
 import 'package:convenience_types/types/maybe.dart';
 import 'package:convenience_types/types/result.dart';
 
-typedef Validator<Type> = String? Function(Type);
+typedef Validator<T> = String? Function(T);
 
 /// Class used as a dart `Mixin` to a `Form` class, providing methods to conviniently
 /// deal with validation and serialization of fields.
 ///
 mixin class FormUtils {
-  /// Method to help validate a [FormField<Type>] providing its value represented by its `Maybe<Type>`, and
-  /// a `List<Validator<Type>>`, returning a `Result<String>` with possible error message.
-  Result<String> validateField<Type>({
-    required Maybe<Type> field,
-    required List<Validator<Type>> validators,
+  /// Method to help validate a [FormField<T>] providing its value represented by its `Maybe<T>`, and
+  /// a `List<Validator<T>>`, returning a `Result<String>` with possible error message.
+  Result<String> validateField<T>({
+    required Maybe<T> field,
+    required List<Validator<T>> validators,
   }) {
     List<String> errorMsgs = [];
 
     for (Function validator in validators) {
       String? error = validator(switch (field) {
-        Nothing<Type>() => '',
-        Just<Type>(:final value) => value != null ? value.toString() : '',
+        Nothing<T>() => '',
+        Just<T>(:final value) => value != null ? value.toString() : '',
       });
       if (error != null) errorMsgs.add(error);
     }

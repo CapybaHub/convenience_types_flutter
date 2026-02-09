@@ -9,6 +9,7 @@ targets:
           - "lib/**_form.dart"
           - "lib/**_type.dart"
           - "lib/**/maybe.dart"
+          - "lib/**/unit.dart"
           - "lib/**/form_field.dart"
           - "lib/**/result.dart"
           - "lib/**/request_status.dart"
