@@ -23,9 +23,14 @@ Across our projects we have adopted types that keep code safer, less error-prone
       <li><a href="#unit">Unit</a></li>
       <li><a href="#requestStatus">RequestStatus</a></li>
       <li><a href="#formField">FormField</a></li>
+      <li><a href="#sizingInformation">SizingInformation</a></li>
+      <li><a href="#noParams">NoParams</a></li>
+      <li><a href="#valueObject">ValueObject</a></li>
+      <li><a href="#usecase">UseCase</a></li>
     </ol>
   </li>
   <li><a href="#ppError">AppError</a></li>
+  <li><a href="#valueErrors">ValueErrors</a></li>
   <li><a href="#util">Util</a>
     <ol>
       <li><a href="#formUtils">FormUtils</a></li>
@@ -318,6 +323,22 @@ Example:
   request.body = formExampleInstance.toJson(),
 ```
 
+### SizingInformation
+
+Holds responsive layout information: **ScreenType** (Small / Medium / Large) and **Size**. Use with `LayoutBuilder` or `MediaQuery` to adapt UI to screen size. **ScreenType.fromWidth(double)** returns `Small` for width ≤ 670, `Large` for width &gt; 1500, and `Medium` otherwise.
+
+### NoParams
+
+A type representing "no parameters" for use cases or callbacks that take no arguments. Use as the parameter type for **UseCase** when the operation needs no input (e.g. `UseCase<T, NoParams>`).
+
+### ValueObject
+
+Base type for domain value objects whose validity is represented by **Result**&lt;T&gt;. Subclasses expose **value** (a `Result`); **isValid** is true when `value` is Success. Use **getOrCrash** to obtain the value or throw **UnexpectedValueError** on failure. **failureOrUnit** converts `value` to `Result<Unit>` (Success → Unit, Failure → same Failure).
+
+### UseCase
+
+Base type for a use case: a single async operation that takes **Params** and returns **Result**&lt;T&gt;. Implement **call(Params params)** returning `Future<Result<T>>`. Use **NoParams** for use cases that take no input.
+
 ## AppError
 
 Abstract class to model errors in the application. As a preset of foreseen
@@ -329,6 +350,10 @@ specific errors there are several implementations of this type. Namely:
 [StorageError] models storage operations related errors
 
 In addition to the [AppError], there are a preset of foreseen [Exceptions].
+
+## ValueErrors
+
+**[ValueError]** extends [AppError] for value validation failures. **[UnexpectedValueError]**&lt;T&gt; is thrown when a **ValueObject** is read via **getOrCrash** and its Result is Failure; it holds the failing Result and optional msg/slug/stackTrace. Preset value errors include: **InvalidEmail**, **InvalidPassword**, **InvalidUserName**, **InvalidName**, **InvalidOTP**, **DescriptionTooShort**, **DescriptionTooLong**, **InsufficientDetail**, **InvalidCharacters**.
 
 ## Util
 
