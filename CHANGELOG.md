@@ -1,3 +1,10 @@
+## 0.9.0
+
+- add NoParams type
+- add UseCase base type
+- add SizingInformation type
+- add ValueObject Base type
+
 ## 0.8.1
 
 - changed id to identity to avoid conflicts
