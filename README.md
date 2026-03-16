@@ -29,7 +29,7 @@ Across our projects we have adopted types that keep code safer, less error-prone
       <li><a href="#usecase">UseCase</a></li>
     </ol>
   </li>
-  <li><a href="#ppError">AppError</a></li>
+  <li><a href="#apperror">AppError</a></li>
   <li><a href="#valueErrors">ValueErrors</a></li>
   <li><a href="#util">Util</a>
     <ol>
@@ -111,6 +111,12 @@ Maybe.from(null);   // Nothing()
 Maybe.from("hi");   // Just("hi")
 ```
 
+**From Result:**
+
+```dart
+Maybe.fromResult(someResult);  // Just(data) or Nothing()
+```
+
 **Chaining:** `mapJust` / `mapAsyncJust` transform the value when `Just` and preserve `Nothing`. `mapNothing` / `mapAsyncNothing` run a callback when `Nothing` and return this `Maybe` unchanged when `Just`. Use `getOrElse(fallback)` to get the value or a fallback when `Nothing` (or when the inner value is null).
 
 **Combining two Maybes:** On a record `(Maybe<K>, Maybe<J>)`, call `maybeCombine` (or `maybeAsyncCombine`) with optional callbacks for `firstJust`, `secondJust`, `bothJust`, and `bothNothing`; omitted callbacks yield `Nothing`.
@@ -142,82 +148,41 @@ The package also provides an **identity function** `identity<T>(T value) => valu
 
 ### RequestStatus
 
-When one is dealing with ui responses to different request states, in the course of it,
-usually there are four states of interest: `Idle`, `Loading`, `Succeeded` or `Failed`.<br>
-So the convenience generic union type
+A type-safe way to model the lifecycle of an asynchronous request in the UI. `RequestStatus<ResultType>` is a union type with four states:
+
+- **Idle** — the request has not been fired yet
+- **Loading** — the request is in flight
+- **Succeeded&lt;ResultType&gt;** — carries a `data` field of type `ResultType`
+- **Failed** — carries an `AppError` in its `error` field
+
+Use `RequestStatus.fromResult(result)` to build a status directly from a `Result`.
+
+**Handle all states with pattern matching (`switch` expression):**
 
 ```dart
-RequestStatus<ResultType>
-````
-
-serves the purpose of modeling those states. `Idle` and `Loading`, carry no inner state, but
-
-```dart
-Succeeded<ResultType>().data = ResultType data;
+Widget build(BuildContext context) {
+  return switch (requestStatus) {
+    Idle() => const SizedBox.shrink(),
+    Loading() => const CircularProgressIndicator(),
+    Succeeded(:final data) => Text(data.toString()),
+    Failed(:final error) => Text(error.msg),
+  };
+}
 ```
 
-contains a field `data` of type `ResultType`. And the
+**Handle only some states using a wildcard `_`:**
 
 ```dart
-Failed().error = AppError error;
+Widget build(BuildContext context) {
+  return switch (requestStatus) {
+    Loading() => const CircularProgressIndicator(),
+    Succeeded(:final data) => Text(data.toString()),
+    _ => const SizedBox.shrink(), // catches Idle and Failed
+  };
+}
 ```
 
-contains a field `error` of type `AppError`. Where `AppError` is the convenience type
-that models errors in the app.<br>
-To deal with the request states one should use one of the unions methods.<br>
-The `.map` forces you to deal with all the four states explicitly, passing callbacks for
-each state with non-destructured states.
-Example:
-
-```dart
-  Widget build(context) {
-    final someRequestStatus = someStateManagement.desiredRequestStatus;
-    return someRequestStatus.map(
-              idle: (idle) => "widget for idle state",
-              loading: (loading) => "widget for loading state",
-              succeeded: (succeeded) => "widget for succeeded state using possibly data within succeeded.data",
-              failed: (failed) => "widget for failed state using possibly AppError within failed.error",
-          );
-  }
-```
-
-The `.when` forces you to deal with all the four states explicitly, passing callbacks for
-each state with destructured states.
-Example:
-
-```dart
-  Widget build(context) {
-    final someRequestStatus = someStateManagement.desiredRequestStatus;
-    return someRequestStatus.when(
-              idle: () => "widget for idle state",
-              loading: () => "widget for loading state",
-              succeeded: (data) => "widget for succeeded state using possibly data within data",
-              failed: (error) => "widget for failed state using possibly AppError within error",
-          );
-  }
-```
-
-You can also use `.maybeMap` and `.maybeWhen`, passing only the cases you care about and an `orElse` callback for the rest.
-Example:
-
-```dart
-  Widget build(context) {
-    final someRequestStatus = someStateManagement.desiredRequestStatus;
-    return someRequestStatus.maybeWhen(
-              orElse: () => "default widget to be displayed when the current state is not specified in other callbacks",
-              loading: () => "widget for loading state",
-              succeeded: (data) => "widget for succeeded state using possibly data within succeeded.data",
-          );
-  }
-```
-
-So, `RequestStatus` provides a safe and declarative way to always deal with all possible or desired states of a request. <br>
-
-```dart
-Maybe<ResultType> get maybeData;
-```
-
-Getter that results in a [Maybe] that is [Just] if the [RequestStatus] is [Succeeded] and [Nothing] otherwise.<br>
+**Extras:** `maybeData` returns `Just(data)` when `Succeeded`, `Nothing` otherwise. Bool convenience getters: `isIdle`, `isLoading`, `isSucceeded`, `isFailed`. Unsafe casting helpers `asIdle`, `asLoading`, `asSucceeded`, `asFailed` throw if the variant is wrong — prefer pattern matching instead.
 
 ### FormField
 
@@ -235,7 +200,7 @@ FormField<Type>
 
 is a convenience type that models, as the name already points,
 a field in a Form, and uses the convention of not passing not filled fields to the resulting `Map`.
-Here we are already passing the [name] of the field in its possible `Map`
+But here we are already passing the [name] of the field in its possible `Map`
 (json) position, and the actual [field] data is a `Maybe<Type>`.
 <br>
 `FormField`s are usually used in a `Form` defined class, and with the usage of
@@ -249,7 +214,7 @@ Example (using `freezed` to create the `Form` class):
 
 ```dart
  @freezed
- class FormExampleWithFreezed with _$FormExampleWithFreezed, FormUtils {
+ abstract class FormExampleWithFreezed with _$FormExampleWithFreezed, FormUtils {
    const FormExampleWithFreezed._();
    const factory FormExampleWithFreezed({
      @Default(FormField(name: 'firstFieldJsonName'))
@@ -341,13 +306,25 @@ Base type for a use case: a single async operation that takes **Params** and ret
 
 ## AppError
 
-Abstract class to model errors in the application. As a preset of foreseen
-specific errors there are several implementations of this type. Namely:
-[HttpError] models errors related to http requests
-[CacheError] models cache errors
-[DeviceInfoError] models device's information gathering related errors
-[FormError] models form related errors
-[StorageError] models storage operations related errors
+Abstract base class for all application errors.
+
+Provides a common interface for typed, structured error handling. All errors
+carry a `slug` (machine-readable identifier), a `msg` (human-readable
+message), and an optional `stackTrace`.
+
+Preset concrete subclasses cover the most common error domains:
+- `HttpError` — HTTP request failures (network, status codes, etc.)
+- `CacheError` — Local cache read/write failures
+- `DeviceInfoError` — Device information retrieval failures
+- `FormError` — Form validation and submission failures
+- `StorageError` — Device storage access failures
+
+General-purpose subclasses are also provided:
+- `AppUnknownError` — Unexpected or unclassified errors
+- `ParseError` — Data parsing or deserialization failures
+- `EntityNotFitError` — Domain rule or constraint violations
+- `FailedToShareError` — Content-sharing failures
+- `TokenNotFoundError` — Authentication token not found
 
 In addition to the [AppError], there are a preset of foreseen [Exceptions].
 

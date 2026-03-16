@@ -1,8 +1,10 @@
 import 'app_error.dart';
 
-/// Abstract class to model errors on the application. As a presset of foreseen
-/// specific errors there are some different implementations of this type.
-/// [CacheError] models cache errors
+/// Abstract base for cache-related errors.
+///
+/// Extend this class to represent specific failure modes when reading from or
+/// writing to a local cache. Concrete subclasses include [FailedToCacheError],
+/// [FileAlreadyCachedError], [NotCachedError], and [FailedToUnloadError].
 abstract class CacheError extends AppError {
   const CacheError({
     super.slug,
@@ -11,7 +13,7 @@ abstract class CacheError extends AppError {
   });
 }
 
-/// [FailedToCacheError] models failure in the action of caching an info
+/// An error arising from a failed attempt to cache data.
 class FailedToCacheError extends CacheError {
   const FailedToCacheError({
     super.slug,
@@ -23,7 +25,7 @@ class FailedToCacheError extends CacheError {
   String toString() => '[FailedToCacheError]: {slug: $slug, msg: $msg}';
 }
 
-/// [FileAlreadyCachedError] models failure araised from trying to cache an already cached file
+/// An error arising from attempting to cache data that is already cached.
 class FileAlreadyCachedError extends CacheError {
   const FileAlreadyCachedError({
     super.slug,
@@ -35,7 +37,7 @@ class FileAlreadyCachedError extends CacheError {
   String toString() => '[FileAlreadyCachedError]: {slug: $slug, msg: $msg}';
 }
 
-/// [NotCachedError] models failure araised from trying retrieve a file not yet cached
+/// An error arising from trying to retrieve data that has not been cached yet.
 class NotCachedError extends CacheError {
   const NotCachedError({
     super.slug,
@@ -47,7 +49,7 @@ class NotCachedError extends CacheError {
   String toString() => '[NotCachedError]: {slug: $slug, msg: $msg}';
 }
 
-/// [FailedToUnloadError] models failure araised from trying to delete a cached file
+/// An error arising from a failed attempt to delete a cached entry.
 class FailedToUnloadError extends CacheError {
   const FailedToUnloadError({
     super.slug,

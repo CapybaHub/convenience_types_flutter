@@ -20,4 +20,21 @@ void main() {
       );
     },
   );
+
+  group('castInto Nothing', () {
+    test('Fields with nothing remain nothing', () {
+      FormField<String> testFormField = const FormField(name: 'test', field: Nothing());
+      FormField<double> castedField = testFormField.castInto(
+          combiner: (input) => Maybe.from(double.tryParse(input)));
+      expect(castedField.field, const Nothing<double>());
+    });
+  });
+
+  group('default field', () {
+    test('field defaults to Nothing if not provided', () {
+      FormField<String> testFormField = const FormField(name: 'test');
+      expect(testFormField.field, isA<Nothing>());
+    });
+  });
 }
+

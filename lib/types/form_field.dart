@@ -5,9 +5,9 @@ part 'form_field.freezed.dart';
 
 /// When providing data to a form and then passing it forward, for instance,
 /// in a request body, one problem that is common here is the need of dealing
-/// with the cases where the field is not filled, and than one might need to
-/// treat every possible resulting Map (json) separetily, either passing the not
-/// filled field with no value or not passing it at all. <br>
+/// with the cases where the field is not filled, and then one might need to
+/// treat every possible resulting Map (json) separately, either passing the not
+/// filled field with no value or not passing it at all.
 ///
 /// The generic sealed data class
 /// ```dart
@@ -94,7 +94,7 @@ part 'form_field.freezed.dart';
 /// ```
 ///
 /// Using a `Form` class as presented, one has a safe way to pass the values of
-/// the field to a request body with easy. <br>
+/// the field to a request body with ease.
 /// Example:
 /// ```dart
 ///   request.body = formExampleInstance.toJson(),

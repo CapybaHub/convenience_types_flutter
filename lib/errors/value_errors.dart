@@ -8,7 +8,7 @@ abstract class ValueError extends AppError {
 
 /// Thrown when a [ValueObject] is read via [ValueObject.getOrCrash] and its [Result] is [Failure].
 ///
-/// Holds the failing [value] ([Result]<T>) and optional [msg], [slug], [stackTrace].
+/// Holds the failing [value] ([Result]\<T>) and optional [msg], [slug], [stackTrace].
 class UnexpectedValueError<T> extends ValueError {
   final Result<T> value;
 
@@ -25,6 +25,7 @@ class UnexpectedValueError<T> extends ValueError {
 
 /// Email failed validation.
 class InvalidEmail extends ValueError {
+  /// The value that failed email validation.
   final String failedValue;
 
   const InvalidEmail({
@@ -40,6 +41,7 @@ class InvalidEmail extends ValueError {
 
 /// Password failed validation.
 class InvalidPassword extends ValueError {
+  /// The value that failed password validation.
   final String failedValue;
 
   const InvalidPassword({
@@ -55,6 +57,7 @@ class InvalidPassword extends ValueError {
 
 /// User name failed validation.
 class InvalidUserName extends ValueError {
+  /// The value that failed username validation.
   final String failedValue;
 
   const InvalidUserName({
@@ -70,6 +73,7 @@ class InvalidUserName extends ValueError {
 
 /// Name failed validation.
 class InvalidName extends ValueError {
+  /// The value that failed name validation.
   final String failedValue;
 
   const InvalidName({
@@ -85,6 +89,7 @@ class InvalidName extends ValueError {
 
 /// OTP (one-time password) failed validation.
 class InvalidOTP extends ValueError {
+  /// The value that failed OTP validation.
   final String failedValue;
 
   const InvalidOTP({
@@ -100,6 +105,7 @@ class InvalidOTP extends ValueError {
 
 /// Description length below minimum.
 class DescriptionTooShort extends ValueError {
+  /// The value whose length was too short.
   final String failedValue;
 
   const DescriptionTooShort({
@@ -112,6 +118,7 @@ class DescriptionTooShort extends ValueError {
 
 /// Description length above maximum.
 class DescriptionTooLong extends ValueError {
+  /// The value whose length was too long.
   final String failedValue;
 
   const DescriptionTooLong({
@@ -124,6 +131,7 @@ class DescriptionTooLong extends ValueError {
 
 /// Detail/content insufficient for validation.
 class InsufficientDetail extends ValueError {
+  /// The value that provided insufficient detail.
   final String failedValue;
 
   const InsufficientDetail({
@@ -136,6 +144,7 @@ class InsufficientDetail extends ValueError {
 
 /// Value contains disallowed characters.
 class InvalidCharacters extends ValueError {
+  /// The value that contained invalid characters.
   final String failedValue;
 
   const InvalidCharacters({

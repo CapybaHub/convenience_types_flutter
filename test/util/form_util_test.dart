@@ -69,7 +69,7 @@ void main() {
         'It should return Failure(FormError(msg: errorMessage)), if the provided list of validators not passes',
         () {
           Result<String> validationTest = formUtils.validateField(
-            field: testField.field,
+            field: testFilledField.field,
             validators: testNotPassingValidators,
           );
 
@@ -85,7 +85,7 @@ void main() {
         'It should return Failure(FormError(msg: errorMessage)), with the first error message, if the provided list of validators not passes for more than one Validator',
         () {
           Result<String> validationTest = formUtils.validateField(
-            field: testField.field,
+            field: testFilledField.field,
             validators: testNotPassingValidators,
           );
 

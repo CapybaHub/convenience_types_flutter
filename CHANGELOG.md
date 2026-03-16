@@ -1,3 +1,10 @@
+## 0.9.1
+
+- add 100% test coverage for all types and errors API surface
+- fix `prefer_function_declarations_over_variables` lint rules in example app
+- refactor tests to support stricter `Nothing<Never>` type checks natively
+- add `mocktail` as a dev dependency to test HTTP responses and DioException fallback handling
+
 ## 0.9.0
 
 - add NoParams type

@@ -3,11 +3,18 @@ import 'package:convenience_types/types/form_field.dart';
 import 'package:convenience_types/types/maybe.dart';
 import 'package:convenience_types/types/result.dart';
 
+/// A validation function for a form field of type [T].
+///
+/// Returns a non-null error message string when validation fails, or `null`
+/// when the value is valid. Used with [FormUtils.validateField].
 typedef Validator<T> = String? Function(T);
 
-/// Class used as a dart `Mixin` to a `Form` class, providing methods to conviniently
-/// deal with validation and serialization of fields.
+/// Mixin for form classes that provides convenient field validation and JSON
+/// serialization.
 ///
+/// Mix this into a form class alongside your [FormField] definitions, then
+/// call [validateField] for per-field validation and [fieldsToJson] to
+/// serialize only the filled fields into a `Map`.
 mixin class FormUtils {
   /// Method to help validate a [FormField<T>] providing its value represented by its `Maybe<T>`, and
   /// a `List<Validator<T>>`, returning a `Result<String>` with possible error message.
