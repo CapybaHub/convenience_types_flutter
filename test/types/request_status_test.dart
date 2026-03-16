@@ -308,4 +308,24 @@ void main() {
       );
     },
   );
+
+  group('State getters (isIdle, isLoading, etc)', () {
+    test('isIdle', () {
+      expect(const Idle().isIdle, true);
+      expect(const Loading().isIdle, false);
+    });
+    test('isLoading', () {
+      expect(const Loading().isLoading, true);
+      expect(const Idle().isLoading, false);
+    });
+    test('isSucceeded', () {
+      expect(const Succeeded(1).isSucceeded, true);
+      expect(const Idle().isSucceeded, false);
+    });
+    test('isFailed', () {
+      expect(const Failed(AppUnknownError()).isFailed, true);
+      expect(const Idle().isFailed, false);
+    });
+  });
 }
+

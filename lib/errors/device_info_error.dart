@@ -1,8 +1,9 @@
 import 'app_error.dart';
 
-/// Abstract class to model errors on the application. As a presset of foreseen
-/// specific errors there are some different implementations of this type.
-/// [DeviceInfoError] models device's information gathering related errors
+/// Abstract base for errors that occur while gathering device information.
+///
+/// Concrete subclasses include [DeviceInfoUnknownError] and
+/// [DeviceInfoNotFoundError].
 abstract class DeviceInfoError extends AppError {
   const DeviceInfoError({
     super.slug,
@@ -11,8 +12,7 @@ abstract class DeviceInfoError extends AppError {
   });
 }
 
-/// [DeviceInfoError] models device's information gathering error related
-/// to device info unknown or malformed
+/// An error indicating that the device information returned was unknown or malformed.
 class DeviceInfoUnknownError extends DeviceInfoError {
   const DeviceInfoUnknownError({
     super.slug,
@@ -21,8 +21,7 @@ class DeviceInfoUnknownError extends DeviceInfoError {
   });
 }
 
-/// [DeviceInfoError] models device's information gathering error related
-/// to device info not found
+/// An error indicating that the requested device information could not be found.
 class DeviceInfoNotFoundError extends DeviceInfoError {
   const DeviceInfoNotFoundError({
     super.slug,

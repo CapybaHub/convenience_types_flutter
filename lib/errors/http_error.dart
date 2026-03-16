@@ -4,11 +4,23 @@ import 'package:dio/dio.dart';
 
 import 'app_error.dart';
 
-/// Abstract class to model errors on the application. As a presset of foreseen
-/// specific errors there are some different implementations of this type.
-/// [HttpError] models errors related to http requests
+/// Abstract base for HTTP request errors.
+///
+/// Carries the HTTP status [code] and an optional typed [response] body
+/// (as [Maybe]\<T>). Concrete subclasses map to specific failure modes:
+/// [HttpNetworkError], [HttpUnknownError], [HttpBadRequestError] (400),
+/// [HttpUnauthorizedError] (401), [HttpForbiddenError] (403),
+/// [HttpNotFoundError] (404), [HttpGoneError] (410),
+/// [UnprocessableEntityError] (422), [HttpInternalServerError] (500),
+/// and [NoInternetConnectionError].
+///
+/// Use [parseHttpError] to automatically map a [DioException] to the
+/// appropriate subclass.
 abstract class HttpError<T> extends AppError {
+  /// The HTTP status code associated with this error (default `-2` when unknown).
   final int code;
+
+  /// The optional typed response body returned alongside this error.
   final Maybe<T> response;
 
   const HttpError({
@@ -45,10 +57,12 @@ class HttpUnknownError<T> extends HttpError<T> {
   });
 }
 
-/// [HttpNetworkError] models http errors with `status 400`
+/// An HTTP 400 Bad Request error.
 class HttpBadRequestError<T> extends HttpError<T> {
+  /// Structured validation errors returned by the server.
   final Map<String, dynamic> errors;
 
+  /// Developer-facing message from the server's `msg_dev` field, if present.
   String get msgDev => errors['msg_dev'] ?? '';
 
   const HttpBadRequestError({
@@ -115,8 +129,10 @@ class HttpGoneError<T> extends HttpError<T> {
 /// [UnprocessableEntityError] models http errors with `status 422`
 
 class UnprocessableEntityError<T> extends HttpError<T> {
+  /// Structured validation errors returned by the server.
   final Map<String, dynamic> errors;
 
+  /// Developer-facing message from the server's `msg_dev` field, if present.
   String get msgDev => errors['msg_dev'] ?? '';
 
   const UnprocessableEntityError({
@@ -153,6 +169,22 @@ class NoInternetConnectionError<T> extends HttpError<T> {
   });
 }
 
+/// Maps a [DioException] to the most appropriate [HttpError] subclass.
+///
+/// - [stackTrace] is used for the error's stack trace field.
+/// - [slug] defaults to the request path or Dio's error message.
+/// - [handleErrorMessage] overrides the default message-extraction logic;
+///   when omitted, the server's `msg` JSON field is used if available.
+/// - [errorResponseSerializer] deserializes the raw response body into [T];
+///   the result is wrapped in a [Maybe] and stored in [HttpError.response].
+/// - [defaultErrorMessage] is the fallback human-readable message.
+/// - [defaultNoInternetConnectionMessage] overrides [defaultErrorMessage]
+///   specifically for connectivity errors; falls back to [defaultErrorMessage]
+///   when empty.
+///
+/// Connection-related errors (timeout, connection error, unknown) are
+/// delegated to [parseSocketException], which checks actual connectivity to
+/// differentiate between [NoInternetConnectionError] and [HttpNetworkError].
 Future<HttpError<T>> parseHttpError<T>({
   required DioException error,
   StackTrace stackTrace = StackTrace.empty,
@@ -279,6 +311,11 @@ Future<HttpError<T>> parseHttpError<T>({
   }
 }
 
+/// Resolves a connection-level [DioException] to [NoInternetConnectionError]
+/// or [HttpNetworkError] depending on actual device connectivity.
+///
+/// Uses `connectivity_plus` to check whether the device has an active network
+/// connection at the time of the error.
 Future<HttpError<T>> parseSocketException<T>({
   required String msg,
   required DioException exception,

@@ -140,4 +140,55 @@ void main() {
       );
     },
   );
+
+  group('isSuccess and isFailure', () {
+    test('isSuccess is true for Success and false for Failure', () {
+      expect(const Success(true).isSuccess, true);
+      expect(const Failure(AppUnknownError()).isSuccess, false);
+    });
+    test('isFailure is true for Failure and false for Success', () {
+      expect(const Failure(AppUnknownError()).isFailure, true);
+      expect(const Success(true).isFailure, false);
+    });
+  });
+
+  group('handle', () {
+    test('Calls onSuccess and returns its result when Success', () {
+      final res = const Success(42).handle(
+        onSuccess: (data) => data * 2,
+        onFailure: (_) => 0,
+      );
+      expect(res, 84);
+    });
+    test('Calls onFailure and returns its result when Failure', () {
+      final res = const Failure(AppUnknownError()).handle(
+        onSuccess: (data) => 1,
+        onFailure: (_) => 0,
+      );
+      expect(res, 0);
+    });
+  });
+
+  group('mapFailure', () {
+    test('Returns the same result when Success', () {
+      final res = const Success<String>('a').mapFailure((_) => const Success('b'));
+      expect(res, const Success('a'));
+    });
+    test('Applies combiner when Failure', () {
+      final res = const Failure<String>(AppUnknownError()).mapFailure((_) => const Success('b'));
+      expect(res, const Success('b'));
+    });
+  });
+
+  group('mapAsyncFailure', () {
+    test('Returns the same result when Success', () async {
+      final res = await const Success<String>('a').mapAsyncFailure((_) async => const Success('b'));
+      expect(res, const Success('a'));
+    });
+    test('Applies combiner when Failure', () async {
+      final res = await const Failure<String>(AppUnknownError()).mapAsyncFailure((_) async => const Success('b'));
+      expect(res, const Success('b'));
+    });
+  });
 }
+

@@ -310,4 +310,58 @@ void main() {
       );
     },
   );
+
+  group('mapNothing', () {
+    test('Returns the same maybe when Just', () {
+      expect(const Just('a').mapNothing(() => const Just('b')), const Just('a'));
+    });
+    test('Applies combiner when Nothing', () {
+      expect(const Nothing<String>().mapNothing(() => const Just('b')), const Just('b'));
+    });
+  });
+
+  group('mapAsyncNothing', () {
+    test('Returns the same maybe when Just', () async {
+      expect(await const Just('a').mapAsyncNothing(() async => const Just('b')), const Just('a'));
+    });
+    test('Applies combiner when Nothing', () async {
+      expect(await const Nothing<String>().mapAsyncNothing(() async => const Just('b')), const Just('b'));
+    });
+  });
+
+  group('isNothing and isJust', () {
+    test('isNothing is true for Nothing and false for Just', () {
+      expect(const Nothing().isNothing, true);
+      expect(const Just(1).isNothing, false);
+    });
+    test('isJust is true for Just and false for Nothing', () {
+      expect(const Just(1).isJust, true);
+      expect(const Nothing().isJust, false);
+    });
+  });
+
+  group('maybeAsyncCombine', () {
+    Future<Maybe<String>> firstJust(int val) async => Just(val.toString());
+    Future<Maybe<String>> secondJust(bool val) async => Just(val.toString());
+    Future<Maybe<String>> bothJust(int number, bool val) async => Just('$number${val.toString()}');
+    Future<Maybe<String>> bothNothing() async => const Just('bothNothing');
+
+    test('It should resolve bothJust', () async {
+      var testRecord = (const Just(1), const Just(true));
+      expect(await testRecord.maybeAsyncCombine(bothJust: bothJust), const Just('1true'));
+    });
+    test('It should resolve firstJust', () async {
+      var testRecord = (const Just(1), const Nothing());
+      expect(await testRecord.maybeAsyncCombine(firstJust: firstJust), const Just('1'));
+    });
+    test('It should resolve secondJust', () async {
+      var testRecord = (const Nothing(), const Just(true));
+      expect(await testRecord.maybeAsyncCombine(secondJust: secondJust), const Just('true'));
+    });
+    test('It should resolve bothNothing', () async {
+      var testRecord = (const Nothing(), const Nothing());
+      expect(await testRecord.maybeAsyncCombine(bothNothing: bothNothing), const Just('bothNothing'));
+    });
+  });
 }
+

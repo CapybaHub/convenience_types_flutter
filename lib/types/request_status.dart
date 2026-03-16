@@ -4,28 +4,18 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'request_status.freezed.dart';
 
-/// When one is dealing with ui responses to different request states, in the course of it,
-/// usually there are four states of interest [Idle], [Loading], [Succeded] or [Failed].
+/// A type-safe way to model the lifecycle of an asynchronous request in the UI.
 ///
-/// So the convenience generic union type
-/// ```dart
-/// RequestStatus<ResultType>
-/// ```
-/// serves the purpose of modeling those states. [Idle] and [Loading], carry no inner state, but
-/// ```dart
-/// Succeeded<ResultType>().data = ResultType data;
-/// ```
-/// contains a field `data` of type `ResultType`. And the
-/// ```dart
-/// Failed().error = AppError error;
-/// ```
-/// contains a field `error` of type `AppError`. Where `AppError` is the convenience type
-/// that models errors in the app.
+/// [RequestStatus]\<ResultType> is a union type with four states:
+/// - [Idle] — the request has not been fired yet
+/// - [Loading] — the request is in flight
+/// - [Succeeded]\<ResultType> — the request completed successfully; carries [data]
+/// - [Failed] — the request failed; carries an [AppError]
 ///
+/// Use [RequestStatus.fromResult] to build a status directly from a [Result].
 ///
-/// To deal with the request states one should use one of the unions methods.
-/// The `.map` forces you to deal with all the four states explicitly, passing callbacks for
-/// each state with undestructured states.
+/// To deal with the request states one should use Dart's native pattern matching.
+/// The `switch` statement or expression forces you to deal with all four states explicitly.
 ///
 /// Example:
 /// ```dart
@@ -34,41 +24,18 @@ part 'request_status.freezed.dart';
 ///
 ///     final someRequestStatus = someStateManagement.desiredRequestStatus;
 ///
-///     return someRequestStatus.map(
-///               idle: (idle) => "widget for idle state",
-///               loading: (loading) => "widget for loading state",
-///               succeeded: (succeeded) => "widget for succeeded state using possibly data within succeeded.data",
-///               failed: (failed) => "widget for failed state using possibly AppError within failed.error",
-///           );
+///     return switch (someRequestStatus) {
+///       Idle() => const Text("widget for idle state"),
+///       Loading() => const Text("widget for loading state"),
+///       Succeeded(:final data) => Text("widget for succeeded state using $data"),
+///       Failed(:final error) => Text("widget for failed state using ${error.msg}"),
+///     };
 ///
 ///   }
 ///
-///
-/// ```
-/// The `.when` forces you to deal with all the four states explicitly, passing callbacks for
-/// each state with destructured states.
-/// /// Example:
-/// ```dart
-///
-///   Widget build(context) {
-///
-///     final someRequestStatus = someStateManagement.desiredRequestStatus;
-///
-///     return someRequestStatus.when(
-///               idle: () => "widget for idle state",
-///               loading: () => "widget for loading state",
-///               succeeded: (data) => "widget for succeeded state using possibly data within data",
-///               failed: (error) => "widget for failed state using possibly AppError within error",
-///           );
-///
-///   }
-///
-///
 /// ```
 ///
-/// and one also might want to not deal explicitly with all states diferently, so
-/// there are the `.maybeMap`, and `.maybeWhen` methods where you need only expclitly to pass a
-/// `orElse` callback.
+/// You can also handle only the states you care about using a default case `_`:
 ///
 /// Example:
 /// ```dart
@@ -77,14 +44,13 @@ part 'request_status.freezed.dart';
 ///
 ///     final someRequestStatus = someStateManagement.desiredRequestStatus;
 ///
-///     return someRequestStatus.maybeWhen(
-///               orElse: () => "default widget to be displayed other wise the current state is not specified in other callbacks"
-///               loading: () => "widget for loading state",
-///               succeeded: (data) => "widget for succeeded state using possibly data within succeeded.data",
-///           );
+///     return switch (someRequestStatus) {
+///       Loading() => const Text("widget for loading state"),
+///       Succeeded(:final data) => Text("widget for succeeded state using $data"),
+///       _ => const Text("default widget to be displayed otherwise"),
+///     };
 ///
 ///   }
-///
 ///
 /// ```
 ///
@@ -119,9 +85,16 @@ sealed class RequestStatus<ResultType> with _$RequestStatus<ResultType> {
         _ => Nothing<ResultType>(),
       };
 
+  /// True if this is [Idle].
   bool get isIdle => this is Idle;
+
+  /// True if this is [Loading].
   bool get isLoading => this is Loading;
+
+  /// True if this is [Succeeded].
   bool get isSucceeded => this is Succeeded;
+
+  /// True if this is [Failed].
   bool get isFailed => this is Failed;
 
   /// Cast [this] into an [Idle], and throw an exception if the cast fails!
