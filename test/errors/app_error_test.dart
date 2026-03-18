@@ -4,7 +4,7 @@ import 'package:convenience_types/types/maybe.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class _TestAppError extends AppError {
-  const _TestAppError({super.slug, super.msg, super.stackTrace});
+  const _TestAppError({super.slug, super.msg, super.stackTrace, super.payload});
 }
 
 void main() {
@@ -31,11 +31,12 @@ void main() {
       );
     });
 
-    test('toString includes slug, msg, and stackTrace', () {
-      const e = _TestAppError(slug: 'my-slug', msg: 'my-msg', stackTrace: 'st');
+    test('toString includes slug, msg, stackTrace, and payload', () {
+      const e = _TestAppError(
+          slug: 'my-slug', msg: 'my-msg', stackTrace: 'st', payload: 'payload');
       expect(
         e.toString(),
-        '[_TestAppError]: (slug: my-slug, msg: my-msg, stackTrace: st,)',
+        '[_TestAppError]: (slug: my-slug, msg: my-msg, stackTrace: st, payload: payload,)',
       );
     });
 
@@ -82,6 +83,21 @@ void main() {
       const e = TokenNotFoundError(slug: 's', msg: 'm', stackTrace: 't');
       expect(e.slug, 's');
       expect(e.toString().contains('[NotFoundError]'), true);
+    });
+
+    test('AppError subclasses accept and expose payload', () {
+      const unknownError = AppUnknownError(
+        slug: 'test',
+        msg: 'test message',
+        payload: {'key': 'value'},
+      );
+      expect(unknownError.payload, equals({'key': 'value'}));
+
+      const parseError = ParseError(
+        slug: 'parse',
+        payload: 42,
+      );
+      expect(parseError.payload, equals(42));
     });
   });
 }

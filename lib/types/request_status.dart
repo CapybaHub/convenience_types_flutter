@@ -120,4 +120,22 @@ sealed class RequestStatus<ResultType> with _$RequestStatus<ResultType> {
   /// `strongly advised to not do that indiscriminately`. Although, it might be convenient to have
   /// this cast sometimes. Use it wisely!
   Failed get asFailed => this as Failed;
+
+  /// If [Succeeded], applies [combiner] to the data and returns the result;
+  /// returns this [RequestStatus] unchanged otherwise.
+  RequestStatus<ResultType> mapSucceeded(RequestStatus<ResultType> Function(ResultType) combiner) {
+    return switch (this) {
+      Succeeded(:final data) => combiner(data),
+      _ => identity(this),
+    };
+  }
+
+  /// If [Failed], applies [combiner] to the error and returns the result;
+  /// returns this [RequestStatus] unchanged otherwise.
+  RequestStatus<ResultType> mapFailed(RequestStatus<ResultType> Function(AppError error) combiner) {
+    return switch (this) {
+      Failed(:final error) => combiner(error),
+      _ => identity(this),
+    };
+  }
 }

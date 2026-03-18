@@ -33,10 +33,14 @@ abstract class AppError {
   /// The stack trace associated with this error, if available.
   final String stackTrace;
 
+  /// An optional payload containing additional data associated with this error.
+  final Object? payload;
+
   const AppError({
     this.slug = '',
     this.msg = '',
     this.stackTrace = '',
+    this.payload,
   });
 
   @override
@@ -51,11 +55,12 @@ abstract class AppError {
         slug,
         msg,
         stackTrace,
+        payload,
       );
 
   @override
   String toString() =>
-      '[$runtimeType]: (slug: $slug, msg: $msg, stackTrace: $stackTrace,)';
+      '[$runtimeType]: (slug: $slug, msg: $msg, stackTrace: $stackTrace, payload: $payload,)';
 
   /// If this error is an [HttpError]\<T>, returns [Just] with its typed
   /// response body; otherwise returns [Nothing].
@@ -71,6 +76,7 @@ class AppUnknownError extends AppError {
     super.slug,
     super.msg,
     super.stackTrace,
+    super.payload,
   });
 
   @override
@@ -87,6 +93,7 @@ class ParseError extends AppError {
     super.slug,
     super.msg,
     super.stackTrace,
+    super.payload,
   });
 
   @override
@@ -103,6 +110,7 @@ class EntityNotFitError extends AppError {
     super.slug,
     super.msg,
     super.stackTrace,
+    super.payload,
   });
 
   @override
@@ -119,6 +127,7 @@ class FailedToShareError extends AppError {
     super.slug,
     super.msg,
     super.stackTrace,
+    super.payload,
   });
 
   @override
@@ -135,6 +144,7 @@ class TokenNotFoundError extends AppError {
     super.slug,
     super.msg,
     super.stackTrace,
+    super.payload,
   });
 
   @override

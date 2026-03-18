@@ -8,3 +8,5 @@ export 'package:convenience_types/types/sizing_information.dart';
 export 'package:convenience_types/types/no_params.dart';
 export 'package:convenience_types/types/value_object.dart';
 export 'package:convenience_types/types/usecase.dart';
+export 'package:convenience_types/types/either.dart';
+export 'package:convenience_types/types/try.dart';

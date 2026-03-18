@@ -190,5 +190,44 @@ void main() {
       expect(res, const Success('b'));
     });
   });
+
+  group('fold', () {
+    test('Calls onSuccess when Success', () {
+      final res = const Success(42).fold(
+        (e) => 0,
+        (data) => data * 2,
+      );
+      expect(res, 84);
+    });
+    test('Calls onError when Failure', () {
+      final res = const Failure(AppUnknownError()).fold(
+        (e) => -1,
+        (data) => data,
+      );
+      expect(res, -1);
+    });
+  });
+
+  group('orElse', () {
+    test('Returns the same result when Success', () {
+      final res = const Success<String>('a').orElse(const Success('b'));
+      expect(res, const Success('a'));
+    });
+    test('Returns fallback when Failure', () {
+      final res = const Failure<String>(AppUnknownError()).orElse(const Success('b'));
+      expect(res, const Success('b'));
+    });
+  });
+
+  group('orElseGet', () {
+    test('Returns the same result when Success', () {
+      final res = const Success<String>('a').orElseGet((_) => const Success('b'));
+      expect(res, const Success('a'));
+    });
+    test('Applies factory when Failure', () {
+      final res = const Failure<String>(AppUnknownError()).orElseGet((_) => const Success('b'));
+      expect(res, const Success('b'));
+    });
+  });
 }
 

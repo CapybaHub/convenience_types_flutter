@@ -1,3 +1,16 @@
+## 0.10.0
+
+- Added `Either<L, R>` type for type-safe disjoint unions.
+- Added `Try<T>` type for safe synchronous computation wrapping.
+- Added `sequence()` and `traverse()` extensions for `Iterable<Maybe<T>>` and `Iterable<Result<T>>`.
+- Added filtered iterable extensions: `.values`, `.nothings`, `.successes`, and `.failures`.
+- Added `payload` field to `AppError` base class and all its subclasses.
+- Updated `HttpError` to automatically map its `response` to the `AppError` payload.
+- Added `DebugPrint` extensions for `Result`, `Maybe`, and `RequestStatus` to improve the debugging experience in Flutter.
+- Added `fold` method to `Result`.
+- Added `orElse` and `orElseGet` to `Result` and `Maybe`.
+- Added `mapSucceeded` and `mapFailed` to `RequestStatus`.
+
 ## 0.9.1
 
 - add 100% test coverage for all types and errors API surface

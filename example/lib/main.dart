@@ -359,6 +359,53 @@ class _DemoHomeState extends State<DemoHome> {
     _log('appErr.maybeResponse<String>(): ${appErr.maybeResponse<String>()}');
     _log('');
 
+    _log('═══ Either ═══');
+    Either<String, int> checkAge(int age) => age >= 18 ? Right(age) : const Left('Too young');
+    final validAge = checkAge(20);
+    final invalidAge = checkAge(10);
+    _log('validAge.isRight: ${validAge.isRight}');
+    _log('invalidAge.isLeft: ${invalidAge.isLeft}');
+    _log('validAge.fold: ${validAge.fold((l) => 'Error: $l', (r) => 'Success: $r')}');
+    _log('');
+
+    _log('═══ Try ═══');
+    final trySuccess = Try.guard(() => int.parse('42'));
+    final tryFailure = Try.guard(() => int.parse('not_a_number'));
+    _log('trySuccess: ${trySuccess.getOrElse((e, s) => -1)}');
+    _log('tryFailure: ${tryFailure.getOrElse((e, s) => -1)}');
+    _log('tryFailure.fold: ${tryFailure.fold((e, s) => 'Caught $e', (v) => 'Ok')}');
+    _log('');
+
+    _log('═══ Iterable Extensions ═══');
+    final listMaybes = <Maybe<int>>[const Just(1), const Just(2)];
+    final listMaybesWithNothing = <Maybe<int>>[const Just(1), const Nothing()];
+    _log('[Just(1), Just(2)].sequence() → ${listMaybes.sequence()}');
+    _log('[Just(1), Nothing()].sequence() → ${listMaybesWithNothing.sequence()}');
+    
+    final listResults = <Result<int>>[const Success(10), const Success(20)];
+    final listResultsWithFailure = <Result<int>>[const Success(10), const Failure(ParseError(slug: 'err'))];
+    _log('[Success(10), Success(20)].sequence() → ${listResults.sequence()}');
+    _log('[Success(10), Failure(...)].sequence() → ${listResultsWithFailure.sequence()}');
+    _log('');
+
+    _log('═══ Filtered Iterable Extensions ═══');
+    _log('listMaybes.values: ${listMaybes.values}');
+    _log('listMaybesWithNothing.values: ${listMaybesWithNothing.values}');
+    _log('listResultsWithFailure.successes: ${listResultsWithFailure.successes}');
+    _log('listResultsWithFailure.failures: ${listResultsWithFailure.failures}');
+    _log('');
+
+    _log('═══ AppError Payload & DebugPrint Extensions ═══');
+    const payloadError = AppUnknownError(slug: 'my_err', payload: {'detail': 'xyz'});
+    _log('AppUnknownError payload: ${payloadError.payload}');
+    
+    // Debug print usage (outputs to console)
+    const Success(100).debugPrint('DemoResult');
+    const Just('Hello').debugPrint('DemoMaybe');
+    const Idle<String>().debugPrint('DemoReqStatus');
+    _log('(Check your debug console for .debugPrint() outputs)');
+    _log('');
+
     _log('✅ All pure-Dart demos complete.');
   }
 

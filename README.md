@@ -20,6 +20,8 @@ Across our projects we have adopted types that keep code safer, less error-prone
     <ol>
       <li><a href="#result">Result</a></li>
       <li><a href="#maybe">Maybe</a></li>
+      <li><a href="#either">Either</a></li>
+      <li><a href="#try">Try</a></li>
       <li><a href="#unit">Unit</a></li>
       <li><a href="#requestStatus">RequestStatus</a></li>
       <li><a href="#formField">FormField</a></li>
@@ -35,6 +37,8 @@ Across our projects we have adopted types that keep code safer, less error-prone
     <ol>
       <li><a href="#formUtils">FormUtils</a></li>
       <li><a href="#seedTestStateMixin">SeedTestStateMixin</a></li>
+      <li><a href="#iterableExtensions">Iterable Extensions</a></li>
+      <li><a href="#debugPrintExtensions">DebugPrint Extensions</a></li>
     </ol>
   </li>
 </ol>
@@ -128,6 +132,44 @@ final combined = (maybeName, maybeCount).maybeCombine<String>(
   secondJust: (count) => Just(count.toString()),
   bothNothing: () => Just('unknown'),
 );
+```
+
+### Either
+
+A type that represents a value of one of two possible types (a disjoint union). `Either<L, R>` is commonly used when an operation can return two distinct types of data. By convention, `Left` is used for failure and `Right` is used for success.
+
+**Pattern matching:**
+
+```dart
+Either<String, int> checkAge(int age) => age >= 18 ? Right(age) : Left('Too young');
+
+final message = switch (checkAge(20)) {
+  Left(:final value) => 'Error: $value',
+  Right(:final value) => 'Success: $value',
+};
+```
+
+**Chaining & Folding:**
+Use `mapRight` and `mapLeft` to transform the respective sides without changing the other. Use `fold` to collapse both possibilities into a single return value.
+
+### Try
+
+A computation wrapper `Try<T>` similar to `Result`, but its semantics are specifically geared towards executing lambdas that might throw synchronous exceptions.
+
+**Guard:**
+
+```dart
+final tryData = Try.guard(() => jsonDecode(malformedJson));
+final value = tryData.getOrElse((e, s) => 'Fallback string');
+```
+
+**Pattern matching:**
+
+```dart
+switch (tryData) {
+  TrySuccess(:final value) => print('Ok: $value'),
+  TryFailure(:final exception, :final stackTrace) => print('Error: $exception'),
+}
 ```
 
 ### Unit
@@ -310,7 +352,10 @@ Abstract base class for all application errors.
 
 Provides a common interface for typed, structured error handling. All errors
 carry a `slug` (machine-readable identifier), a `msg` (human-readable
-message), and an optional `stackTrace`.
+message), an optional `stackTrace`, and an optional `payload`.
+
+**Payloads:**
+The `payload` field (`Object?`) standardizes the handling of custom error data across all subclasses. For example, `HttpError` maps its network `response` directly to this `payload` internally, enabling consistent access to extra error data across the app.
 
 Preset concrete subclasses cover the most common error domains:
 - `HttpError` — HTTP request failures (network, status codes, etc.)
@@ -374,6 +419,38 @@ test(
           );
 
           /// test body
+          /// test body
         },
       );
+```
+
+### Iterable Extensions
+
+Provides `.sequence()` and `.traverseMaybe()` / `.traverseResult()` on Iterables to cleanly invert the relationship between a List and a Monad.
+
+```dart
+final list = [Just(1), Just(2)];
+final Maybe<List<int>> sequenced = list.sequence(); // Just([1, 2])
+
+final mixed = [Success(1), Failure(AppUnknownError())];
+final Result<List<int>> sequencedResult = mixed.sequence(); // Yields the first Failure
+
+**Filtering:**
+Use `.values` / `.nothings` on `Iterable<Maybe<T>>` and `.successes` / `.failures` on `Iterable<Result<T>>` to extract only the desired variants:
+
+```dart
+final maybes = [Just(1), Nothing(), Just(3)];
+final values = maybes.values; // [1, 3]
+
+final results = [Success(10), Failure(err), Success(30)];
+final successes = results.successes; // [10, 30]
+final errors = results.failures; // [err]
+```
+
+### DebugPrint Extensions
+
+The `.debugPrint([prefix])` extension on `Result`, `Maybe`, and `RequestStatus` makes it incredibly easy to output current states to the console without breaking fluent chains:
+
+```dart
+Result.success(42).debugPrint('My Operation'); // stdout: "My Operation Result: Success(42)"
 ```
