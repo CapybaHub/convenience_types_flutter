@@ -131,6 +131,23 @@ sealed class Maybe<T> with _$Maybe<T> {
       Just<T>(:final value) => fallbackOrValue(value),
     };
   }
+
+  /// Returns [fallback] when [Nothing], otherwise returns this [Maybe] unchanged.
+  Maybe<T> orElse(Maybe<T> fallback) {
+    return switch (this) {
+      Nothing<T>() => fallback,
+      Just<T>() => identity(this),
+    };
+  }
+
+  /// Applies [factory] when [Nothing] and returns the result;
+  /// returns this [Maybe] unchanged when [Just].
+  Maybe<T> orElseGet(Maybe<T> Function() factory) {
+    return switch (this) {
+      Nothing<T>() => factory(),
+      Just<T>() => identity(this),
+    };
+  }
 }
 
 extension MaybeRecordX<K, J> on (Maybe<K>, Maybe<J>) {

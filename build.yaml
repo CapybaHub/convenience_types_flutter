@@ -15,5 +15,6 @@ targets:
           - "lib/**/sizing_information.dart"
           - "lib/**/no_params.dart"
           - "lib/**/request_status.dart"
-          - "lib/**/shipment_status.dart"
+          - "lib/**/either.dart"
+          - "lib/**/try.dart"
           - "lib/src/shared/types/api_state.dart"

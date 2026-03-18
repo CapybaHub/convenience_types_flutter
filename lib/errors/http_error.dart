@@ -29,7 +29,7 @@ abstract class HttpError<T> extends AppError {
     super.stackTrace,
     this.code = -2,
     this.response = const Nothing(),
-  });
+  }) : super(payload: response);
 
   @override
   String toString() =>

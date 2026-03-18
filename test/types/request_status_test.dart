@@ -327,5 +327,30 @@ void main() {
       expect(const Idle().isFailed, false);
     });
   });
+
+  group('mapSucceeded', () {
+    test('Returns the same status when not Succeeded', () {
+      expect(const Idle().mapSucceeded((_) => const Succeeded(1)), const Idle());
+      expect(const Loading().mapSucceeded((_) => const Succeeded(1)), const Loading());
+      expect(const Failed(AppUnknownError()).mapSucceeded((_) => const Succeeded(1)), const Failed(AppUnknownError()));
+    });
+    test('Applies combiner when Succeeded', () {
+      final res = const Succeeded(42).mapSucceeded((data) => Succeeded(data * 2));
+      expect(res, const Succeeded(84));
+    });
+  });
+
+  group('mapFailed', () {
+    test('Returns the same status when not Failed', () {
+      expect(const Idle().mapFailed((_) => const Failed(AppUnknownError())), const Idle());
+      expect(const Loading().mapFailed((_) => const Failed(AppUnknownError())), const Loading());
+      expect(const Succeeded(1).mapFailed((_) => const Failed(AppUnknownError())), const Succeeded(1));
+    });
+    test('Applies combiner when Failed', () {
+      final error = AppUnknownError(slug: 'original');
+      final res = Failed(error).mapFailed((e) => const Failed(AppUnknownError(slug: 'transformed')));
+      expect(res, const Failed(AppUnknownError(slug: 'transformed')));
+    });
+  });
 }
 

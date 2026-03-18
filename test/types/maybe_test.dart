@@ -363,5 +363,23 @@ void main() {
       expect(await testRecord.maybeAsyncCombine(bothNothing: bothNothing), const Just('bothNothing'));
     });
   });
+
+  group('orElse', () {
+    test('Returns the same maybe when Just', () {
+      expect(const Just('a').orElse(const Just('b')), const Just('a'));
+    });
+    test('Returns fallback when Nothing', () {
+      expect(const Nothing<String>().orElse(const Just('b')), const Just('b'));
+    });
+  });
+
+  group('orElseGet', () {
+    test('Returns the same maybe when Just', () {
+      expect(const Just('a').orElseGet(() => const Just('b')), const Just('a'));
+    });
+    test('Applies factory when Nothing', () {
+      expect(const Nothing<String>().orElseGet(() => const Just('b')), const Just('b'));
+    });
+  });
 }
 

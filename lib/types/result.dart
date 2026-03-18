@@ -110,4 +110,31 @@ sealed class Result<ResultType> with _$Result<ResultType> {
         onSuccess: (data) => Just(data),
         onFailure: (_) => Nothing<ResultType>(),
       );
+
+  /// Folds the result: applies [onError] with the error when [Failure],
+  /// [onSuccess] with the value when [Success]. Returns the callback's return value.
+  ///
+  /// This is an alias for [handle] with a more traditional FP naming convention.
+  T fold<T>(
+    T Function(AppError error) onError,
+    T Function(ResultType data) onSuccess,
+  ) =>
+      handle(onSuccess: onSuccess, onFailure: onError);
+
+  /// Returns [fallback] when [Failure], otherwise returns this [Result] unchanged.
+  Result<ResultType> orElse(Result<ResultType> fallback) {
+    return handle(
+      onSuccess: (_) => identity(this),
+      onFailure: (_) => fallback,
+    );
+  }
+
+  /// Applies [factory] to the error when [Failure] and returns the result;
+  /// returns this [Result] unchanged when [Success].
+  Result<ResultType> orElseGet(Result<ResultType> Function(AppError error) factory) {
+    return handle(
+      onSuccess: (_) => identity(this),
+      onFailure: (error) => factory(error),
+    );
+  }
 }
